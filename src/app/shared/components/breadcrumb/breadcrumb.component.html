@@ -1,0 +1,26 @@
+<div class="breadcrumb-container" *ngIf="lengthListBreadCrumb > 0">
+  <ol class="breadcrumbs">
+    <li
+      *ngFor="let item of listBreadCrumb; let i = index"
+      class="breadcrumb-item"
+    >
+      <div
+        class="breadcrumb-item__name"
+        *ngIf="item.name != ''"
+        [routerLink]="item.route"
+        routerLinkActive="router-link-active"
+        class="{{ item.route ? 'breadcrumb-link' : '' }}"
+        [style.color]="i == lengthListBreadCrumb - 1 ? '#1890FF' : '#000000'"
+      >
+        {{ item.name }}
+      </div>
+      <!-- <i
+        *ngIf="i != lengthListBreadCrumb - 1"
+        nz-icon
+        nzType="right"
+        nzTheme="outline"
+        class="breadcrumb-icon"
+      ></i> -->
+    </li>
+  </ol>
+</div>

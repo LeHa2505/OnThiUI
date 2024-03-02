@@ -1,0 +1,40 @@
+ol {
+  list-style: none;
+}
+
+.breadcrumbs {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  padding-left: 0;
+}
+
+.breadcrumb-item {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    .breadcrumb-item__name {
+      color: #fff !important;
+    }
+  }
+
+  &:first-child, &:last-child {
+    cursor: default;
+    pointer-events: none;
+  }
+}
+
+.breadcrumb-icon {
+  padding: 0 8px;
+  color: #595959;
+  font-size: 14px;
+}
+
+.breadcrumb-link{
+  cursor: pointer;
+  pointer-events: auto;
+}
+

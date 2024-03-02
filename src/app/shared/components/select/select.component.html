@@ -1,0 +1,8 @@
+<nz-select class="select" name="value" nzAllowClear [(ngModel)]="selectedValue">
+  <nz-option
+    *ngFor="let item of listOption; let i = index"
+    [nzLabel]="item[labelField]"
+    [nzValue]="item[valueField]"
+  >
+  </nz-option>
+</nz-select>

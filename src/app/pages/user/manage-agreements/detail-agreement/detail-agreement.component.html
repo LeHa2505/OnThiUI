@@ -1,0 +1,280 @@
+<div nz-row [nzGutter]="24" *ngIf="isLoadingPage==false">
+    <div nz-col [nzSpan]="24">
+        <nz-card nzTitle="Content" style="margin-bottom: 16px;" [nzExtra]="extraTemplate">
+            <div style="padding: 0 24px;" class="formAgreement" [formGroup]="validateForm" (ngSubmit)="updateForm()">
+                <div nz-row [nzGutter]="24">
+                    <nz-form-item nz-col [nzSpan]="12" class="info">
+                        <nz-form-label nzFor="date">
+                            <strong>Agreement end time (MM/DD/YYYY)</strong>
+                        </nz-form-label>
+                        <nz-form-control *ngIf="isEdit == false" [nzSpan]="8">
+                            <p>{{requestForm.date?requestForm.date.toLocaleDateString():null}}</p>
+                        </nz-form-control>
+                        <nz-form-control *ngIf="isEdit == true" nzErrorTip="Please choose deadline">
+                            <nz-date-picker [nzPlaceHolder]="'Select date'" style="min-width: 350px;"
+                                [(ngModel)]="requestForm.date" formControlName="deadline"></nz-date-picker>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item nz-col [nzSpan]="12" class="info">
+                        <nz-form-label nzFor="agreementID">
+                            <strong>Status</strong>
+                        </nz-form-label>
+                        <nz-form-control [nzSpan]="8">
+                            <p>{{requestForm.status}}</p>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-row [nzGutter]="24">
+                    <nz-form-item nz-col [nzSpan]="12" class="info">
+                        <nz-form-label nzFor="applicant">
+                            <strong>Applicant</strong>
+                        </nz-form-label>
+                        <nz-form-control [nzSpan]="8">
+                            <p>{{requestForm.applicant}}</p>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item nz-col [nzSpan]="12" class="info">
+                        <nz-form-label nzFor="applicantLegalName">
+                            <strong>Applicant legal name</strong>
+                        </nz-form-label>
+                        <nz-form-control [nzSpan]="8">
+                            <p>{{requestForm.applicantLegalName}}</p>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-row [nzGutter]="24">
+                    <nz-form-item nz-col [nzSpan]="12" class="info">
+                        <nz-form-label nzFor="beneficiary">
+                            <strong>Beneficiary</strong>
+                        </nz-form-label>
+                        <nz-form-control *ngIf="isEdit == false">
+                            <p>{{requestForm.beneficiary}}</p>
+                        </nz-form-control>
+                        <nz-form-control [nzSpan]="12" nzErrorTip="Please input your beneficiary"
+                            *ngIf="isEdit == true">
+                            <nz-select style="min-width: 350px;" nzShowSearch nzAllowClear
+                                nzPlaceHolder="{{requestForm.beneficiary}}" [(ngModel)]="requestForm.beneficiary"
+                                formControlName="beneficiary">
+                                <nz-option *ngFor="let item of listCustomer" [nzLabel]="item"
+                                    [nzValue]="item"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item nz-col [nzSpan]="12" class="info">
+                        <nz-form-label nzFor="date">
+                            <strong>Beneficiary legal name</strong>
+                        </nz-form-label>
+                        <nz-form-control>
+                            <p>{{requestForm.beneficiaryLegalName}}</p>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-row [nzGutter]="24">
+                    <nz-form-item nz-col [nzSpan]="12" class="info">
+                        <nz-form-label nzFor="issuingBank">
+                            <strong>Issuing bank</strong>
+                        </nz-form-label>
+                        <nz-form-control *ngIf="isEdit == false">
+                            <p>{{requestForm.issuingBank}}</p>
+                        </nz-form-control>
+                        <nz-form-control [nzSpan]="12" *ngIf="isEdit == true"
+                            nzErrorTip="Please input your Issuing bank">
+                            <nz-select style="min-width: 350px;" nzShowSearch nzAllowClear
+                                nzPlaceHolder="{{requestForm.issuingBank}}" [(ngModel)]="requestForm.issuingBank"
+                                formControlName="issuingBank">
+                                <nz-option *ngFor="let item of listBank" [nzLabel]="item" [nzValue]="item"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item nz-col [nzSpan]="12" class="info">
+                        <nz-form-label nzFor="issuingBankCode">
+                            <strong>Issuing Bank SWIFT/BIC code</strong>
+                        </nz-form-label>
+                        <nz-form-control>
+                            <p>{{requestForm.issuingBankCode}}</p>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-row [nzGutter]="24">
+                    <nz-form-item nz-col [nzSpan]="12" class="info">
+                        <nz-form-label nzFor="advisingBank">
+                            <strong>Advising bank</strong>
+                        </nz-form-label>
+                        <nz-form-control *ngIf="isEdit == false">
+                            <p>{{requestForm.advisingBank}}</p>
+                        </nz-form-control>
+                        <nz-form-control [nzSpan]="12" *ngIf="isEdit == true" [nzErrorTip]="errorTpl">
+                            <nz-select style="min-width: 350px;" nzShowSearch nzAllowClear
+                                nzPlaceHolder="{{requestForm.advisingBank}}" formControlName="advisingBank"
+                                [(ngModel)]="requestForm.advisingBank">
+                                <nz-option *ngFor="let item of listBank" [nzLabel]="item" [nzValue]="item"></nz-option>
+                            </nz-select>
+                            <ng-template #errorTpl let-control>
+                                <ng-container *ngIf="control.hasError('required')">Please input your Issuing
+                                    bank</ng-container>
+                                <ng-container *ngIf="control.hasError('confirm')">
+                                    The Advising bank must be different from Issuing bank
+                                </ng-container>
+                            </ng-template>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item nz-col [nzSpan]="12" class="info">
+                        <nz-form-label nzFor="advisingBankCode">
+                            <strong>Advising Bank SWIFT/BIC code</strong>
+                        </nz-form-label>
+                        <nz-form-control>
+                            <p>{{requestForm.advisingBankCode}}</p>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-row [nzGutter]="24">
+                    <nz-form-item nz-col [nzSpan]="12" class="info">
+                        <nz-form-label nzFor="commodityName">
+                            <strong>Commodity name</strong>
+                        </nz-form-label>
+                        <nz-form-control *ngIf="isEdit == false">
+                            <p>{{requestForm.commodityName}}</p>
+                        </nz-form-control>
+                        <nz-form-control [nzSpan]="12" *ngIf="isEdit == true"
+                            nzErrorTip="Please input your commodity name">
+                            <input type="text" nz-input formControlName="commodityName" style="min-width: 350px;"
+                                [(ngModel)]="requestForm.commodityName" placeholder="{{requestForm.commodityName}}" />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item nz-col [nzSpan]="12" class="info">
+                        <nz-form-label nzFor="commodityValue">
+                            <strong>Commodity value</strong>
+                        </nz-form-label>
+                        <nz-form-control *ngIf="isEdit == false">
+                            <p>{{requestForm.commodityValue + ' ' + requestForm.currencyUnit}}</p>
+                        </nz-form-control>
+                        <nz-form-control [nzSpan]="12" *ngIf="isEdit == true"
+                            nzErrorTip="Please input your commodity value">
+                            <nz-input-group [nzAddOnAfter]="addOnAfterTemplate" style="width: 50% !important;">
+                                <ng-template #addOnAfterTemplate>
+                                    <nz-select formControlName="currencyUnit" style="min-width: 80px !important;"
+                                        [(ngModel)]="requestForm.currencyUnit">
+                                        <nz-option *ngFor="let item of currencyUnitList" [nzValue]="item"
+                                            [nzLabel]="item"></nz-option>
+                                    </nz-select>
+                                </ng-template>
+                                <input style="min-width: 270px !important;" nz-input type="number" placeholder="0"
+                                    formControlName="commodityValue" [(ngModel)]="requestForm.commodityValue" />
+                            </nz-input-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-row [nzGutter]="24">
+                    <nz-form-item nz-col [nzSpan]="12" class="info">
+                        <nz-form-label nzFor="paymentMethod">
+                            <strong>Payment method</strong>
+                        </nz-form-label>
+                        <nz-form-control *ngIf="isEdit == false">
+                            <p>{{requestForm.paymentMethod}}</p>
+                        </nz-form-control>
+                        <nz-form-control [nzSpan]="12" *ngIf="isEdit == true"
+                            nzErrorTip="Please choose your payment method">
+                            <nz-radio-group formControlName="paymentMethod" [(ngModel)]="requestForm.paymentMethod">
+                                <label nz-radio nzValue="Via bank">Via bank</label>
+                                <label nz-radio nzValue="Digital money">Digital money</label>
+                            </nz-radio-group>
+                        </nz-form-control>
+                    </nz-form-item>
+
+                    <nz-form-item nz-col [nzSpan]="12" class="info">
+                        <nz-form-label nzFor="requiredDocument">
+                            <strong>Required documents</strong>
+                        </nz-form-label>
+                        <nz-form-control *ngIf="isEdit == false">
+                            <p>{{requestForm.requiredDocument.invoice? 'Invoice' : ''}}</p>
+                            <p>Other documents: {{requestForm.requiredDocument.otherDocument || 'none'}}</p>
+                        </nz-form-control>
+                        <nz-form-control [nzSpan]="12" *ngIf="isEdit == true">
+                            <nz-checkbox-wrapper style="width: 100%;">
+                                <div>
+                                    <label nz-checkbox nzValue="invoice"
+                                        [(ngModel)]="requestForm.requiredDocument.invoice"
+                                        formControlName="invoice">Invoice</label>
+                                </div>
+                                <div>
+                                    <label nz-checkbox nzValue="otherDocument"
+                                    formControlName="otherDocument">
+                                        Other document
+                                    </label>
+                                    <input placeholder="Enter list other necessary documents" nz-input 
+                                    *ngIf="validateForm.value.otherDocument" 
+                                    [(ngModel)]="requestForm.requiredDocument.otherDocument"
+                                    style="min-width: 100px;" formControlName="listOtherDocument" type="text">
+                                </div>
+                            </nz-checkbox-wrapper>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <hr style="margin-top: 40px;">
+
+                <div nz-row [nzGutter]="24">
+                    <nz-form-item nz-col [nzSpan]="24" class="info">
+                        <nz-form-label nzFor="additionalInformation">
+                            <strong>Additional information <em>(optional)</em></strong>
+                        </nz-form-label>
+                        <nz-form-control *ngIf="isEdit == false">
+                            <p>{{requestForm.additionalInformation || 'none'}}</p>
+                        </nz-form-control>
+                        <nz-form-control [nzSpan]="12" *ngIf="isEdit == true"
+                            style="margin: 24px 0 24px 0; min-width: 500px;"
+                            nzErrorTip="Please choose your payment method">
+                            <textarea nz-input formControlName="additionalInformation"
+                                [(ngModel)]="requestForm.additionalInformation"
+                                [nzAutosize]="{ minRows: 3, maxRows: 3 }"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+
+            <nz-divider></nz-divider>
+
+            <div class="button-group"
+                *ngIf="requestForm.applicant !== username && isAccepted == false && role == 'user'">
+                <button nz-button nzType="primary" (click)="showConfirm()">Accept this agreement</button>
+            </div>
+            <div class="button-group"
+                *ngIf="requestForm.issuingBank == username && role == 'bank' && requestForm.status == 'exporter_approved'">
+                <button nz-button nzType="primary" (click)="showConfirmAcceptLC()">Accept</button>
+                <!-- <button nz-button nzType="primary" nzDanger (click)="showModalRefuse()">Return with reason</button> -->
+            </div>
+        </nz-card>
+    </div>
+</div>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Do you want to return this agreement?" (nzOnCancel)="handleCancelRefuse()"
+    (nzOnOk)="handleOkRefuse()" [nzOkDanger]="true">
+    <ng-container *nzModalContent>
+        <form nz-form [formGroup]="validateRefuseForm" (ngSubmit)="submitForm()">
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">Reason</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid!">
+                    <input nz-input formControlName="reason" id="reason" />
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </ng-container>
+</nz-modal>
+
+<ng-template #extraTemplate>
+    <div *ngIf="requestForm.applicant == username && requestForm.status == 'created'">
+        <button *ngIf="isEdit == false" nz-button nzType="primary" nzShape="round" (click)="updateForm()">
+            <span nz-icon nzType="edit" nzTheme="outline"></span> Edit
+        </button>
+        <button style="background-color: #52c41a;" *ngIf="isEdit == true" nz-button nzType="primary" nzShape="round"
+            (click)="saveForm()">
+            <span nz-icon nzType="save" nzTheme="outline"></span> Save
+        </button>
+    </div>
+</ng-template>
+
+<div *ngIf="isLoadingPage">
+    <div class="example">
+        <nz-spin nzSimple nzTip="Loading..."></nz-spin>
+    </div>
+</div>

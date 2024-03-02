@@ -1,0 +1,12 @@
+<button
+  [disabled]="isDisable"
+  nz-button
+  [nzType]="buttonType"
+  (click)="onClick()"
+  [nzDanger]="isDanger"
+  [class]="className"
+>
+  <span *ngIf="iconType" nz-icon [nzType]="iconType" nzTheme="outline"></span>
+  <span *ngIf="title">{{ title }}</span>
+</button>
+<nz-modal> </nz-modal>
