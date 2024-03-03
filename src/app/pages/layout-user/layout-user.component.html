@@ -1,11 +1,12 @@
 <nz-layout class="layout">
-  <nz-sider class="menu-sidebar" nzTheme="light" nzCollapsible nzWidth="220px" nzBreakpoint="md"
+  <nz-sider class="menu-sidebar" nzTheme="dark" nzCollapsible nzWidth="180px" nzBreakpoint="md"
     [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
     <div class="sidebar-logo" [routerLink]="'/'">
-      <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo" />
-      <span style="margin: 1em; font-size: 16px"><strong>BC4LC</strong></span>
+      <div style="width: 2.3rem; height: 2.3rem; border-radius: 8px; background-color: #fff; transform: rotate(45deg);">
+      </div>
+      <span style="margin: 1em; font-size: 16px; color: #fff;"><strong>ONTHI</strong></span>
     </div>
-    <ul nz-menu nzTheme="light" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
       <ng-container *ngFor="let item of menus">
         <li *ngIf="item.subMenus && item.role == role" nz-submenu [nzTitle]="item.title" [nzIcon]="item.icon">
           <ul>
@@ -15,24 +16,72 @@
           </ul>
         </li>
         <li [routerLink]="item.url" nz-menu-item *ngIf="!item.subMenus && item.role == role">
-          <span nz-icon [nzType]="item.icon"></span>
+          <span nz-icon><i [ngClass]="item.icon"></i></span>
           <span>{{ item.title }}</span>
         </li>
       </ng-container>
     </ul>
     <span class="header-trigger"
-      style="position: absolute; bottom: 0; width: 100%; display: flex; 
+      style="position: absolute; bottom: 0; width: 100%; display: flex; color: #fff;
       justify-content: left; border-top: 1px solid rgba(0,0,0,.06); align-items: center; align-content: center; flex-wrap: nowrap;"
       (click)="isCollapsed = !isCollapsed">
-      <span class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'">
+      <span class="trigger" nz-icon>
+        <i [ngClass]="isCollapsed ? 'fas fa-arrow-right' : 'fas fa-arrow-left'"></i>
       </span>
     </span>
   </nz-sider>
   <nz-layout class="right-layout">
     <nz-header>
+
       <div class="app-header">
+        <div style="margin-left: 1.5rem;">
+          <nz-input-group style="border-radius: 16px; width: 600px;" [nzSuffix]="suffixIconSearch">
+            <input type="text" nz-input placeholder="Tìm kiếm" />
+          </nz-input-group>
+
+          <ng-template #suffixIconSearch>
+            <span nz-icon nzType="search"></span>
+          </ng-template>
+        </div>
+
         <div class="header-user">
-          <span class="avartar-img"><strong>{{username[0].toUpperCase()}}</strong></span>
+
+          <div style="margin-right: 1.5rem;">
+            <nz-badge [nzCount]="5" nz-dropdown [nzDropdownMenu]="noti" [nzPlacement]="'bottomRight'">
+              <span nz-icon><i style="font-size: 20px;" class="fa-regular fa-bell"></i></span>
+            </nz-badge>
+
+            <nz-dropdown-menu #noti="nzDropdownMenu">
+              <ul nz-menu nzSelectable style="height: 350px !important; overflow-y: scroll;">
+                <li *ngFor="let item of notifications" style="width: 350px;" class="ant-dropdown-menu-item" nz-menu-item>
+                  <div style="padding: 5px 16px !important; display: flex;">
+                    <div>
+                      <span nz-icon nzTheme="outline" style="margin-right: 1rem;">
+                        <div [ngSwitch]="item.status">
+                          <app-message-icon *ngSwitchCase="1"></app-message-icon>
+                          <app-checked-icon *ngSwitchCase="2"></app-checked-icon>
+                          <app-warning-icon *ngSwitchCase="3"></app-warning-icon>
+                          <app-plus-icon *ngSwitchCase="4"></app-plus-icon>
+                          <div *ngSwitchDefault>Unknown Icon</div>
+                        </div>
+                      </span>
+                    </div>
+                    <div style="display: flex; flex-direction: column;">
+                      <span><strong>{{ item.content }}</strong></span>
+                      <span style="color: #41475E; opacity: 0.5;   letter-spacing: 0.30000001192092896px;
+                      ">{{ item.time }}</span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </nz-dropdown-menu>
+
+          </div>
+
+          <span class="avartar-img">
+            <!-- <strong>{{username[0].toUpperCase()}}</strong> -->
+            <img style="width: 100%;" src="https://cdn-icons-png.flaticon.com/512/1993/1993167.png" alt="">
+          </span>
           <div>
             <div style="display: flex; align-items: center;">
               <div class="user-menu" nz-dropdown [nzDropdownMenu]="menu" [nzPlacement]="'bottomCenter'">
@@ -40,20 +89,27 @@
                   <strong>{{username}}</strong>
                 </span>
                 <span style="font-size: 12px">
-                  {{role==='bank'?'Bank':'User'}}
+                  {{role==='teacher'?'Teacher':'Student'}}
                 </span>
               </div>
-              <div style="margin-left: 0.5rem;"><span nz-icon nzType="caret-down" nzTheme="outline"></span></div>
+              <div style="margin-left: 0.5rem;">
+                <!-- <span nz-icon nzType="caret-down" nzTheme="outline"></span> -->
+                <i class="fas fa-caret-down"></i>
+              </div>
             </div>
             <nz-dropdown-menu #menu="nzDropdownMenu">
               <ul nz-menu nzSelectable>
                 <li style="width: 160px;" class="ant-dropdown-menu-item" nz-menu-item [routerLink]="'profile'">
-                  <div style=" padding: 5px 12px !important;"><span nz-icon nzType="user" nzTheme="outline"></span>
+                  <div style="padding: 5px 16px !important;"><span nz-icon nzTheme="outline">
+                      <i class="fas fa-user"></i>
+                    </span>
                     Profile</div>
                 </li>
                 <li style="width: 160px;" class="ant-dropdown-menu-item" nz-menu-item (click)="showConfirm()">
-                  <div style=" padding: 5px 12px !important;">
-                    <span nz-icon nzType="logout" nzTheme="outline"></span> Log out
+                  <div style="padding: 5px 16px !important;">
+                    <span nz-icon nzTheme="outline">
+                      <i class="fas fa-right-from-bracket"></i>
+                    </span> Log out
                   </div>
                 </li>
               </ul>

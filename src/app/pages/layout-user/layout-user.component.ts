@@ -10,70 +10,39 @@ import { AuthenticationService } from 'src/app/service/authentication/authentica
   styleUrls: ['./layout-user.component.less'],
 })
 export class LayoutUserComponent implements OnInit {
-  role: any = localStorage.getItem('role');
-  username = localStorage.getItem('username');
+  // role: any = localStorage.getItem('role');
+  // username = localStorage.getItem('username');
+  role: any;
+  username: any;
   isCollapsed = false;
+  notifications: any;
+
   menus: any[] = [
     {
-      title: 'New agreement',
-      icon: 'file-add',
+      title: 'Trang chủ',
+      icon: 'fas fa-house',
       url: '',
+      role: 'student',
+    },
+    {
+      title: 'Khóa học',
+      icon: 'fas fa-person-chalkboard',
       role: 'user',
     },
     {
-      title: 'Manage agreements',
-      icon: 'hdd',
-      subMenus: [
-        {
-          title: 'Agreements list',
-          url: 'agreements',
-        },
-      ],
-      role: 'user',
+      title: 'Lịch học',
+      icon: 'fas fa-calendar',
+      role: 'student',
     },
     {
-      title: 'Manage LCs',
-      icon: 'audit',
-      subMenus: [
-        {
-          title: 'LCs list',
-          url: 'LCs',
-        },
-      ],
-      role: 'user',
+      title: 'Tài liệu',
+      icon: 'fas fa-book',
+      role: 'student',
     },
     {
-      title: 'Manage documents',
-      icon: 'file-done',
-      subMenus: [
-        {
-          title: 'Documents list',
-          url: `documents`,
-        },
-      ],
-      role: 'user',
-    },
-    {
-      title: 'Manage agreements',
-      icon: 'database',
-      subMenus: [
-        {
-          title: 'Agreements list',
-          url: 'agreements',
-        },
-      ],
-      role: 'bank',
-    },
-    {
-      title: 'Manage LCs',
-      icon: 'audit',
-      subMenus: [
-        {
-          title: 'LCs list',
-          url: 'bank/LCs',
-        },
-      ],
-      role: 'bank',
+      title: 'Nhóm',
+      icon: 'fas fa-user-group',
+      role: 'student',
     },
   ];
 
@@ -88,6 +57,8 @@ export class LayoutUserComponent implements OnInit {
     private authenSer: AuthenticationService,
     private msg: NzMessageService
   ) {
+    this.initUserInform();
+    this.initNotification();
     // Theo dõi sự kiện thay đổi URL
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -103,6 +74,56 @@ export class LayoutUserComponent implements OnInit {
     // Lấy breadcrumbs cho URL ban đầu
     const initialUrl = this.router.url;
     this.breadcrumbs = this.createBreadcrumbs(initialUrl);
+  }
+
+  initUserInform() {
+    this.role = 'student';
+    this.username = 'Hà Trang';
+  }
+
+  initNotification() {
+    this.notifications = [
+      {
+        content: 'Cô giáo Toán ới vào xem live kìa Trang ơi',
+        time: '20 phút trước',
+        status: 1
+      },
+      {
+        content: 'Thật tuyệt vời, vừa hoàn thành xong 1 bài học kìa',
+        time: 'Hôm qua',
+        status: 2
+      },
+      {
+        content: 'Lẹ lơn, sắp deadline mà chưa hoàn thành task kìa',
+        time: '6pm hôm nay',
+        status: 3
+      },
+      {
+        content: 'Có bài tập mới cần hoàn thành nè, lẹ lẹ zô xem đề đi!',
+        time: '1 tháng 3',
+        status: 4
+      },
+      {
+        content: 'Cô giáo Toán ới vào xem live kìa Trang ơi',
+        time: '20 phút trước',
+        status: 1
+      },
+      {
+        content: 'Thật tuyệt vời, vừa hoàn thành xong 1 bài học kìa',
+        time: 'Hôm qua',
+        status: 2
+      },
+      {
+        content: 'Lẹ lơn, sắp deadline mà chưa hoàn thành task kìa',
+        time: '6pm hôm nay',
+        status: 3
+      },
+      {
+        content: 'Có bài tập mới cần hoàn thành nè, lẹ lẹ zô xem đề đi!',
+        time: '1 tháng 3',
+        status: 4
+      }
+    ]
   }
 
   private createBreadcrumbs(url: string): string[] {

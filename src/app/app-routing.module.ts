@@ -17,7 +17,7 @@ const routes: Routes = [
       },
       // Thêm các route con cho trang layout chung ở đây
     ],
-    canActivate: [AuthGuard]
+    // canActivate: [AuthGuard]
   },
   {
     path: 'auth',

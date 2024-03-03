@@ -54,7 +54,6 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 
-
 @NgModule({
   declarations: [
     LoginComponent,
@@ -114,7 +113,7 @@ import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
     NzMessageModule,
     NzStepsModule,
     NzPopconfirmModule,
-    NzTreeSelectModule
+    NzTreeSelectModule,
   ],
 })
 export class PagesModule {}

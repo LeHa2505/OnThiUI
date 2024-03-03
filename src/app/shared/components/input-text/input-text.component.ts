@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-input-text',
@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./input-text.component.less']
 })
 export class InputTextComponent {
-
+  
 }

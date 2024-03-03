@@ -27,6 +27,10 @@ import { InputTextComponent } from './input-text/input-text.component';
 import { InfoTextComponent } from './info-text/info-text.component';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzGridModule } from 'ng-zorro-antd/grid';
+import { MessageIconComponent } from './message-icon/message-icon.component';
+import { CheckedIconComponent } from './checked-icon/checked-icon.component';
+import { WarningIconComponent } from './warning-icon/warning-icon.component';
+import { PlusIconComponent } from './plus-icon/plus-icon.component';
 
 
 
@@ -42,6 +46,10 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
     HeaderComponent,
     InputTextComponent,
     InfoTextComponent,
+    MessageIconComponent,
+    CheckedIconComponent,
+    WarningIconComponent,
+    PlusIconComponent,
   ],
   imports: [
     NzGridModule,
@@ -73,7 +81,11 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
     SelectComponent,
     HeaderComponent,
     InfoTextComponent,
-    InputTextComponent
+    InputTextComponent,
+    MessageIconComponent,
+    CheckedIconComponent,
+    PlusIconComponent,
+    WarningIconComponent
   ],
 })
 export class ComponentsModule {}
