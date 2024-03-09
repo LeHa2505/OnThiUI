@@ -1,75 +1,83 @@
-<app-header [pageName]="'Sign up'">
-</app-header>
-
-<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-  <div class="items">
-    <nz-form-item>
-      <nz-form-label
-        [nzSm]="6"
-        [nzXs]="24"
-        nzFor="nickname"
-        nzRequired
-        nzTooltipTitle="What do you want other to call you"
-      >
-        <span>Username</span>
-      </nz-form-label>
-      <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your nickname!">
-        <input nz-input id="nickname" formControlName="nickname" />
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">E-mail</nz-form-label>
-      <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid E-mail!">
-        <input nz-input formControlName="email" id="email" />
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>Password</nz-form-label>
-      <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your password!">
-        <input
-          nz-input
-          type="password"
-          id="password"
-          formControlName="password"
-          (ngModelChange)="updateConfirmValidator()"
-        />
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword" nzRequired>Confirm Password</nz-form-label>
-      <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorTpl">
-        <input nz-input type="password" formControlName="checkPassword" id="checkPassword" />
-        <ng-template #errorTpl let-control>
-          <ng-container *ngIf="control.hasError('required')">Please confirm your password!</ng-container>
-          <ng-container *ngIf="control.hasError('confirm')">
-            Two passwords that you enter is inconsistent!
-          </ng-container>
-        </ng-template>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="role" nzRequired>Select role</nz-form-label>
-      <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorTpl">
-        <nz-radio-group formControlName="role" nzErrorTip="Please select your role!">
-          <label nz-radio nzValue="user">User</label>
-          <label nz-radio nzValue="bank">Bank</label>
-        </nz-radio-group>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item nz-row class="register-area">
-      <nz-form-control [nzSpan]="14" [nzOffset]="6">
-        <label nz-checkbox formControlName="agree">
-          <span>
-            I have read the
-            <a>agreement</a>
-          </span>
-        </label>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item nz-row class="register-area">
-      <nz-form-control [nzSpan]="14" [nzOffset]="6">
-        <button nz-button nzType="primary" [nzLoading]="isButtonLoading">Register</button>
-      </nz-form-control>
-    </nz-form-item>
+<div class="wrapper">
+  <div class="inner">
+    <img src="../../../assets/images/image-1.png" alt="" class="image-1">
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+      <div class="items">
+        <nz-form-item>
+          <nz-form-label style="float: left; display: flex;" [nzSm]="10" [nzXs]="24" nzFor="nickname" nzRequired
+            nzTooltipTitle="Tên bạn muốn được gọi khi dùng web là gì?">
+            <span>Tên đăng nhập</span>
+          </nz-form-label>
+          <nz-form-control class="form-holder" [nzSm]="14" [nzXs]="24" nzErrorTip="Hãy điền tên đăng nhập!">
+            <input class="form-control" nz-input id="nickname" formControlName="nickname" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label style="float: left; display: flex;" [nzSm]="10" [nzXs]="24" nzRequired
+            nzFor="email">E-mail</nz-form-label>
+          <nz-form-control class="form-holder" [nzSm]="14" [nzXs]="24" nzErrorTip="Hãy điền email!">
+            <input nz-input class="form-control" formControlName="email" id="email" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label style="float: left; display: flex;" [nzSm]="10" [nzXs]="24" nzFor="password" nzRequired>Mật
+            khẩu</nz-form-label>
+          <nz-form-control class="form-holder" [nzSm]="14" [nzXs]="24" nzErrorTip="Hãy điền mật khẩu!">
+            <nz-input-group>
+              <input [type]="passwordVisible ? 'text' : 'password'" nz-input class="form-control" type="password"
+              id="password" formControlName="password" (ngModelChange)="updateConfirmValidator()" />
+            <span style="float: right; left: 75% !important; width: auto;" class="icon-pass form-control" nz-icon
+              [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></span>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label style="float: left; display: flex;" [nzSm]="10" [nzXs]="24" nzFor="checkPassword"
+            nzRequired>Nhập lại mật khẩu</nz-form-label>
+          <nz-form-control class="form-holder" [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorTpl">
+            <nz-input-group>
+              <input [type]="passwordVisible ? 'text' : 'password'" nz-input class="form-control" 
+              type="password" formControlName="checkPassword" id="checkPassword" />
+              <span style="float: right; left: 75% !important; width: auto;" class="icon-pass form-control" nz-icon
+              [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></span>
+              <ng-template #errorTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">Hãy nhập lại mật khẩu!</ng-container>
+                <ng-container *ngIf="control.hasError('confirm')">
+                  Mật khẩu nhập lại không trùng khớp!
+                </ng-container>
+              </ng-template>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label style="float: left; display: flex;" [nzSm]="12" [nzXs]="24" nzFor="role" nzRequired>Bạn đăng ký
+            với tư cách là </nz-form-label>
+          <nz-form-control [nzSm]="12" [nzXs]="24" nzErrorTip="Hãy chọn một trong hai lựa chọn trên!">
+            <nz-radio-group formControlName="role">
+              <label nz-radio nzValue="student">Học sinh</label>
+              <label nz-radio nzValue="teacher">Giáo viên</label>
+            </nz-radio-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item nz-row class="register-area">
+          <nz-form-control>
+            <label nz-checkbox formControlName="agree">
+              <span>
+                Tôi đã đọc kỹ
+                <a>các điều khoản</a>
+                trước khi đăng ký
+              </span>
+            </label>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item nz-row class="register-area">
+          <nz-form-control>
+            <button nz-button [nzLoading]="isButtonLoading">Đăng ký</button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </form>
+    <img src="../../../assets/images/image-2.png" alt="" class="image-2">
   </div>
-  </form>
+
+</div>

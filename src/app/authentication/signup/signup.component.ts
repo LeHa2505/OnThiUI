@@ -32,6 +32,7 @@ export class SignupComponent implements OnInit {
   };
   num: number;
   isButtonLoading = false;
+  passwordVisible = false;
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -43,7 +44,7 @@ export class SignupComponent implements OnInit {
   async submitForm(): Promise<void> {
     if (this.validateForm.valid) {
       this.isButtonLoading = true;
-      this.requestRegisterForm.username = this.validateForm.value.nickname;
+      this.requestRegisterForm.username = this.validateForm.value.username;
       this.requestRegisterForm.email = this.validateForm.value.email;
       this.requestRegisterForm.password = this.validateForm.value.password;
       this.requestRegisterForm.role = this.validateForm.value.role;
