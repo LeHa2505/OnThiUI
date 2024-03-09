@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
   isLoginFailed: boolean;
   isLoading = false;
   isLogin = false;
+  passwordVisible = false;
 
   constructor(
     private fb: UntypedFormBuilder,

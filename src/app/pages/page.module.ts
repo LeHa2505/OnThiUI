@@ -16,7 +16,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LayoutUserComponent } from './layout-user/layout-user.component';
-import { LoginComponent } from '../authentication/login/login.component';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -56,7 +55,6 @@ import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 
 @NgModule({
   declarations: [
-    LoginComponent,
     LayoutUserComponent,
     NewAgreementComponent,
     RequestLCComponent,
