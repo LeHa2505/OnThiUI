@@ -33,9 +33,9 @@
               }
             ],
             "styles": [
-              "src/styles.less", 
+              "src/styles.less",
               "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
-          ],
+            ],
             "scripts": []
           },
           "configurations": {
@@ -101,10 +101,11 @@
             "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "less",
             "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles.less", 
-            "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
-            "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
-          ],
+            "styles": [
+              "src/styles.less",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+            ],
             "scripts": []
           }
         }

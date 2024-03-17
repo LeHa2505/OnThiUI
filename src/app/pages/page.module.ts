@@ -20,7 +20,6 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NewAgreementComponent } from './user/manage-agreements/new-agreement/new-agreement.component';
 import { RequestLCComponent } from './user/manage-lcs/request-lc/request-lc.component';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
@@ -28,48 +27,45 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
-import { ListNewRequestComponent } from './user/manage-agreements/list-new-request/list-new-request.component';
-import { DetailAgreementComponent } from './user/manage-agreements/detail-agreement/detail-agreement.component';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzMessageModule } from 'ng-zorro-antd/message';
-import { ListAgreementComponent } from './user/manage-agreements/list-agreement/list-agreement.component';
 import { ListLCsComponent } from './user/manage-lcs/list-lcs/list-lcs.component';
 import { DetailLcComponent } from './user/manage-lcs/detail-lc/detail-lc.component';
-import { UploadDocumentComponent } from './user/manage-documents/upload-document/upload-document.component';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
-import { ListDocumentsComponent } from './user/manage-documents/list-documents/list-documents.component';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
-import { EventContractComponent } from './user/event-contract/event-contract.component';
 import { ProfileComponent } from './user/profile/profile.component';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { DetailDocumentComponent } from './user/manage-documents/detail-document/detail-document.component';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
+import { HomePageComponent } from './user/home-page/home-page.component';
+import { ListCourseComponent } from './user/course/list-course/list-course.component';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { PrevDirective } from './user/course/list-course/directives/prev.directive';
+import { NextDirective } from './user/course/list-course/directives/next.directive';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 @NgModule({
   declarations: [
     LayoutUserComponent,
-    NewAgreementComponent,
     RequestLCComponent,
-    ListNewRequestComponent,
-    DetailAgreementComponent,
-    ListAgreementComponent,
     ListLCsComponent,
     DetailLcComponent,
-    UploadDocumentComponent,
-    ListDocumentsComponent,
-    EventContractComponent,
     ProfileComponent,
-    DetailDocumentComponent,
+    HomePageComponent,
+    ListCourseComponent,
+    PrevDirective,
+    NextDirective,
   ],
   imports: [
+    NzTypographyModule,
     NzDescriptionsModule,
     NzInputNumberModule,
     NzTabsModule,
@@ -111,7 +107,9 @@ import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
     NzMessageModule,
     NzStepsModule,
     NzPopconfirmModule,
+    NzTagModule,
     NzTreeSelectModule,
+    NzAvatarModule,
   ],
 })
 export class PagesModule {}

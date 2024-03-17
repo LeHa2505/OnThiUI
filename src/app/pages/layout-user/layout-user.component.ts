@@ -25,9 +25,10 @@ export class LayoutUserComponent implements OnInit {
       role: 'student',
     },
     {
-      title: 'Khóa học',
+      title: 'Khoá học',
       icon: 'fas fa-person-chalkboard',
-      role: 'user',
+      url: 'courses',
+      role: 'student',
     },
     {
       title: 'Lịch học',
