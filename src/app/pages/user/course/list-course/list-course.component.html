@@ -1,0 +1,205 @@
+<h6 style="color: #7D7D7D; font-size: 18px; font-weight: 600;">Khóa học của tôi</h6>
+
+<div class="container-fluid" style="padding-left: 0;">
+  <div class="slider-wrap">
+    <div class="slider-main">
+      <div class="item" *ngFor="let item of listClass; let i = index">
+        <div class="text">
+          <nz-card [style]="'width: 350px; border-radius: 8px;'" [nzBordered]="false" [nzTitle]="item.name"
+            [nzExtra]="extraTemplate">
+            <p style="color: rgba(0, 0, 0, 0.6);" nz-typography nzEllipsis [nzEllipsisRows]="2">
+              {{item.description}}</p>
+
+            <div style="margin-top: 1rem;" class="courses">
+              <div>
+                <div style="margin-bottom: 0.5rem;">
+                  <i class="fas fa-calendar-days" style="color: #828282; margin-right: 0.5rem;"></i>
+                  <span style="color: #828282;">{{ item.schedule }}</span>
+                </div>
+                <div style="margin-bottom: 0.5rem;">
+                  <i class="fas fa-clock" style="color: #828282; margin-right: 0.5rem;"></i>
+                  <span style="color: #828282;">{{ item.timeDetail }}</span>
+                </div>
+              </div>
+              <div style="margin-bottom: 0.5rem;">
+                <i class="fas fa-user" style="color: #828282; margin-right: 0.5rem;"></i>
+                <span style="color: #828282;">{{ item.teacherName }}</span>
+              </div>
+            </div>
+
+            <div>
+              <h6 style="font-size: 14px; color: #121212; margin-top: 0.5rem; margin-bottom: 0.8rem;">Bạn
+                cùng lớp</h6>
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center;">
+                  <nz-avatar-group>
+                    <nz-avatar
+                      nzSrc="https://www.nicepng.com/png/detail/971-9717270_girl-avatar-download-png-image-cartoon.png"></nz-avatar>
+                    <nz-avatar
+                      nzSrc="https://img.freepik.com/premium-vector/flat-design-character-illustration-character-cartoon-avatar-vector-design-face-girl-boy_659115-35.jpg"
+                      style="background-color: #f56a00" nzText="U"></nz-avatar>
+                    <nz-avatar
+                      nzSrc="https://static.vecteezy.com/system/resources/previews/028/597/534/original/young-cartoon-female-avatar-student-character-wearing-eyeglasses-file-no-background-ai-generated-png.png"
+                      style="background-color: #f56a00" nzText="U"></nz-avatar>
+                    <nz-avatar
+                      nzSrc="https://png.pngtree.com/png-vector/20240204/ourlarge/pngtree-avatar-job-student-flat-portrait-of-man-png-image_11606889.png"
+                      style="background-color: #f56a00" nzText="U"></nz-avatar>
+                  </nz-avatar-group>
+                  <span style="color: #595959; margin-left: 0.5rem;">+ {{ item.memberList }} người bạn
+                    khác</span>
+                </div>
+                <nz-badge [nzCount]="5">
+                  <i class="fas fa-comments"
+                    style="color: #828282; margin-right: 0.5rem; font-size: 1rem; float: right;"></i>
+                </nz-badge>
+              </div>
+            </div>
+            <ng-template #extraTemplate>
+              <nz-tag [nzColor]="'#FF4D4F'" style="border-radius: 1rem !important;" *ngIf="item.noti">Nay
+                có {{ item.noti }} lúc {{
+                item.liveTime }} nha</nz-tag>
+            </ng-template>
+          </nz-card>
+        </div>
+      </div>
+    </div>
+    <div class="button-area">
+      <!-- <button type="button" class="prev" appPrev><i class="fas fa-chevron-left"></i></button> -->
+      <button type="button" class="next" appNext><i class="fas fa-chevron-right"></i></button>
+    </div>
+  </div>
+</div>
+
+<h6 style="color: #7D7D7D; font-size: 18px; font-weight: 600; margin-bottom: 1rem;">Các khóa học của chúng mình</h6>
+
+
+<!-- Các khóa học của chúng mình -->
+<ul nz-menu nzMode="horizontal" style="background-color: none !important; margin-bottom: 1rem;">
+  <li nz-menu-item>
+    Tất cả
+  </li>
+  <li nz-submenu nzPlacement="bottomCenter" nzTitle="Khóa cơ bản" nzIcon="down">
+    <ul style="display: flex;">
+      <li nz-menu-group nzTitle="Lớp 9">
+        <div style="display: flex;">
+          <ul>
+            <nz-checkbox-group [(ngModel)]="checkOptionsOne" (ngModelChange)="log(checkOptionsOne)"></nz-checkbox-group>
+            <li nz-menu-item>Toán học</li>
+            <li nz-menu-item>Hóa học</li>
+            <li nz-menu-item>Vật lý</li>
+            <li nz-menu-item>Sinh học</li>
+          </ul>
+          <ul>
+            <li nz-menu-item>Ngữ văn</li>
+            <li nz-menu-item>Địa lý</li>
+            <li nz-menu-item>Lịch sử</li>
+            <li nz-menu-item>Giáo dục công dân</li>
+          </ul>
+          <ul>
+            <li nz-menu-item>Tiếng Anh</li>
+            <li nz-menu-item>Tiếng Nhật</li>
+            <li nz-menu-item>Tiếng Trung</li>
+            <li nz-menu-item>Tiếng Pháp</li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </li>
+  <li nz-submenu nzPlacement="bottomRight" nzTitle="Khóa nâng cao" nzIcon="down">
+    <ul>
+      <li nz-menu-group nzTitle="Item 1">
+        <ul>
+          <li nz-menu-item>Option 1</li>
+          <li nz-menu-item>Option 2</li>
+        </ul>
+      </li>
+      <li nz-menu-group nzTitle="Item 2">
+        <ul>
+          <li nz-menu-item>Option 3</li>
+          <li nz-menu-item>Option 4</li>
+          <li nz-submenu nzTitle="Sub Menu">
+            <ul>
+              <li nz-menu-item nzDisabled>Option 5</li>
+              <li nz-menu-item>Option 6</li>
+            </ul>
+          </li>
+          <li nz-submenu nzDisabled nzTitle="Disabled Sub Menu">
+            <ul>
+              <li nz-menu-item>Option 5</li>
+              <li nz-menu-item>Option 6</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li nz-submenu nzPlacement="topLeft" nzTitle="Luyện đề theo tỉnh thành" nzIcon="down">
+    <ul>
+      <li nz-menu-group nzTitle="Item 1">
+        <ul>
+          <li nz-menu-item>Option 1</li>
+          <li nz-menu-item>Option 2</li>
+        </ul>
+      </li>
+      <li nz-menu-group nzTitle="Item 2">
+        <ul>
+          <li nz-menu-item>Option 3</li>
+          <li nz-menu-item>Option 4</li>
+          <li nz-submenu nzTitle="Sub Menu">
+            <ul>
+              <li nz-menu-item nzDisabled>Option 5</li>
+              <li nz-menu-item>Option 6</li>
+            </ul>
+          </li>
+          <li nz-submenu nzDisabled nzTitle="Disabled Sub Menu">
+            <ul>
+              <li nz-menu-item>Option 5</li>
+              <li nz-menu-item>Option 6</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+
+</ul>
+
+
+<div style="display: flex; flex-wrap: wrap; flex-direction: row;">
+  <nz-card *ngFor="let item of listCourse"
+    style="width:300px; border-radius: 8px; margin-right: 1rem; margin-bottom: 1rem;">
+    <img style="border-radius: 16px;" width="100%"
+      src="https://img.freepik.com/premium-photo/student-girl-laughs-smiles-looking-away-isolated-blue-background-copy-space-web-banner_101969-2491.jpg"
+      alt="" />
+    <div style="margin: 0.5rem 0; display: flex; align-items: center; justify-content: space-between">
+      <div>
+        <nz-tag *ngFor="let tag of item.tags" style="border-radius: 16px;" [nzColor]="tag.colorTag">
+          {{ tag.nameTag }}
+        </nz-tag>
+      </div>
+      <div>
+        <i style="color: #D9D9D9;" class="fas fa-clock"></i>
+        <span style="margin-left: 0.3rem; color: #696984;">{{ item.time }}</span>
+      </div>
+    </div>
+
+    <div style="margin: 0.5rem 0 1rem 0;">
+      <h6 style="font-size: 1.1rem;">{{ item.title }}</h6>
+      <p style="color: #696984; margin: 0; padding: 0;"><strong>{{ item.lessons }}</strong> Bài giảng</p>
+      <p style="color: #696984; margin: 0; padding: 0;"><strong>{{ item.quizs }}</strong> Câu hỏi ôn tập</p>
+    </div>
+
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <div>
+        <nz-avatar nzSrc="https://hikosen-cara.vn/wp-content/uploads/2022/03/4-2-400x400.jpg"></nz-avatar>
+        <span style="margin-left: 0.3rem;">{{ item.teacher }}</span>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between">
+        <p style="color: #808080; margin: 0; padding: 0; font-size: 1rem;"><em><s>{{ item.price }}K</s></em></p>
+        <p style="color: #49BBBD; margin: 0; padding: 0; font-size: 1.2rem; margin-left: 0.5rem;"><strong>{{
+            item.discount }}K</strong></p>
+      </div>
+    </div>
+
+  </nz-card>
+</div>

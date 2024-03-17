@@ -20,7 +20,7 @@ import { LoginComponent } from './login/login.component';
   providers: [UntypedFormBuilder],
   declarations: [
     SignupComponent,
-    LoginComponent
+    LoginComponent,
   ],
   imports: [
     NzButtonModule,
