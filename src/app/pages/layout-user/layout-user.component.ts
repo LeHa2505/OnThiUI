@@ -45,6 +45,11 @@ export class LayoutUserComponent implements OnInit {
       icon: 'fas fa-user-group',
       role: 'student',
     },
+    {
+      title: 'Tin nhắn',
+      icon: 'fas fa-comment',
+      role: 'student',
+    },
   ];
 
   breadcrumbs: string[] = [];

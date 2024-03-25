@@ -51,6 +51,13 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { PrevDirective } from './user/course/list-course/directives/prev.directive';
 import { NextDirective } from './user/course/list-course/directives/next.directive';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { DetailCourseComponent } from './user/course/detail-course/detail-course.component';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
+import { NzRateModule } from 'ng-zorro-antd/rate';
+import { NzCommentModule } from 'ng-zorro-antd/comment';
+import { LearningCourseComponent } from './user/course/learning-course/learning-course.component';
+import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
+import { QuizComponent } from './user/course/quiz/quiz.component';
 
 @NgModule({
   declarations: [
@@ -63,8 +70,14 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
     ListCourseComponent,
     PrevDirective,
     NextDirective,
+    DetailCourseComponent,
+    LearningCourseComponent,
+    QuizComponent,
   ],
   imports: [
+    NzCommentModule,
+    NzRateModule,
+    NzProgressModule,
     NzTypographyModule,
     NzDescriptionsModule,
     NzInputNumberModule,
@@ -110,6 +123,10 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
     NzTagModule,
     NzTreeSelectModule,
     NzAvatarModule,
+    EditorModule
   ],
+  providers: [
+    { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }
+  ]
 })
 export class PagesModule {}

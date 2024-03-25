@@ -6,6 +6,9 @@ import { DetailLcComponent } from './user/manage-lcs/detail-lc/detail-lc.compone
 import { ProfileComponent } from './user/profile/profile.component';
 import { HomePageComponent } from './user/home-page/home-page.component';
 import { ListCourseComponent } from './user/course/list-course/list-course.component';
+import { DetailCourseComponent } from './user/course/detail-course/detail-course.component';
+import { LearningCourseComponent } from './user/course/learning-course/learning-course.component';
+import { QuizComponent } from './user/course/quiz/quiz.component';
 
 const routes: Routes = [
   {
@@ -14,11 +17,24 @@ const routes: Routes = [
   },
   {
     path: 'courses',
-    component: ListCourseComponent,
-  },
-  {
-    path: 'request-lc/:id',
-    component: RequestLCComponent,
+    children: [
+      {
+        path: '',
+        component: ListCourseComponent
+      },
+      {
+        path: ':id',
+        component: DetailCourseComponent,
+      },
+      {
+        path: 'learning/:id',
+        component: LearningCourseComponent
+      },
+      {
+        path: 'quizs/:id',
+        component: QuizComponent
+      }
+    ],
   },
   {
     path: 'agreements',
@@ -38,7 +54,7 @@ const routes: Routes = [
   },
   {
     path: 'profile',
-    component: ProfileComponent
+    component: ProfileComponent,
   },
   {
     path: 'bank',
