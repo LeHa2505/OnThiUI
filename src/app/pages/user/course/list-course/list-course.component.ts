@@ -15,8 +15,12 @@ export class ListCourseComponent implements OnInit {
     { label: 'Tiếng Anh', value: 'Tiếng Anh' },
     { label: 'Hóa học', value: 'Hóa học' },
     { label: 'Vật lý', value: 'Vật lý' },
-    { label: 'Sinh học', value: 'Giáo dục công dân' },
+    { label: 'Sinh học', value: 'Sinh học' },
     { label: 'Tiếng Anh', value: 'Tiếng Anh' },
+    { label: 'Tiếng Nhật', value: 'Tiếng Nhật' },
+    { label: 'Tiếng Trung', value: 'Tiếng Trung' },
+    { label: 'Tiếng Pháp', value: 'Tiếng Pháp' },
+    { label: 'Giáo dục công dân', value: 'Giáo dục công dân' },
   ];
 
   constructor() {}
@@ -87,6 +91,7 @@ export class ListCourseComponent implements OnInit {
   initListCourse() {
     this.listCourse = [
       {
+        id: 'abc',
         title: 'Tổng ôn kiến thức Toán 9 các dạng Nâng cao',
         time: '3 tháng',
         teacher: 'Cô Lan',
@@ -106,6 +111,7 @@ export class ListCourseComponent implements OnInit {
         discount: 499,
       },
       {
+        id: 'abc',
         title: 'Tổng ôn kiến thức Toán 9 các dạng Nâng cao',
         time: '3 tháng',
         teacher: 'Cô Lan',
@@ -125,6 +131,7 @@ export class ListCourseComponent implements OnInit {
         discount: 499,
       },
       {
+        id: 'abc',
         title: 'Tổng ôn kiến thức Toán 9 các dạng Nâng cao',
         time: '3 tháng',
         teacher: 'Cô Lan',
@@ -144,6 +151,7 @@ export class ListCourseComponent implements OnInit {
         discount: 499,
       },
       {
+        id: 'abc',
         title: 'Tổng ôn kiến thức Toán 9 các dạng Nâng cao',
         time: '3 tháng',
         teacher: 'Cô Lan',
@@ -163,6 +171,7 @@ export class ListCourseComponent implements OnInit {
         discount: 499,
       },
       {
+        id: 'abc',
         title: 'Tổng ôn kiến thức Toán 9 các dạng Nâng cao',
         time: '3 tháng',
         teacher: 'Cô Lan',
@@ -182,6 +191,7 @@ export class ListCourseComponent implements OnInit {
         discount: 499,
       },
       {
+        id: 'abc',
         title: 'Tổng ôn kiến thức Toán 9 các dạng Nâng cao',
         time: '3 tháng',
         teacher: 'Cô Lan',
@@ -203,7 +213,7 @@ export class ListCourseComponent implements OnInit {
     ];
   }
 
-  log(value: object[]): void {
+  log(value: string[]): void {
     console.log(value);
   }
 }

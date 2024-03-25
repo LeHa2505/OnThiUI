@@ -31,8 +31,12 @@ import { MessageIconComponent } from './message-icon/message-icon.component';
 import { CheckedIconComponent } from './checked-icon/checked-icon.component';
 import { WarningIconComponent } from './warning-icon/warning-icon.component';
 import { PlusIconComponent } from './plus-icon/plus-icon.component';
-
-
+import { PdfFileComponent } from './icon-files/pdf-file/pdf-file.component';
+import { DocFileComponent } from './icon-files/doc-file/doc-file.component';
+import { ExelFileComponent } from './icon-files/exel-file/exel-file.component';
+import { FileInfoComponent } from './file-info/file-info.component';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
+import { NoneFileComponent } from './icon-files/none-file/none-file.component';
 
 @NgModule({
   declarations: [
@@ -50,8 +54,14 @@ import { PlusIconComponent } from './plus-icon/plus-icon.component';
     CheckedIconComponent,
     WarningIconComponent,
     PlusIconComponent,
+    PdfFileComponent,
+    DocFileComponent,
+    ExelFileComponent,
+    FileInfoComponent,
+    NoneFileComponent,
   ],
   imports: [
+    NzProgressModule,
     NzGridModule,
     NzLayoutModule,
     CommonModule,
@@ -85,7 +95,12 @@ import { PlusIconComponent } from './plus-icon/plus-icon.component';
     MessageIconComponent,
     CheckedIconComponent,
     PlusIconComponent,
-    WarningIconComponent
+    WarningIconComponent,
+    PdfFileComponent,
+    DocFileComponent,
+    ExelFileComponent,
+    FileInfoComponent,
+    NoneFileComponent
   ],
 })
 export class ComponentsModule {}

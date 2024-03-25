@@ -81,83 +81,84 @@
   <li nz-submenu nzPlacement="bottomCenter" nzTitle="Khóa cơ bản" nzIcon="down">
     <ul style="display: flex;">
       <li nz-menu-group nzTitle="Lớp 9">
+        <nz-checkbox-wrapper style="width: 100%;" (nzOnChange)="log($event)">
         <div style="display: flex;">
           <ul>
-            <nz-checkbox-group [(ngModel)]="checkOptionsOne" (ngModelChange)="log(checkOptionsOne)"></nz-checkbox-group>
-            <li nz-menu-item>Toán học</li>
-            <li nz-menu-item>Hóa học</li>
-            <li nz-menu-item>Vật lý</li>
-            <li nz-menu-item>Sinh học</li>
+            <li style="display: flex;" nz-menu-item nz-checkbox nzValue="Toán học">Toán học</li>
+            <li style="display: flex;"  nz-menu-item nz-checkbox nzValue="Hóa học">Hóa học</li>
+            <li style="display: flex;"  nz-menu-item nz-checkbox nzValue="Vật lý">Vật lý</li>
+            <li style="display: flex;"  nz-menu-item nz-checkbox nzValue="Sinh học">Sinh học</li>
           </ul>
           <ul>
-            <li nz-menu-item>Ngữ văn</li>
-            <li nz-menu-item>Địa lý</li>
-            <li nz-menu-item>Lịch sử</li>
-            <li nz-menu-item>Giáo dục công dân</li>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Ngữ văn" style="display: flex;" >Ngữ văn</li>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Địa lý" style="display: flex;" >Địa lý</li>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Lịch sử" style="display: flex;" >Lịch sử</li>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Giáo dục công dân" style="display: flex;" >Giáo dục công dân</li>
           </ul>
           <ul>
-            <li nz-menu-item>Tiếng Anh</li>
-            <li nz-menu-item>Tiếng Nhật</li>
-            <li nz-menu-item>Tiếng Trung</li>
-            <li nz-menu-item>Tiếng Pháp</li>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Anh" style="display: flex;" >Tiếng Anh</li>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Nhật" style="display: flex;" >Tiếng Nhật</li>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Trung" style="display: flex;" >Tiếng Trung</li>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Pháp" style="display: flex;" >Tiếng Pháp</li>
           </ul>
         </div>
+      </nz-checkbox-wrapper>
       </li>
     </ul>
   </li>
-  <li nz-submenu nzPlacement="bottomRight" nzTitle="Khóa nâng cao" nzIcon="down">
-    <ul>
-      <li nz-menu-group nzTitle="Item 1">
-        <ul>
-          <li nz-menu-item>Option 1</li>
-          <li nz-menu-item>Option 2</li>
-        </ul>
-      </li>
-      <li nz-menu-group nzTitle="Item 2">
-        <ul>
-          <li nz-menu-item>Option 3</li>
-          <li nz-menu-item>Option 4</li>
-          <li nz-submenu nzTitle="Sub Menu">
-            <ul>
-              <li nz-menu-item nzDisabled>Option 5</li>
-              <li nz-menu-item>Option 6</li>
-            </ul>
-          </li>
-          <li nz-submenu nzDisabled nzTitle="Disabled Sub Menu">
-            <ul>
-              <li nz-menu-item>Option 5</li>
-              <li nz-menu-item>Option 6</li>
-            </ul>
-          </li>
-        </ul>
+  <li nz-submenu nzPlacement="bottomCenter" nzTitle="Khóa nâng cao" nzIcon="down">
+    <ul style="display: flex;">
+      <li nz-menu-group nzTitle="Lớp 9">
+        <nz-checkbox-wrapper style="width: 100%;" (nzOnChange)="log($event)">
+        <div style="display: flex;">
+          <ul>
+            <li style="display: flex;" nz-menu-item nz-checkbox nzValue="Toán học">Toán học</li>
+            <li style="display: flex;"  nz-menu-item nz-checkbox nzValue="Hóa học">Hóa học</li>
+            <li style="display: flex;"  nz-menu-item nz-checkbox nzValue="Vật lý">Vật lý</li>
+            <li style="display: flex;"  nz-menu-item nz-checkbox nzValue="Sinh học">Sinh học</li>
+          </ul>
+          <ul>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Ngữ văn" style="display: flex;" >Ngữ văn</li>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Địa lý" style="display: flex;" >Địa lý</li>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Lịch sử" style="display: flex;" >Lịch sử</li>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Giáo dục công dân" style="display: flex;" >Giáo dục công dân</li>
+          </ul>
+          <ul>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Anh" style="display: flex;" >Tiếng Anh</li>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Nhật" style="display: flex;" >Tiếng Nhật</li>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Trung" style="display: flex;" >Tiếng Trung</li>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Pháp" style="display: flex;" >Tiếng Pháp</li>
+          </ul>
+        </div>
+      </nz-checkbox-wrapper>
       </li>
     </ul>
   </li>
-  <li nz-submenu nzPlacement="topLeft" nzTitle="Luyện đề theo tỉnh thành" nzIcon="down">
-    <ul>
-      <li nz-menu-group nzTitle="Item 1">
-        <ul>
-          <li nz-menu-item>Option 1</li>
-          <li nz-menu-item>Option 2</li>
-        </ul>
-      </li>
-      <li nz-menu-group nzTitle="Item 2">
-        <ul>
-          <li nz-menu-item>Option 3</li>
-          <li nz-menu-item>Option 4</li>
-          <li nz-submenu nzTitle="Sub Menu">
-            <ul>
-              <li nz-menu-item nzDisabled>Option 5</li>
-              <li nz-menu-item>Option 6</li>
-            </ul>
-          </li>
-          <li nz-submenu nzDisabled nzTitle="Disabled Sub Menu">
-            <ul>
-              <li nz-menu-item>Option 5</li>
-              <li nz-menu-item>Option 6</li>
-            </ul>
-          </li>
-        </ul>
+  <li nz-submenu nzPlacement="bottomCenter" nzTitle="Luyện đề theo tỉnh thành" nzIcon="down">
+    <ul style="display: flex;">
+      <li nz-menu-group nzTitle="Lớp 9">
+        <nz-checkbox-wrapper style="width: 100%;" (nzOnChange)="log($event)">
+        <div style="display: flex;">
+          <ul>
+            <li style="display: flex;" nz-menu-item nz-checkbox nzValue="Toán học">Toán học</li>
+            <li style="display: flex;"  nz-menu-item nz-checkbox nzValue="Hóa học">Hóa học</li>
+            <li style="display: flex;"  nz-menu-item nz-checkbox nzValue="Vật lý">Vật lý</li>
+            <li style="display: flex;"  nz-menu-item nz-checkbox nzValue="Sinh học">Sinh học</li>
+          </ul>
+          <ul>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Ngữ văn" style="display: flex;" >Ngữ văn</li>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Địa lý" style="display: flex;" >Địa lý</li>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Lịch sử" style="display: flex;" >Lịch sử</li>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Giáo dục công dân" style="display: flex;" >Giáo dục công dân</li>
+          </ul>
+          <ul>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Anh" style="display: flex;" >Tiếng Anh</li>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Nhật" style="display: flex;" >Tiếng Nhật</li>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Trung" style="display: flex;" >Tiếng Trung</li>
+            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Pháp" style="display: flex;" >Tiếng Pháp</li>
+          </ul>
+        </div>
+      </nz-checkbox-wrapper>
       </li>
     </ul>
   </li>
@@ -166,8 +167,8 @@
 
 
 <div style="display: flex; flex-wrap: wrap; flex-direction: row;">
-  <nz-card *ngFor="let item of listCourse"
-    style="width:300px; border-radius: 8px; margin-right: 1rem; margin-bottom: 1rem;">
+  <nz-card *ngFor="let item of listCourse" [routerLink]="['/courses', item.id]"
+    style="width:300px; border-radius: 8px; margin-right: 1rem; margin-bottom: 1rem; cursor: pointer;">
     <img style="border-radius: 16px;" width="100%"
       src="https://img.freepik.com/premium-photo/student-girl-laughs-smiles-looking-away-isolated-blue-background-copy-space-web-banner_101969-2491.jpg"
       alt="" />
