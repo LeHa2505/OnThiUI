@@ -1,0 +1,42 @@
+<div style="display: flex; align-items: center;">
+  <i class="fas fa-chevron-left" style="color: #7D7D7D; margin-right: 1rem; font-size: 18px; "></i>
+  <h6 style="color: #7D7D7D; font-size: 18px; font-weight: 600; margin-bottom: 0;">Lịch học của tôi</h6>
+</div>
+
+<div style="display: flex; justify-content: space-between; align-items: flex-start;">
+  <nz-card style="width:65%; margin-top: 1rem; border-radius: 1rem; position: sticky; top: 70px;">
+    <igx-calendar [(ngModel)]="selectedDate"
+                  (ngModelChange)="onListDayChange()"
+                  style="width: 100%"
+                  [locale]="locale"
+                  [hasHeader]="false"
+    ></igx-calendar>
+  </nz-card>
+
+  <div style="width:33%;">
+    <nz-card style="margin-top: 1rem; border-radius: 1rem;">
+      <h6 style="color: #252641; font-size: 16px; margin-bottom: 1rem;">{{ selectedDate }}</h6>
+
+      <div>
+        <app-schedule-card *ngFor="let item of schedules"
+                           [time]="item.time" [subject]="item.subject" [lessonName]="item.lessonName">
+        </app-schedule-card>
+      </div>
+    </nz-card>
+
+    <nz-card style="margin-top: 1rem; border-radius: 1rem;">
+      <h6 style="color: #252641; font-size: 16px; margin-bottom: 1rem;">Việc cần làm</h6>
+
+      <div>
+        <div *ngFor="let item of toDoList" style="display: flex; align-items: center; margin-bottom: 1rem">
+          <label nz-checkbox style="margin-right: 1rem">
+          </label>
+          <div>
+            <p style="margin: 0; font-weight: bold; font-size: 13px">{{ item.name }}</p>
+            <p style="margin: 0; font-size: 12px; color: #41475E"> Deadline: {{ item.deadline }}</p>
+          </div>
+        </div>
+      </div>
+    </nz-card>
+  </div>
+</div>
