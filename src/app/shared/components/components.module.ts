@@ -37,6 +37,9 @@ import { ExelFileComponent } from './icon-files/exel-file/exel-file.component';
 import { FileInfoComponent } from './file-info/file-info.component';
 import { NzProgressModule } from 'ng-zorro-antd/progress';
 import { NoneFileComponent } from './icon-files/none-file/none-file.component';
+import { ScheduleCardComponent } from './schedule-card/schedule-card.component';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
 
 @NgModule({
   declarations: [
@@ -59,8 +62,11 @@ import { NoneFileComponent } from './icon-files/none-file/none-file.component';
     ExelFileComponent,
     FileInfoComponent,
     NoneFileComponent,
+    ScheduleCardComponent,
   ],
   imports: [
+    NzBadgeModule,
+    NzCardModule,
     NzProgressModule,
     NzGridModule,
     NzLayoutModule,
@@ -100,7 +106,8 @@ import { NoneFileComponent } from './icon-files/none-file/none-file.component';
     DocFileComponent,
     ExelFileComponent,
     FileInfoComponent,
-    NoneFileComponent
+    NoneFileComponent,
+    ScheduleCardComponent
   ],
 })
 export class ComponentsModule {}
