@@ -24,6 +24,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from './_guards/authGuard';
 import { authInterceptorProviders } from './_guards/authInterceptor';
+import { HammerModule } from '@angular/platform-browser';
 
 
 registerLocaleData(vi);

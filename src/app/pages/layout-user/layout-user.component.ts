@@ -33,6 +33,7 @@ export class LayoutUserComponent implements OnInit {
     {
       title: 'Lịch học',
       icon: 'fas fa-calendar',
+      url: 'my-calendar',
       role: 'student',
     },
     {
@@ -179,6 +180,6 @@ export class LayoutUserComponent implements OnInit {
   }
 
   uploadFile() {
-    
+
   }
 }

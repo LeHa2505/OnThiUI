@@ -9,6 +9,7 @@ import { ListCourseComponent } from './user/course/list-course/list-course.compo
 import { DetailCourseComponent } from './user/course/detail-course/detail-course.component';
 import { LearningCourseComponent } from './user/course/learning-course/learning-course.component';
 import { QuizComponent } from './user/course/quiz/quiz.component';
+import {MyCalendarComponent} from "./user/my-calendar/my-calendar.component";
 
 const routes: Routes = [
   {
@@ -37,7 +38,8 @@ const routes: Routes = [
     ],
   },
   {
-    path: 'agreements',
+    path: 'my-calendar',
+    component: MyCalendarComponent
   },
   {
     path: 'LCs',
