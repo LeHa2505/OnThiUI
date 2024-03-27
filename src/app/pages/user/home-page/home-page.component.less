@@ -1,14 +1,27 @@
-
-.calendar-wrapper {
-  max-width: 650px;
-  min-width: 300px;
-  margin: 8px;
-  border: 1px solid deeppink;
-  border-radius: 6px;
+.video-continue {
+  background-image: url("https://cdn.create.vista.com/downloads/7d8ef085-6136-4cc5-af71-3c651a3a4de5_640.jpeg");
+  background-size: cover; /* Thay đổi kích thước ảnh để lấp đầy khung */
+  height: 40vh; /* Chiều cao là 20% chiều cao của màn hình */
+  width: 40vw;
+  display: flex; /* Hiển thị nội dung bên trong theo chiều dọc */
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  border-radius: 15px;
+  flex-direction: column;
 }
 
-.location-wrapper {
-  min-width: 200px;
-  max-width: 640px;
-  margin-bottom: 32px;
+.inner-video {
+  display: flex; /* Hiển thị nội dung bên trong theo chiều dọc */
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  flex-direction: column;
+}
+
+.content-video {
+  color: #fff;
+  float: left;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
 }
