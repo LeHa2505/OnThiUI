@@ -1,27 +1,62 @@
 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-    <div style="width:50%; border-radius: 1rem;">
+    <div style="width:65%; border-radius: 1rem;">
 
         <div style="display: flex; align-items: center;">
-            <h6 style="color: #7D7D7D; font-size: 18px; font-weight: 500; margin-bottom: 0.5rem;  margin-right: 1rem;">
-                HỌC TIẾP
+            <h6 style="color: #7D7D7D; font-size: 18px; font-weight: 500; margin-bottom: 0.5rem; margin-right: 1rem;">
+                Học tiếp
             </h6>
         </div>
 
-        <div class="video-continue">
-            <div class="inner-video" style="background-color: rgba(0, 0, 0, 0.2); width: 100%; height: 100%; border-radius: 15px;">
-                <app-video-player-icon></app-video-player-icon>
+        <div class="video-continue" [routerLink]="['/courses/learning', 'item.name']">
+            <div class="inner-video" style="background-color: rgba(0, 0, 0, 0.4); width: 100%; height: 100%; border-radius: 15px;">
+                <div class="video-icon">
+                  <app-video-player-icon></app-video-player-icon>
+                </div>
                 <div class="content-video">
                     <div>
                         <h6 style="color: #fff;">Kiến thức cơ bản Toán 9</h6>
-                        <p>11 bài học</p>
+                        <p style="font-family: ReadexPro-light">11 bài học</p>
                     </div>
                     <div>
-                        <i class="fa-regular fa-clock" style="margin-right: 0.5rem;"></i>
+                        <i class="fas fa-clock" style="margin-right: 0.5rem;"></i>
                         <span>Còn 3 giờ</span>
                     </div>
                 </div>
             </div>
         </div>
+
+      <div class="living-video" style="display: flex; align-items: center; margin-top: 1rem;">
+        <h6 style="color: #7D7D7D; font-size: 18px; font-weight: 500; margin-bottom: 0.5rem;  margin-right: 1rem;">
+          Đang live nè!
+        </h6>
+        <span style="color: #3649F9">
+          Xem tất cả
+        </span>
+      </div>
+
+      <div class="living-video" style="display: flex; align-items: center; margin-top: 1rem;">
+        <h6 style="color: #7D7D7D; font-size: 18px; font-weight: 500; margin-bottom: 0.5rem;  margin-right: 1rem;">
+          Shorts
+        </h6>
+      </div>
+
+      <div>
+        <nz-card nzHoverable style="width:160px; border-radius: 12px !important;
+        background-color: rgba(0, 0, 0, 0)" [nzCover]="coverTemplate">
+          <nz-card-meta [nzDescription]="descriptionVideo"></nz-card-meta>
+          <span style="margin-top: 0.5rem">Kiến thức vật lý hay ho bổ ích</span>
+        </nz-card>
+        <ng-template #descriptionVideo>
+          <i class="fas fa-eye" style="margin-right: 0.3rem"></i>
+          <span>
+            1 triệu lượt
+          </span>
+        </ng-template>
+        <ng-template #coverTemplate>
+          <img style="border-radius: 12px;" alt="example"
+               src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgd9o9wLIBk3dKcb4MwUCzaS1GqF4NU19v1PGzZRFUZjKt9qdEzyy08JBiBHjOJmfVINS_rN_wQjzRjmSdu4fLRbpIV6srtV8dYT0Lxgn_65OuKSVtrtuv474Ff4SVrr0xUoKv6Ee7D09V4/s1600/Spiral+Math-8.jpg" />
+        </ng-template>
+      </div>
 
     </div>
 

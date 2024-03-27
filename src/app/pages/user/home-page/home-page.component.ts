@@ -45,6 +45,8 @@ export class HomePageComponent implements OnInit {
     },
   ];
 
+  shorts = []
+
   ngOnInit() {
     this.selectedDate = new Date();
   }
