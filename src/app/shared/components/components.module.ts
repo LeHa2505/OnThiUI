@@ -40,6 +40,7 @@ import { NoneFileComponent } from './icon-files/none-file/none-file.component';
 import { ScheduleCardComponent } from './schedule-card/schedule-card.component';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { VideoPlayerIconComponent } from './video-player-icon/video-player-icon.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
     FileInfoComponent,
     NoneFileComponent,
     ScheduleCardComponent,
+    VideoPlayerIconComponent,
   ],
   imports: [
     NzBadgeModule,
@@ -107,7 +109,8 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
     ExelFileComponent,
     FileInfoComponent,
     NoneFileComponent,
-    ScheduleCardComponent
+    ScheduleCardComponent,
+    VideoPlayerIconComponent
   ],
 })
 export class ComponentsModule {}
