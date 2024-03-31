@@ -8,14 +8,15 @@
         </div>
 
         <div class="video-continue" [routerLink]="['/courses/learning', 'item.name']">
-            <div class="inner-video" style="background-color: rgba(0, 0, 0, 0.4); width: 100%; height: 100%; border-radius: 15px;">
+            <div class="inner-video"
+                style="background-color: rgba(0, 0, 0, 0.4); width: 100%; height: 100%; border-radius: 15px;">
                 <div class="video-icon">
-                  <app-video-player-icon></app-video-player-icon>
+                    <app-video-player-icon></app-video-player-icon>
                 </div>
                 <div class="content-video">
                     <div>
                         <h6 style="color: #fff;">Kiến thức cơ bản Toán 9</h6>
-                        <p style="font-family: ReadexPro-light">11 bài học</p>
+                        <p style="font-family: ReadexPro-light; margin: 0;">11 bài học</p>
                     </div>
                     <div>
                         <i class="fas fa-clock" style="margin-right: 0.5rem;"></i>
@@ -25,38 +26,66 @@
             </div>
         </div>
 
-      <div class="living-video" style="display: flex; align-items: center; margin-top: 1rem;">
-        <h6 style="color: #7D7D7D; font-size: 18px; font-weight: 500; margin-bottom: 0.5rem;  margin-right: 1rem;">
-          Đang live nè!
-        </h6>
-        <span style="color: #3649F9">
-          Xem tất cả
-        </span>
-      </div>
+        <div>
+            <div class="living-video"
+                style="display: flex; align-items: center; margin-top: 2rem; margin-bottom: 0.5rem;">
+                <h6
+                    style="color: #7D7D7D; font-size: 18px; font-weight: 500; margin-bottom: 0.5rem;  margin-right: 1rem;">
+                    Đang live nè!
+                </h6>
+                <span style="color: #3649F9">
+                    Xem tất cả
+                </span>
+            </div>
 
-      <div class="living-video" style="display: flex; align-items: center; margin-top: 1rem;">
-        <h6 style="color: #7D7D7D; font-size: 18px; font-weight: 500; margin-bottom: 0.5rem;  margin-right: 1rem;">
-          Shorts
-        </h6>
-      </div>
+            <div style="display: flex; justify-content: space-between; flex-wrap: wrap; flex-direction: row;">
+                <div *ngFor="let item of livestreams" class="story-background"
+                    [ngStyle]="{'background-image': 'url(' + item.link + ')','margin-bottom': '1rem'}">
+                    <div class="inner-video"
+                        style="background-color: rgba(0, 0, 0, 0.4); width: 100%; height: 100%; border-radius: 15px;">
+                        <div class="border-avatar">
+                            <nz-avatar [nzSize]="'large'" nzIcon="user" [nzSrc]="item.user"></nz-avatar>
+                        </div>
+                        <div class="live-content">
+                            <span>LIVE</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-      <div>
-        <nz-card nzHoverable style="width:160px; border-radius: 12px !important;
-        background-color: rgba(0, 0, 0, 0)" [nzCover]="coverTemplate">
-          <nz-card-meta [nzDescription]="descriptionVideo"></nz-card-meta>
-          <span style="margin-top: 0.5rem">Kiến thức vật lý hay ho bổ ích</span>
-        </nz-card>
-        <ng-template #descriptionVideo>
-          <i class="fas fa-eye" style="margin-right: 0.3rem"></i>
-          <span>
-            1 triệu lượt
-          </span>
-        </ng-template>
-        <ng-template #coverTemplate>
-          <img style="border-radius: 12px;" alt="example"
-               src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgd9o9wLIBk3dKcb4MwUCzaS1GqF4NU19v1PGzZRFUZjKt9qdEzyy08JBiBHjOJmfVINS_rN_wQjzRjmSdu4fLRbpIV6srtV8dYT0Lxgn_65OuKSVtrtuv474Ff4SVrr0xUoKv6Ee7D09V4/s1600/Spiral+Math-8.jpg" />
-        </ng-template>
-      </div>
+        <div class="living-video" style="display: flex; align-items: center; margin-top: 2rem; margin-bottom: 0.5rem;">
+            <h6 style="color: #7D7D7D; font-size: 18px; font-weight: 500; margin-bottom: 0.5rem;  margin-right: 1rem;">
+                Shorts
+            </h6>
+            <span style="color: #3649F9">
+                Xem tất cả
+            </span>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: stretch; flex-wrap: wrap;">
+            <nz-card *ngFor="let item of shorts" nzHoverable nz-tooltip [nzTooltipTitle]="item.name"
+                [nzTooltipColor]="'#000'" [nzTooltipOverlayClassName]="tooltipCustomise" nzTooltipPlacement="right"
+                style="width:160px; 
+                border-radius: 12px !important; height: 100%;
+                background-color: rgba(0, 0, 0, 0); margin-bottom: 1rem;" [nzCover]="coverTemplate">
+                <nz-card-meta></nz-card-meta>
+                <div style="margin: -1rem;">
+                    <p nz-typography nzEllipsis [nzEllipsisRows]="2" style="margin-top: 1rem; margin-bottom: 0.5rem;">
+                        {{ item.name }}
+                    </p>
+                    <div>
+                        <i class="fas fa-eye" style="margin-right: 0.3rem; color: #7D7D7D;"></i>
+                        <span style="color: #7D7D7D;">
+                            {{ item.views }} lượt xem
+                        </span>
+                    </div>
+                </div>
+                <ng-template #coverTemplate>
+                    <img style="border-radius: 12px;" alt="example" [src]="item.img" />
+                </ng-template>
+            </nz-card>
+        </div>
 
     </div>
 

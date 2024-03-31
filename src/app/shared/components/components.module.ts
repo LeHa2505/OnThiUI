@@ -41,6 +41,9 @@ import { ScheduleCardComponent } from './schedule-card/schedule-card.component';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { VideoPlayerIconComponent } from './video-player-icon/video-player-icon.component';
+import { FooterComponent } from './footer/footer.component';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+
 
 @NgModule({
   declarations: [
@@ -65,8 +68,10 @@ import { VideoPlayerIconComponent } from './video-player-icon/video-player-icon.
     NoneFileComponent,
     ScheduleCardComponent,
     VideoPlayerIconComponent,
+    FooterComponent,
   ],
   imports: [
+    NzDividerModule,
     NzBadgeModule,
     NzCardModule,
     NzProgressModule,
@@ -110,7 +115,8 @@ import { VideoPlayerIconComponent } from './video-player-icon/video-player-icon.
     FileInfoComponent,
     NoneFileComponent,
     ScheduleCardComponent,
-    VideoPlayerIconComponent
+    VideoPlayerIconComponent,
+    FooterComponent
   ],
 })
 export class ComponentsModule {}

@@ -1,4 +1,5 @@
 <nz-layout class="layout">
+
   <nz-sider class="menu-sidebar" nzTheme="dark" nzCollapsible nzWidth="180px" nzBreakpoint="md"
     [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
     <div class="sidebar-logo" [routerLink]="'/'">
@@ -30,7 +31,9 @@
       </span>
     </span>
   </nz-sider>
+
   <nz-layout class="right-layout">
+
     <nz-header>
 
       <div class="app-header">
@@ -134,9 +137,10 @@
         <router-outlet></router-outlet>
       </div>
     </nz-content>
-    <nz-footer style="text-align: center; padding: 0 25px 10px 25px; margin-top: -8px; line-height: 20px;">
-      ©Copyright <a href="">Onthi</a>. All Rights Reserved.
-      Designed by <a href="">Onthi</a>
+
+    <nz-footer style="text-align: center; padding: 5rem 0 0 0; margin-top: -8px; line-height: 20px;">
+      <nz-divider></nz-divider>
+      <app-footer></app-footer>
     </nz-footer>
   </nz-layout>
 </nz-layout>
