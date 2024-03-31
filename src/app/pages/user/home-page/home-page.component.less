@@ -12,11 +12,39 @@
   transition: background-size 1s ease, background-position 1s ease; /* Chuyển động mượt mà trong 0.3 giây */
 }
 
-.inner-video {
+.story-background {
+  // background-image: url("https://i.pinimg.com/564x/74/2e/ed/742eed01690416dcec83d97cb179c0fb.jpg");
+  background-size: cover; /* Thay đổi kích thước ảnh để lấp đầy khung */
+  height: 250px; /* Chiều cao là 20% chiều cao của màn hình */
+  width: 160px;
   display: flex; /* Hiển thị nội dung bên trong theo chiều dọc */
   justify-content: center; /* Căn giữa theo chiều ngang */
   align-items: center; /* Căn giữa theo chiều dọc */
+  border-radius: 15px;
   flex-direction: column;
+  cursor: pointer;
+  transition: background-size 1s ease, background-position 1s ease;
+}
+
+.inner-video {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: column;
+  padding-bottom: 1rem;
+}
+
+.live-content {
+  background-color: #fff;
+  padding: 0 0.2rem;
+  border-radius: 5px;
+}
+
+.border-avatar {
+  border: 2px solid #fff;
+  border-radius: 50%;
+  padding: 0.2rem;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
 }
 
 .content-video {
@@ -44,4 +72,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.list-shorts {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.tooltipCustomise {
+  border-radius: 15px;
 }

@@ -1,3 +1,21 @@
+<ng-template #template>
+  <div class="ant-notification-notice-content" style="border-radius: 15px;">
+    <div class="ant-notification-notice-with-icon">
+      <span class="ant-notification-notice-icon">
+        <i class="fas fa-face-laugh-beam"></i>
+      </span>
+      <div class="ant-notification-notice-message" style="color: #389e0d !important;">Thông báo</div>
+      <div class="ant-notification-notice-description">
+        Đã xóa task thành công!
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<button nz-button [nzType]="'primary'" (click)="createBasicNotification(template)">
+  Open the notification box
+</button>
+
 <div style="display: flex; align-items: center;">
   <i class="fas fa-chevron-left" style="color: #7D7D7D; margin-right: 1rem; font-size: 18px; "></i>
   <h6 style="color: #7D7D7D; font-size: 18px; font-weight: 600; margin-bottom: 0;">Lịch học của tôi</h6>
@@ -6,12 +24,8 @@
 <div style="display: flex; justify-content: space-between; align-items: stretch;">
   <div style="width:65%;">
     <nz-card style="margin-top: 1rem; border-radius: 1rem; height: 100%;">
-      <igx-calendar [(ngModel)]="selectedDate"
-                    (ngModelChange)="onListDayChange()"
-                    style="width: 100%"
-                    [locale]="locale"
-                    [hasHeader]="false"
-      ></igx-calendar>
+      <igx-calendar [(ngModel)]="selectedDate" (ngModelChange)="onListDayChange()" style="width: 100%" [locale]="locale"
+        [hasHeader]="false"></igx-calendar>
     </nz-card>
   </div>
 
@@ -20,26 +34,98 @@
       <h6 style="color: #252641; font-size: 1rem; margin-bottom: 1rem;"><strong>{{ selectedDate }}</strong></h6>
 
       <div style="overflow-y: auto;">
-        <app-schedule-card *ngFor="let item of schedules"
-                           [time]="item.time" [subject]="item.subject" [lessonName]="item.lessonName">
+        <app-schedule-card *ngFor="let item of schedules" [time]="item.time" [subject]="item.subject"
+          [lessonName]="item.lessonName">
         </app-schedule-card>
       </div>
     </nz-card>
   </div>
 </div>
 
-
-<nz-card style="margin-top: 2rem; border-radius: 1rem; width:65%;">
-  <h6 style="color: #252641; font-size: 16px; margin-bottom: 1rem;">Việc cần làm</h6>
-
-  <div>
-    <div *ngFor="let item of toDoList" style="display: flex; align-items: center; margin-bottom: 1rem">
-      <label nz-checkbox style="margin-right: 1rem">
-      </label>
-      <div>
-        <p style="margin: 0; font-weight: bold; font-size: 15px">{{ item.name }}</p>
-        <p style="margin: 0; font-size: 13px; color: #41475E"> Deadline: {{ item.deadline }}</p>
-      </div>
-    </div>
+<nz-card style="margin-top: 3rem; border-radius: 1rem;">
+  <div style="margin-bottom: 1.5rem; display: flex; align-items: center;">
+    <i style="color: #7D7D7D; margin: 0 0.5rem;" class="fas fa-pen-to-square"></i>
+    <h6 style="color: #7D7D7D; font-size: 16px; font-weight: 600; margin-bottom: 0;">Việc cần làm</h6>
   </div>
+
+  <nz-table #editRowTable style="border-radius: 15px !important;" #basicTable [nzData]="listOfData">
+    <thead>
+      <tr class="head-style">
+        <th style="border-radius: 15px 0 0 0;">Công việc</th>
+        <th>Hạn chót</th>
+        <th>Mô tả</th>
+        <th>Trạng thái</th>
+        <th style="border-radius: 0 15px 0 0; text-align: center;">Thao tác</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <ng-container *ngIf="!editCache[data.id].edit; else editTemplate">
+          <td [style]="{'display': 'flex', 'color': data.status == 2 ? 'rgb(204 200 200)' : '' }">
+            <span style="margin-left: 0.5rem;">{{ data.name }} 一</span>
+            <nz-tag style="border-radius: 15px; margin-left: 0.5rem;"
+              [nzColor]="data.status == 2 ? 'default' : getColor()" [nzBordered]="false">
+              <span [style]="{ 'color': data.status == 2 ? 'rgb(204 200 200)' : '' }">{{ data.subject }}</span>
+            </nz-tag>
+          </td>
+          <td [style]="{ 'color': data.status == 2 ? 'rgb(204 200 200)' : '' }">
+            {{ data.deadline }}
+          </td>
+          <td [style]="{ 'color': data.status == 2 ? 'rgb(204 200 200)' : '' }">
+            {{ data.description }}
+          </td>
+          <td [style]="{ 'color': data.status == 2 ? 'rgb(204 200 200)' : '' }">
+            <nz-tag style="border-radius: 15px;"
+              [nzColor]="data.status == 0 ? 'red' : (data.status == 1 ? 'blue' : 'green')" [nzBordered]="false">
+              <span nz-icon
+                [nzType]="data.status == 0 ? 'exclamation-circle' : (data.status == 1 ? 'sync' : 'check-circle')"></span>
+              <span>
+                {{ data.status == 0 ? 'Chưa làm' : (data.status == 1 ? 'Đang làm' : 'Hoàn thành') }}</span>
+            </nz-tag>
+          </td>
+          <td style="text-align: center; display: flex; justify-content: space-evenly;">
+            <a nzTooltipTitle="Chỉnh sửa" [nzTooltipColor]="'rgba(0, 0, 0, 0.85)'" nzTooltipPlacement="top" nz-tooltip
+              (click)="startEdit(data.id)">
+              <i style="margin-right: 0.5rem;" class="fas fa-pen-to-square"></i>
+            </a>
+
+            <a (click)="showModal(data.id)" nzTooltipTitle="Xóa công việc" [nzTooltipColor]="'rgba(0, 0, 0, 0.85)'"
+              nzTooltipPlacement="top" nz-tooltip (click)="onclickDelete(data.id)">
+              <i style="margin-right: 0.5rem;" class="fas fa-trash"></i>
+            </a>
+          </td>
+        </ng-container>
+        <ng-template #editTemplate>
+          <td><input style="border-radius: 15px;" type="text" nz-input [(ngModel)]="editCache[data.id].data.name" />
+          </td>
+          <td>
+            <input style="border-radius: 15px;" type="text" nz-input [(ngModel)]="editCache[data.id].data.deadline" />
+          </td>
+          <td><input style="border-radius: 15px;" type="text" nz-input
+              [(ngModel)]="editCache[data.id].data.description" /></td>
+          <td>
+            <nz-select style="width: 100%;" [(ngModel)]="editCache[data.id].data.status">
+              <nz-option [nzValue]="0" nzLabel="Chưa làm"></nz-option>
+              <nz-option [nzValue]="1" nzLabel="Đang làm"></nz-option>
+              <nz-option [nzValue]="2" nzLabel="Hoàn thành"></nz-option>
+            </nz-select>
+          </td>
+          <td>
+            <a (click)="saveEdit(data.id)" class="save">Lưu</a>
+            <a nz-popconfirm [nzOkText]="'Có'" [nzCancelText]="'Khum'"
+              nzPopconfirmTitle="Bạn có chắc chắn hủy thay đổi không?" (nzOnConfirm)="cancelEdit(data.id)">Hủy</a>
+          </td>
+        </ng-template>
+      </tr>
+    </tbody>
+  </nz-table>
+
 </nz-card>
+
+<nz-modal [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()" nzOkText="Có nha" nzCancelText="Khum khum"
+  (nzOnOk)="handleOk()">
+  <ng-container *nzModalContent>
+    <i style="color: #faad14; margin-right: 0.5rem;" class="fas fa-circle-exclamation" ></i>
+    <span>Bạn có chắc chắn muốn xóa task này không zậy?</span>
+  </ng-container>
+</nz-modal>
