@@ -1,1 +1,34 @@
-<p>quiz works!</p>
+<div style="display: flex; align-items: center;">
+    <i class="fas fa-chevron-left" style="color: #7D7D7D; margin-right: 1rem; font-size: 18px; "></i>
+    <h6 style="color: #7D7D7D; font-size: 18px; font-weight: 600; margin-bottom: 0;">Bài tập</h6>
+</div>
+
+<nz-card style="width:100%; margin-top: 1rem; border-radius: 1rem;">
+    <h6 style="font-size: 1.1rem; margin-bottom: 1rem;">Tổng ôn kiến thức Toán 9 các dạng Nâng cao</h6>
+    <div style="margin: 0.5rem 0 1.5rem 0; display: flex; align-items: center; justify-content: space-between">
+        <div>
+            <nz-tag style="border-radius: 16px;" [nzColor]="'blue'">
+                Toán
+            </nz-tag>
+            <nz-tag style="border-radius: 16px;" [nzColor]="'magenta'">
+                Nâng cao
+            </nz-tag>
+        </div>
+    </div>
+
+    <h6 style="font-size: 1rem; margin-bottom: 1rem;">PHẦN ÔN TẬP</h6>
+    <h6 style="font-size: 1rem; margin-bottom: 1rem; text-align: center; color: #252641;">Bài tập về Căn thức</h6>
+
+    <nz-card style="width:100%; margin-top: 1rem; border-radius: 1rem; background-color: #F5F7F8;">
+        <div>
+            <div *ngFor="let item of quizs">
+                <h6 style="text-transform: uppercase; color: #faad14; font-size: 1rem;">CÂU 1:</h6>
+                <p>Cho số thực a > 0. Số nào sau đây là căn bậc 2 của số thực a?</p>
+                <div>
+                    <p *ngFor="let item of item.choices">{{ item }}</p>
+                </div>
+            </div>
+        </div>
+    </nz-card>
+
+</nz-card>

@@ -12,10 +12,6 @@
   </div>
 </ng-template>
 
-<button nz-button [nzType]="'primary'" (click)="createBasicNotification(template)">
-  Open the notification box
-</button>
-
 <div style="display: flex; align-items: center;">
   <i class="fas fa-chevron-left" style="color: #7D7D7D; margin-right: 1rem; font-size: 18px; "></i>
   <h6 style="color: #7D7D7D; font-size: 18px; font-weight: 600; margin-bottom: 0;">Lịch học của tôi</h6>
@@ -43,15 +39,24 @@
 </div>
 
 <nz-card style="margin-top: 3rem; border-radius: 1rem;">
-  <div style="margin-bottom: 1.5rem; display: flex; align-items: center;">
-    <i style="color: #7D7D7D; margin: 0 0.5rem;" class="fas fa-pen-to-square"></i>
-    <h6 style="color: #7D7D7D; font-size: 16px; font-weight: 600; margin-bottom: 0;">Việc cần làm</h6>
+  <div
+    style="display: flex; align-items: center; align-content: center; justify-content: space-between; margin-bottom: 1.5rem; ">
+    <div style="display: flex; align-items: center;">
+      <i style="color: #7D7D7D; margin: 0 0.5rem;" class="fas fa-pen-to-square"></i>
+      <h6 style="color: #7D7D7D; font-size: 16px; font-weight: 600; margin-bottom: 0;">Việc cần làm</h6>
+    </div>
+
+    <button style="background-color: #001529; color: #fff; cursor: pointer !important;" nz-button (click)="addTask()">
+      <i class="fas fa-plus" style="margin-right: 0.5rem; color: #fff;"></i>
+      Thêm công việc
+    </button>
   </div>
 
   <nz-table #editRowTable style="border-radius: 15px !important;" #basicTable [nzData]="listOfData">
     <thead>
       <tr class="head-style">
         <th style="border-radius: 15px 0 0 0;">Công việc</th>
+        <th>Môn học</th>
         <th>Hạn chót</th>
         <th>Mô tả</th>
         <th>Trạng thái</th>
@@ -61,19 +66,26 @@
     <tbody>
       <tr *ngFor="let data of basicTable.data">
         <ng-container *ngIf="!editCache[data.id].edit; else editTemplate">
-          <td [style]="{'display': 'flex', 'color': data.status == 2 ? 'rgb(204 200 200)' : '' }">
-            <span style="margin-left: 0.5rem;">{{ data.name }} 一</span>
-            <nz-tag style="border-radius: 15px; margin-left: 0.5rem;"
+
+          <td [style]="{'color': data.status == 2 ? 'rgb(204 200 200)' : '' }">
+            <span style="margin-left: 0.5rem;">{{ data.name }}</span>
+          </td>
+
+          <td [style]="{'color': data.status == 2 ? 'rgb(204 200 200)' : '' }">
+            <nz-tag style="border-radius: 15px"
               [nzColor]="data.status == 2 ? 'default' : getColor()" [nzBordered]="false">
               <span [style]="{ 'color': data.status == 2 ? 'rgb(204 200 200)' : '' }">{{ data.subject }}</span>
             </nz-tag>
           </td>
+
           <td [style]="{ 'color': data.status == 2 ? 'rgb(204 200 200)' : '' }">
             {{ data.deadline }}
           </td>
+
           <td [style]="{ 'color': data.status == 2 ? 'rgb(204 200 200)' : '' }">
             {{ data.description }}
           </td>
+
           <td [style]="{ 'color': data.status == 2 ? 'rgb(204 200 200)' : '' }">
             <nz-tag style="border-radius: 15px;"
               [nzColor]="data.status == 0 ? 'red' : (data.status == 1 ? 'blue' : 'green')" [nzBordered]="false">
@@ -83,6 +95,7 @@
                 {{ data.status == 0 ? 'Chưa làm' : (data.status == 1 ? 'Đang làm' : 'Hoàn thành') }}</span>
             </nz-tag>
           </td>
+
           <td style="text-align: center; display: flex; justify-content: space-evenly;">
             <a nzTooltipTitle="Chỉnh sửa" [nzTooltipColor]="'rgba(0, 0, 0, 0.85)'" nzTooltipPlacement="top" nz-tooltip
               (click)="startEdit(data.id)">
@@ -97,6 +110,8 @@
         </ng-container>
         <ng-template #editTemplate>
           <td><input style="border-radius: 15px;" type="text" nz-input [(ngModel)]="editCache[data.id].data.name" />
+          </td>
+          <td><input style="border-radius: 15px;" type="text" nz-input [(ngModel)]="editCache[data.id].data.subject" />
           </td>
           <td>
             <input style="border-radius: 15px;" type="text" nz-input [(ngModel)]="editCache[data.id].data.deadline" />
@@ -125,7 +140,7 @@
 <nz-modal [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()" nzOkText="Có nha" nzCancelText="Khum khum"
   (nzOnOk)="handleOk()">
   <ng-container *nzModalContent>
-    <i style="color: #faad14; margin-right: 0.5rem;" class="fas fa-circle-exclamation" ></i>
+    <i style="color: #faad14; margin-right: 0.5rem;" class="fas fa-circle-exclamation"></i>
     <span>Bạn có chắc chắn muốn xóa task này không zậy?</span>
   </ng-container>
 </nz-modal>
