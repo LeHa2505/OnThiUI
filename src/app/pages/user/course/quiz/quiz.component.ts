@@ -17,18 +17,71 @@ export class QuizComponent {
         'C. $$\\sqrt{2a}$$',
         'D. $$2\\sqrt{a}$$',
       ],
+      answer: '$$\\sqrt{a}$$',
+      chosenAnswer: '$$\\sqrt{a}$$',
+      note: 'Note thử gì đó'
     },
     {
-      quiz: 'Cho số thực a > 0. Số nào sau đây là căn bậc 2 của số thực a?',
+      quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
       choices: [
         'A. $$\\sqrt{a}$$',
         'B. $$-\\sqrt{a}$$',
         'C. $$\\sqrt{2a}$$',
         'D. $$2\\sqrt{a}$$',
       ],
+      answer: '$$\\sqrt{a}$$',
+      chosenAnswer: '$$\\sqrt{a}$$',
+      note: 'Note thử gì đó'
+    },
+    {
+      quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
+      choices: [
+        'A. $$\\sqrt{a}$$',
+        'B. $$-\\sqrt{a}$$',
+        'C. $$\\sqrt{2a}$$',
+        'D. $$2\\sqrt{a}$$',
+      ],
+      answer: '$$\\sqrt{a}$$',
+      chosenAnswer: '$$\\sqrt{a}$$',
+      note: 'Note thử gì đó'
+    },
+    {
+      quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
+      choices: [
+        'A. $$\\sqrt{a}$$',
+        'B. $$-\\sqrt{a}$$',
+        'C. $$\\sqrt{2a}$$',
+        'D. $$2\\sqrt{a}$$',
+      ],
+      answer: '$$\\sqrt{a}$$',
+      chosenAnswer: '$$\\sqrt{a}$$',
+      note: 'Note thử gì đó'
+    },
+    {
+      quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
+      choices: [
+        'A. $$\\sqrt{a}$$',
+        'B. $$-\\sqrt{a}$$',
+        'C. $$\\sqrt{2a}$$',
+        'D. $$2\\sqrt{a}$$',
+      ],
+      answer: '$$\\sqrt{a}$$',
+      chosenAnswer: '$$\\sqrt{a}$$',
+      note: 'Note thử gì đó'
+    },
+    {
+      quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
+      choices: [
+        'A. $$\\sqrt{a}$$',
+        'B. $$-\\sqrt{a}$$',
+        'C. $$\\sqrt{2a}$$',
+        'D. $$2\\sqrt{a}$$',
+      ],
+      answer: '$$\\sqrt{a}$$',
+      chosenAnswer: '$$\\sqrt{a}$$',
+      note: 'Note thử gì đó'
     },
   ];
-
   constructor(public gs: GlobalService) {}
 
   ngOnInit() {
@@ -39,7 +92,6 @@ export class QuizComponent {
   mathJaxObject;
   ngOnChanges(changes: SimpleChanges) {
     if (changes['content']) {
-      // console.log("content chnaged")
       this.renderMath();
     }
   }
@@ -58,7 +110,7 @@ export class QuizComponent {
       );
     }, 1000);
   }
-  
+
   loadMathConfig() {
     console.log('load config');
 

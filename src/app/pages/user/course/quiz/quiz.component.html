@@ -20,6 +20,9 @@
     <h6 style="font-size: 1rem; margin-bottom: 1rem; text-align: center; color: #252641;">Bài tập về Căn thức</h6>
 
     <nz-card style="width:100%; margin-top: 1rem; border-radius: 1rem; background-color: #F5F7F8;">
+      <div>
+
+      </div>
         <div>
             <div *ngFor="let item of quizs; let i = index" style="margin-bottom: 1rem;">
                 <h6 style="display: flex; align-items: center;">
@@ -28,10 +31,30 @@
                     </p>
                 </h6>
                 <div>
-                    <span style="display: flex; align-items: center;" id="mathContent" *ngFor="let choice of item.choices"
-                        [innerHTML]="choice">
-                    </span>
+                  <nz-radio-group [(ngModel)]="item.chosenAnswer" nzName="radiogroup">
+                    <label *ngFor="let choice of item.choices"
+                           nz-radio [nzValue]="choice">
+                        <span style="display: flex; align-items: center;" id="mathContent"
+                              [innerHTML]="choice">
+                        </span>
+                    </label>
+                  </nz-radio-group>
                 </div>
+              <div>
+                <nz-collapse nzGhost [nzExpandIconPosition]="'right'">
+                  <nz-collapse-panel [nzHeader]="correct">
+                    <ng-template #correct>
+                      <button nz-button nzType="primary" nzShape="round">
+                        <i class="fas fa-pen-to-square" style="margin-right: 0.5rem"></i>
+                        Chữa bài
+                      </button>
+                    </ng-template>
+                    <p style="margin:0;">
+                      {{ item.note }}
+                    </p>
+                  </nz-collapse-panel>
+                </nz-collapse>
+              </div>
             </div>
         </div>
     </nz-card>
