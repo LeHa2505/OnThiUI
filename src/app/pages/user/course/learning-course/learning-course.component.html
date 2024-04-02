@@ -141,8 +141,9 @@
                                 <div class="info-detail">
                                     <p style="font-family: ReadexPro-regular; font-size: 14px; margin: 0;">{{ item.name
                                         }}</p>
-                                    <p *ngIf="!item.isFinish"
-                                        style="font-family: ReadexPro-regular; font-size: 14px; margin: 0; color: #EE7777;">
+                                    <p *ngIf="!item.isFinish" [routerLink]="['/courses/quizs', item.name]"
+                                        style="font-family: ReadexPro-regular; cursor: pointer;
+                                        font-size: 14px; margin: 0; color: #EE7777;">
                                         Làm bài
                                         <i style="margin-left: 0.5rem;" class="fa-solid fa-pencil"></i>
                                     </p>

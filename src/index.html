@@ -12,11 +12,29 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Titillium+Web:300,400,600,700" rel="stylesheet">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+    integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 
 <body>
   <app-root></app-root>
+  <script>
+    window.DATA = { foo: 'bar' };
+    window.MathJax = MathJax;
+
+    //   window.MathJax.Hub.Config({        
+    //   showMathMenu: false,
+    //   tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},
+    //   menuSettings: { zoom: "Double-Click",zscale: "150%" },
+    //   CommonHTML: { linebreaks: { automatic: true } },
+    //   "HTML-CSS": { linebreaks: { automatic: true } },
+    //          SVG: { linebreaks: { automatic: true } }
+    // });
+    // console.log("mathsjax  in window")
+
+  </script>
 </body>
 
 </html>

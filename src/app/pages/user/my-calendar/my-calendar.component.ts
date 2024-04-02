@@ -91,13 +91,20 @@ export class MyCalendarComponent implements OnInit {
 
   constructor(private notification: NzNotificationService) {}
 
+  ngOnInit() {
+    this.selectedDate = new Date();
+    this.updateEditCache();
+  }
+
   showModal(id: any): void {
     this.deleteTaskId = id;
     this.isVisible = true;
   }
 
   handleOk(): void {
-    this.listOfData = this.listOfData.filter(item => item.id !== this.deleteTaskId);
+    this.listOfData = this.listOfData.filter(
+      (item) => item.id !== this.deleteTaskId
+    );
     this.createBasicNotification(this.template);
     this.isVisible = false;
   }
@@ -130,17 +137,16 @@ export class MyCalendarComponent implements OnInit {
 
   updateEditCache(): void {
     this.listOfData.forEach((item) => {
-      this.editCache[item.id] = {
-        edit: false,
-        data: { ...item },
-      };
+      if (!this.editCache[item.id]) {
+        // Kiểm tra xem item có trong editCache chưa
+        this.editCache[item.id] = {
+          edit: false,
+          data: { ...item },
+        };
+      }
     });
   }
 
-  ngOnInit() {
-    this.selectedDate = new Date();
-    this.updateEditCache();
-  }
   onListDayChange() {
     this.selectedDate = this.fomatDate(new Date(this.selectedDate));
   }
@@ -156,5 +162,21 @@ export class MyCalendarComponent implements OnInit {
     return this.colorsArray[randomIndex];
   }
 
-  onclickDelete(id: any) {}
+  addTask() {
+    const addId = (this.listOfData.length + 1).toString();
+    this.listOfData = [
+      ...this.listOfData,
+      {
+        id: addId,
+        isDone: false,
+        name: '',
+        subject: '',
+        deadline: '',
+        description: '',
+        status: 0,
+      },
+    ];
+    this.updateEditCache();
+    this.startEdit(addId);
+  }
 }

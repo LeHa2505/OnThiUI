@@ -3,7 +3,7 @@
 <div class="container-fluid" style="padding-left: 0;">
   <div class="slider-wrap">
     <div class="slider-main">
-      <div class="item" *ngFor="let item of listClass; let i = index">
+      <div *ngFor="let item of listClass; let i = index" class="item" [routerLink]="['/courses', item.name]">
         <div class="text">
           <nz-card [style]="'width: 350px; border-radius: 8px;'" [nzBordered]="false" [nzTitle]="item.name"
             [nzExtra]="extraTemplate">

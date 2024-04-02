@@ -25,6 +25,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from './_guards/authGuard';
 import { authInterceptorProviders } from './_guards/authInterceptor';
 import { HammerModule } from '@angular/platform-browser';
+import { GlobalService } from './global.service';
 
 
 registerLocaleData(vi);
@@ -50,8 +51,9 @@ registerLocaleData(vi);
     ReactiveFormsModule
   ],
   providers: [{ provide: NZ_I18N, useValue: vi_VN }
-    , AuthGuard
+    , AuthGuard,
     // , authInterceptorProviders
+    GlobalService
   ],
   bootstrap: [AppComponent],
 })
