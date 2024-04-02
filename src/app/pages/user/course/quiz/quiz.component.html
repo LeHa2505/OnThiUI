@@ -21,11 +21,16 @@
 
     <nz-card style="width:100%; margin-top: 1rem; border-radius: 1rem; background-color: #F5F7F8;">
         <div>
-            <div *ngFor="let item of quizs">
-                <h6 style="text-transform: uppercase; color: #faad14; font-size: 1rem;">CÂU 1:</h6>
-                <p>Cho số thực a > 0. Số nào sau đây là căn bậc 2 của số thực a?</p>
+            <div *ngFor="let item of quizs; let i = index" style="margin-bottom: 1rem;">
+                <h6 style="display: flex; align-items: center;">
+                    <p style="text-transform: uppercase; color: #faad14; font-size: 1rem; margin: 0 0.5rem 0 0;">CÂU {{i+1}}: </p>
+                    <p class="mathjax-formula" style="display: flex; align-items: center; font-size: 1rem; margin-bottom: 0;" [innerHTML]="item.quiz">
+                    </p>
+                </h6>
                 <div>
-                    <p *ngFor="let item of item.choices">{{ item }}</p>
+                    <span style="display: flex; align-items: center;" id="mathContent" *ngFor="let choice of item.choices"
+                        [innerHTML]="choice">
+                    </span>
                 </div>
             </div>
         </div>
