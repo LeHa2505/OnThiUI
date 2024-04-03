@@ -1,4 +1,4 @@
-<div style="display: flex; align-items: center;">
+<div class="flex">
     <i class="fas fa-chevron-left" style="color: #7D7D7D; margin-right: 1rem; font-size: 18px; "></i>
     <h6 style="color: #7D7D7D; font-size: 18px; font-weight: 600; margin-bottom: 0;">Bài tập</h6>
 </div>
@@ -17,46 +17,76 @@
     </div>
 
     <h6 style="font-size: 1rem; margin-bottom: 1rem;">PHẦN ÔN TẬP</h6>
-    <h6 style="font-size: 1rem; margin-bottom: 1rem; text-align: center; color: #252641;">Bài tập về Căn thức</h6>
+    <h6 style="font-size: 1rem; margin-bottom: 1rem; text-align: center; color: #252641;" id="questions">Bài tập về Căn thức</h6>
 
-    <nz-card style="width:100%; margin-top: 1rem; border-radius: 1rem; background-color: #F5F7F8;">
-      <div>
+  <div style="display: flex; flex-direction: row-reverse; justify-content: space-between; align-items: flex-start;">
+    <nz-card style="margin-top: 1rem; border-radius: 1rem; width: 23%; position: sticky; top: 70px;">
+      <h6 style="color: #252641; font-size: 16px; margin-bottom: 1rem;">Tổng quan câu hỏi</h6>
 
+      <div class="flex" style="justify-content: space-around;">
+        <div class="flex">
+          <div style="width: 0.8rem; height: 0.8rem; background-color: #1890ff; border-radius: 50%;"></div>
+          <span style="margin-left: 0.5rem">Đã làm</span>
+        </div>
+        <div class="flex">
+          <div style="width: 0.8rem; height: 0.8rem; border: 1px solid #d9d9d9; border-radius: 50%;"></div>
+          <span style="margin-left: 0.5rem">Chưa làm</span>
+        </div>
       </div>
-        <div>
-            <div *ngFor="let item of quizs; let i = index" style="margin-bottom: 1rem;">
-                <h6 style="display: flex; align-items: center;">
-                    <p style="text-transform: uppercase; color: #faad14; font-size: 1rem; margin: 0 0.5rem 0 0;">CÂU {{i+1}}: </p>
-                    <p class="mathjax-formula" style="display: flex; align-items: center; font-size: 1rem; margin-bottom: 0;" [innerHTML]="item.quiz">
-                    </p>
-                </h6>
-                <div>
-                  <nz-radio-group [(ngModel)]="item.chosenAnswer" nzName="radiogroup">
-                    <label *ngFor="let choice of item.choices"
-                           nz-radio [nzValue]="choice">
-                        <span style="display: flex; align-items: center;" id="mathContent"
+
+      <div style="display: flex; flex-direction: row; flex-wrap: wrap; margin-top: 1rem;
+      justify-content: flex-start; align-items: flex-start;">
+        <button style="margin: 0 0.5rem 0.5rem 0.5rem" *ngFor="let item of quizs; let i = index"
+                nz-button [nzType]="item.chosenAnswer ? 'primary' : 'default'"
+                (click)="scrollToTarget('question'+ (i-1))"
+                nzShape="circle">
+          {{ i+1 }}
+        </button>
+      </div>
+    </nz-card>
+
+    <nz-card style="width:75%; margin-top: 1rem; border-radius: 1rem; background-color: #F5F7F8;">
+      <div>
+        <div *ngFor="let item of quizs; let i = index" style="margin-bottom: 1rem;" [id]="'question'+ i">
+          <h6 class="flex">
+            <p style="text-transform: uppercase; color: #faad14; font-size: 1rem; margin: 0 0.5rem 0 0;">CÂU {{i+1}}: </p>
+            <p class="mathjax-formula" style="display: flex; align-items: center; font-size: 1rem; margin-bottom: 0;" [innerHTML]="item.quiz">
+            </p>
+          </h6>
+          <div>
+            <nz-radio-group [(ngModel)]="item.chosenAnswer" nzName="radiogroup">
+              <label *ngFor="let choice of item.choices"
+                     nz-radio [nzValue]="choice">
+                        <span class="flex" id="mathContent"
                               [innerHTML]="choice">
                         </span>
-                    </label>
-                  </nz-radio-group>
+              </label>
+            </nz-radio-group>
+          </div>
+          <div *ngIf="isFinish">
+            <nz-collapse nzGhost [nzExpandIconPosition]="'right'">
+              <nz-collapse-panel [nzHeader]="correct" nzExpandedIcon="none">
+                <ng-template #correct>
+                  <button nz-button nzType="primary" nzShape="round">
+                    <i class="fas fa-pen-to-square" style="margin-right: 0.5rem; font-size: 0.9rem"></i>
+                    Chữa bài
+                  </button>
+                </ng-template>
+                <div class="quiz-correct">
+                  <p >
+                    Đáp án: <span style="font-size: 1.1rem; font-weight: 500; color: #cc8c0c">{{ item.answer }}</span>
+                  </p>
+                  <p style="margin:0; display: flex; align-items: flex-start; flex-wrap: nowrap;">
+                    <span style="font-weight: 500; white-space: nowrap;">Giải thích: </span>
+                    <span style="margin-left: 0.5rem; ">{{ item.note }}</span>
+                  </p>
                 </div>
-              <div>
-                <nz-collapse nzGhost [nzExpandIconPosition]="'right'">
-                  <nz-collapse-panel [nzHeader]="correct">
-                    <ng-template #correct>
-                      <button nz-button nzType="primary" nzShape="round">
-                        <i class="fas fa-pen-to-square" style="margin-right: 0.5rem"></i>
-                        Chữa bài
-                      </button>
-                    </ng-template>
-                    <p style="margin:0;">
-                      {{ item.note }}
-                    </p>
-                  </nz-collapse-panel>
-                </nz-collapse>
-              </div>
-            </div>
+              </nz-collapse-panel>
+            </nz-collapse>
+          </div>
         </div>
+      </div>
     </nz-card>
+  </div>
 
 </nz-card>

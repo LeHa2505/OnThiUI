@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ElementRef} from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { GlobalService } from 'src/app/global.service';
 
@@ -17,9 +17,9 @@ export class QuizComponent {
         'C. $$\\sqrt{2a}$$',
         'D. $$2\\sqrt{a}$$',
       ],
-      answer: '$$\\sqrt{a}$$',
-      chosenAnswer: '$$\\sqrt{a}$$',
-      note: 'Note thử gì đó'
+      answer: 'A',
+      chosenAnswer: '',
+      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).'
     },
     {
       quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
@@ -29,9 +29,9 @@ export class QuizComponent {
         'C. $$\\sqrt{2a}$$',
         'D. $$2\\sqrt{a}$$',
       ],
-      answer: '$$\\sqrt{a}$$',
-      chosenAnswer: '$$\\sqrt{a}$$',
-      note: 'Note thử gì đó'
+      answer: 'A',
+      chosenAnswer: '',
+      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).'
     },
     {
       quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
@@ -41,9 +41,9 @@ export class QuizComponent {
         'C. $$\\sqrt{2a}$$',
         'D. $$2\\sqrt{a}$$',
       ],
-      answer: '$$\\sqrt{a}$$',
-      chosenAnswer: '$$\\sqrt{a}$$',
-      note: 'Note thử gì đó'
+      answer: 'A',
+      chosenAnswer: '',
+      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).'
     },
     {
       quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
@@ -53,9 +53,9 @@ export class QuizComponent {
         'C. $$\\sqrt{2a}$$',
         'D. $$2\\sqrt{a}$$',
       ],
-      answer: '$$\\sqrt{a}$$',
-      chosenAnswer: '$$\\sqrt{a}$$',
-      note: 'Note thử gì đó'
+      answer: 'A',
+      chosenAnswer: '',
+      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).'
     },
     {
       quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
@@ -65,9 +65,9 @@ export class QuizComponent {
         'C. $$\\sqrt{2a}$$',
         'D. $$2\\sqrt{a}$$',
       ],
-      answer: '$$\\sqrt{a}$$',
-      chosenAnswer: '$$\\sqrt{a}$$',
-      note: 'Note thử gì đó'
+      answer: 'A',
+      chosenAnswer: '',
+      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).'
     },
     {
       quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
@@ -77,16 +77,109 @@ export class QuizComponent {
         'C. $$\\sqrt{2a}$$',
         'D. $$2\\sqrt{a}$$',
       ],
-      answer: '$$\\sqrt{a}$$',
-      chosenAnswer: '$$\\sqrt{a}$$',
-      note: 'Note thử gì đó'
+      answer: 'A',
+      chosenAnswer: '',
+      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).'
+    },
+    {
+      quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
+      choices: [
+        'A. $$\\sqrt{a}$$',
+        'B. $$-\\sqrt{a}$$',
+        'C. $$\\sqrt{2a}$$',
+        'D. $$2\\sqrt{a}$$',
+      ],
+      answer: 'A',
+      chosenAnswer: '',
+      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).'
+    },
+    {
+      quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
+      choices: [
+        'A. $$\\sqrt{a}$$',
+        'B. $$-\\sqrt{a}$$',
+        'C. $$\\sqrt{2a}$$',
+        'D. $$2\\sqrt{a}$$',
+      ],
+      answer: 'A',
+      chosenAnswer: '',
+      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).'
+    },
+    {
+      quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
+      choices: [
+        'A. $$\\sqrt{a}$$',
+        'B. $$-\\sqrt{a}$$',
+        'C. $$\\sqrt{2a}$$',
+        'D. $$2\\sqrt{a}$$',
+      ],
+      answer: 'A',
+      chosenAnswer: '',
+      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).'
+    },
+    {
+      quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
+      choices: [
+        'A. $$\\sqrt{a}$$',
+        'B. $$-\\sqrt{a}$$',
+        'C. $$\\sqrt{2a}$$',
+        'D. $$2\\sqrt{a}$$',
+      ],
+      answer: 'A',
+      chosenAnswer: '',
+      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).'
+    },
+    {
+      quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
+      choices: [
+        'A. $$\\sqrt{a}$$',
+        'B. $$-\\sqrt{a}$$',
+        'C. $$\\sqrt{2a}$$',
+        'D. $$2\\sqrt{a}$$',
+      ],
+      answer: 'A',
+      chosenAnswer: '',
+      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).'
+    },
+    {
+      quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
+      choices: [
+        'A. $$\\sqrt{a}$$',
+        'B. $$-\\sqrt{a}$$',
+        'C. $$\\sqrt{2a}$$',
+        'D. $$2\\sqrt{a}$$',
+      ],
+      answer: 'A',
+      chosenAnswer: '',
+      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).'
     },
   ];
-  constructor(public gs: GlobalService) {}
+
+  isFinish = false;
+  isFinishLoading = false;
+  constructor(public gs: GlobalService,
+              private el: ElementRef,) {}
 
   ngOnInit() {
     this.loadMathConfig();
     this.renderMath();
+    this.actionWithinOneSecond();
+  }
+
+  actionWithinOneSecond(): void {
+    setTimeout(() => {
+      this.isFinishLoading = true;
+    }, 1000); // 1000 milliseconds = 1 giây
+  }
+
+  scrollToTarget(position: String) {
+    if (position == 'question-1') {
+      position = 'questions';
+    }
+    const targetElement = this.el.nativeElement.querySelector('#' + position);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 
   mathJaxObject;
