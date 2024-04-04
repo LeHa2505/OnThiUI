@@ -69,6 +69,7 @@ import {
 import { HammerModule } from '@angular/platform-browser';
 import { MyCalendarComponent } from './user/my-calendar/my-calendar.component';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 @NgModule({
   declarations: [
@@ -87,6 +88,7 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
     MyCalendarComponent,
   ],
   imports: [
+    NzSkeletonModule,
     NzNotificationModule,
     IgxDatePickerModule,
     IgxTooltipModule,
