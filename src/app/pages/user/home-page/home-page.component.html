@@ -54,20 +54,52 @@
             </div>
         </div>
 
+      <div class="container-fluid" style="padding-left: 0;">
+        <div class="slider-wrap">
+          <div class="slider-main">
+            <div *ngFor="let item of shorts; let i = index" class="item" [routerLink]="['/courses', item.name]">
+              <div class="text">
+                <nz-card [style]="'width: 160px; border-radius: 8px;'" nzHoverable nz-tooltip [nzTooltipTitle]="item.name"
+                         [nzTooltipColor]="'#000'" nzTooltipPlacement="right"
+                         class="short-video"
+                         [routerLink]="['/shorts', item.name]"
+                         [nzCover]="coverTemplate">
+                  <nz-card-meta></nz-card-meta>
+                  <div style="margin: -1rem;">
+                    <p nz-typography nzEllipsis [nzEllipsisRows]="2" style="margin-top: 1rem; margin-bottom: 0.5rem;">
+                      {{ item.name }}
+                    </p>
+                    <div>
+                      <i class="fas fa-eye" style="margin-right: 0.3rem; color: #7D7D7D;"></i>
+                      <span style="color: #7D7D7D;">
+                            {{ item.views }} lượt xem
+                        </span>
+                    </div>
+                  </div>
+                  <ng-template #coverTemplate>
+                    <img style="border-radius: 12px; width: 160px; height: 240px" alt="example" [src]="item.img" />
+                  </ng-template>
+                </nz-card>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
         <div class="living-video" style="display: flex; align-items: center; margin-top: 2rem; margin-bottom: 0.5rem;">
             <h6 style="color: #7D7D7D; font-size: 18px; font-weight: 500; margin-bottom: 0.5rem;  margin-right: 1rem;">
                 Shorts
             </h6>
-            <a style="color: #3649F9">
+            <a style="color: #3649F9" [routerLink]="['/shorts']">
                 Xem tất cả
             </a>
         </div>
 
         <div style="display: flex; justify-content: space-between; align-items: stretch; flex-wrap: wrap;">
             <nz-card *ngFor="let item of shorts" nzHoverable nz-tooltip [nzTooltipTitle]="item.name"
-                [nzTooltipColor]="'#000'" [nzTooltipOverlayClassName]="tooltipCustomise" nzTooltipPlacement="right"
+                nzTooltipColor="#000" nzTooltipPlacement="right"
                 class="short-video"
-                [routerLink]="['/shorts', item.name]" 
+                [routerLink]="['/shorts', item.name]"
                 [nzCover]="coverTemplate">
                 <nz-card-meta></nz-card-meta>
                 <div style="margin: -1rem;">
@@ -82,7 +114,7 @@
                     </div>
                 </div>
                 <ng-template #coverTemplate>
-                    <img style="border-radius: 12px;" alt="example" [src]="item.img" />
+                    <img style="border-radius: 12px; width: 160px; height: 240px" alt="example" [src]="item.img" />
                 </ng-template>
             </nz-card>
         </div>

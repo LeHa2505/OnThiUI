@@ -10,7 +10,8 @@ import { DetailCourseComponent } from './user/course/detail-course/detail-course
 import { LearningCourseComponent } from './user/course/learning-course/learning-course.component';
 import { QuizComponent } from './user/course/quiz/quiz.component';
 import {MyCalendarComponent} from "./user/my-calendar/my-calendar.component";
-import { WatchVideoComponent } from './user/watch-video/watch-video.component';
+import { WatchVideoComponent } from './user/videos/watch-video/watch-video.component';
+import {ListVideosComponent} from "./user/videos/list-videos/list-videos.component";
 
 const routes: Routes = [
   {
@@ -45,6 +46,10 @@ const routes: Routes = [
   {
     path: 'shorts',
     children: [
+      {
+        path: '',
+        component: ListVideosComponent
+      },
       {
         path: ':id',
         component: WatchVideoComponent
