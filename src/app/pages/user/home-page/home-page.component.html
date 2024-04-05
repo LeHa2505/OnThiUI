@@ -33,9 +33,9 @@
                     style="color: #7D7D7D; font-size: 18px; font-weight: 500; margin-bottom: 0.5rem;  margin-right: 1rem;">
                     Đang live nè!
                 </h6>
-                <span style="color: #3649F9">
+                <a style="color: #3649F9">
                     Xem tất cả
-                </span>
+                </a>
             </div>
 
             <div style="display: flex; justify-content: space-between; flex-wrap: wrap; flex-direction: row;">
@@ -58,17 +58,17 @@
             <h6 style="color: #7D7D7D; font-size: 18px; font-weight: 500; margin-bottom: 0.5rem;  margin-right: 1rem;">
                 Shorts
             </h6>
-            <span style="color: #3649F9">
+            <a style="color: #3649F9">
                 Xem tất cả
-            </span>
+            </a>
         </div>
 
         <div style="display: flex; justify-content: space-between; align-items: stretch; flex-wrap: wrap;">
             <nz-card *ngFor="let item of shorts" nzHoverable nz-tooltip [nzTooltipTitle]="item.name"
                 [nzTooltipColor]="'#000'" [nzTooltipOverlayClassName]="tooltipCustomise" nzTooltipPlacement="right"
-                style="width:160px; 
-                border-radius: 12px !important; height: 100%;
-                background-color: rgba(0, 0, 0, 0); margin-bottom: 1rem;" [nzCover]="coverTemplate">
+                class="short-video"
+                [routerLink]="['/shorts', item.name]" 
+                [nzCover]="coverTemplate">
                 <nz-card-meta></nz-card-meta>
                 <div style="margin: -1rem;">
                     <p nz-typography nzEllipsis [nzEllipsisRows]="2" style="margin-top: 1rem; margin-bottom: 0.5rem;">
@@ -94,9 +94,10 @@
             <igx-calendar [(ngModel)]="selectedDate" (ngModelChange)="onListDayChange()" style="width: 100%"
                 [locale]="locale" [hasHeader]="false"></igx-calendar>
 
-            <h6 style="color: #252641; font-size: 1rem; margin-bottom: 1rem;"><strong>{{ selectedDate }}</strong></h6>
+            <h6 style="color: #252641; font-size: 1rem;"><strong>{{ selectedDate }}</strong></h6>
+            <a routerLink="/my-calendar" class="mb">Xem chi tiết lịch của tôi</a>
 
-            <div style="overflow-y: auto;">
+            <div style="overflow-y: auto; margin-top: 1rem;">
                 <app-schedule-card *ngFor="let item of schedules" [time]="item.time" [subject]="item.subject"
                     [lessonName]="item.lessonName">
                 </app-schedule-card>
