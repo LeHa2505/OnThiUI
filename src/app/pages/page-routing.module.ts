@@ -10,6 +10,7 @@ import { DetailCourseComponent } from './user/course/detail-course/detail-course
 import { LearningCourseComponent } from './user/course/learning-course/learning-course.component';
 import { QuizComponent } from './user/course/quiz/quiz.component';
 import {MyCalendarComponent} from "./user/my-calendar/my-calendar.component";
+import { WatchVideoComponent } from './user/watch-video/watch-video.component';
 
 const routes: Routes = [
   {
@@ -40,6 +41,15 @@ const routes: Routes = [
   {
     path: 'my-calendar',
     component: MyCalendarComponent
+  },
+  {
+    path: 'shorts',
+    children: [
+      {
+        path: ':id',
+        component: WatchVideoComponent
+      }
+    ]
   },
   {
     path: 'LCs',
