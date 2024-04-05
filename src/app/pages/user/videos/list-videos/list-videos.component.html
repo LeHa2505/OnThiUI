@@ -1,0 +1,32 @@
+<div style="display: flex; align-items: center;">
+  <i class="fas fa-chevron-left" style="color: #7D7D7D; margin-right: 1rem; font-size: 18px; "></i>
+  <h6 style="color: #7D7D7D; font-size: 18px; font-weight: 600; margin-bottom: 0;">Shorts</h6>
+</div>
+
+<div class="wrap-videos">
+  <nz-card *ngFor="let item of shorts" nzHoverable nz-tooltip [nzTooltipTitle]="item.name"
+           [nzTooltipColor]="'#000'" nzTooltipPlacement="right"
+           class="short-video"
+           [routerLink]="['/shorts', item.name]"
+           [nzCover]="coverTemplate">
+    <nz-card-meta></nz-card-meta>
+    <div style="margin: -1rem;">
+      <p nz-typography nzEllipsis [nzEllipsisRows]="2" style="margin-top: 1rem; margin-bottom: 0.5rem;">
+        {{ item.name }}
+      </p>
+      <div>
+        <i class="fas fa-eye" style="margin-right: 0.3rem; color: #7D7D7D;"></i>
+        <span style="color: #7D7D7D;">
+          {{ item.views }} lượt xem
+        </span>
+      </div>
+    </div>
+    <ng-template #coverTemplate>
+      <img style="border-radius: 12px; width: 160px; height: 240px" alt="example" [src]="item.img" />
+    </ng-template>
+  </nz-card>
+</div>
+
+<div class="center-item">
+  <nz-pagination [nzPageIndex]="1" [nzTotal]="50"></nz-pagination>
+</div>

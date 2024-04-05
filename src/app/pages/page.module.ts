@@ -70,7 +70,9 @@ import { HammerModule } from '@angular/platform-browser';
 import { MyCalendarComponent } from './user/my-calendar/my-calendar.component';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
-import { WatchVideoComponent } from './user/watch-video/watch-video.component';
+import { WatchVideoComponent } from './user/videos/watch-video/watch-video.component';
+import { ListVideosComponent } from './user/videos/list-videos/list-videos.component';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
 @NgModule({
   declarations: [
@@ -88,8 +90,10 @@ import { WatchVideoComponent } from './user/watch-video/watch-video.component';
     QuizComponent,
     MyCalendarComponent,
     WatchVideoComponent,
+    ListVideosComponent,
   ],
   imports: [
+    NzPaginationModule,
     NzSkeletonModule,
     NzNotificationModule,
     IgxDatePickerModule,

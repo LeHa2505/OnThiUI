@@ -95,83 +95,20 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0);
   margin-bottom: 1rem;
+  margin-right: 1rem;
 }
 
-.ant-card-head {
-  padding: 0 12px !important;
-}
-
-.courses {
+.wrap-videos {
   display: flex;
-  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
   flex-wrap: wrap;
-  justify-content: space-between;
+  margin-top: 1rem;
+  flex-direction: row;
 }
 
-.slider-wrap {
-  position: relative;
-  overflow: hidden;
-  height: 240px;
-}
-
-.slider-main {
-  position: absolute;
-  width: 100%;
-  left: 0px;
-  // transition: transform 1.5s ease;
-  transition: left .8s cubic-bezier(0.77, 0, 0.175, 1);
-}
-
-.item {
-  display: inline-block;
-  width: 160px;
-  height: 240px;
-  position: relative;
-  margin: 0 1.5rem 0 0;
-  transition: transform 1.5s ease;
-  -webkit-animation: slide 0.5s forwards;
-  -webkit-animation-delay: 2s;
-  animation: slide 0.5s forwards;
-  animation-delay: 2s;
-  flex: 0 0 auto;
-}
-
-@-webkit-keyframes item {
-  100% { left: 0; }
-}
-
-@keyframes item {
-  100% { left: 0; }
-}
-
-.slider-main .item:nth-child(n + 1):nth-child(-n + 2) {
-  opacity: 1;
-}
-
-/* Xác định vị trí của item hiện tại */
-#slide1:checked ~ .slider-main {
-  transform: translateX(0);
-}
-#slide2:checked ~ .slider-main {
-  transform: translateX(-50%);
-}
-#slide3:checked ~ .slider-main {
-  transform: translateX(-100%);
-}
-
-#slide1:checked ~ .button-area .prev,
-#slide2:checked ~ .button-area .next {
-  display: none; /* Ẩn nút prev khi ở slide đầu */
-}
-
-#slide3:checked ~ .button-area .next {
-  display: none; /* Ẩn nút next khi ở slide cuối */
-}
-
-.text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #fff;
+.center-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
