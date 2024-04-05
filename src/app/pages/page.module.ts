@@ -70,6 +70,7 @@ import { HammerModule } from '@angular/platform-browser';
 import { MyCalendarComponent } from './user/my-calendar/my-calendar.component';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { WatchVideoComponent } from './user/watch-video/watch-video.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
     LearningCourseComponent,
     QuizComponent,
     MyCalendarComponent,
+    WatchVideoComponent,
   ],
   imports: [
     NzSkeletonModule,
