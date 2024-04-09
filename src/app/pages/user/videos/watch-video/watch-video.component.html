@@ -1,1 +1,121 @@
-sdsds
+<div style="display: flex; justify-content: space-between; align-items: stretch;">
+
+    <!-- Đây là chỗ play video -->
+    <div style="width:33%;">
+        <nz-card style="border-radius: 1rem; height: 100%;">
+            <div style="margin-bottom: 1rem;">
+                <video width="100%" controls style="border-radius: 15px;">
+                    <source [src]="short.url" type="video/mp4">
+                    Your browser does not support HTML5 video.
+                </video>
+            </div>
+        </nz-card>
+    </div>
+
+    <!-- Đây là chỗ bình luận -->
+    <div style="width:65%;">
+        <nz-card style="border-radius: 1rem; height: 100%;">
+            <!-- Tên video -->
+            <div>
+                <h6 style="padding-right: 0.5rem;">
+                    {{ short.title }}
+                </h6>
+                <nz-divider></nz-divider>
+            </div>
+
+            <div>
+                <div style="display: flex;">
+                    <div style="margin-right: 1rem;">
+                        <nz-avatar [nzSize]="50" [nzSrc]="short.avatar"></nz-avatar>
+                    </div>
+                    <div style="width: 100%;">
+                        <div style="display: flex; justify-content: space-between; 
+                    align-items: center; margin-bottom: 0.2rem;
+                    width: 100%; float: right;">
+                            <h6 style="color: #252641; font-size: 15px; margin-bottom: 0rem;">{{ short.author }}</h6>
+                            <div>
+                                <a style="color: #3649F9 !important;" href="">
+                                    <i class="fa-solid fa-address-card"></i> Xem profile</a>
+                            </div>
+                        </div>
+                        <div>
+                            <p style="font-size: 14px; font-weight: 200; color: #7A7E86; 
+                            font-family: ReadexPro-light; margin-bottom: 0.5rem">
+                                Đăng {{ short.timeUpload }} trước</p>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="description">
+                    {{ short.description }}
+                </p>
+            </div>
+
+            <nz-divider></nz-divider>
+
+            <h6 style="padding-right: 0.5rem;">
+                <i class="fa-solid fa-comment"></i> Bình luận
+            </h6>
+
+            <nz-comment>
+                <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="user.avatar"></nz-avatar>
+                <nz-comment-content class="comment">
+                    <nz-form-item style="width: 85%;">
+                        <textarea style="border-radius: 15px;" [(ngModel)]="inputValue"
+                            placeholder="Gửi lại bình luận..." nz-input rows="2"></textarea>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <button style="background-color: rgba(0, 0, 0, 0); border: none;" nz-button
+                            [nzLoading]="submitting" [disabled]="!inputValue" (click)="handleSubmit()">
+                            <i class="fas fa-paper-plane" style="margin-right: 0.5rem;"></i> Gửi
+                        </button>
+                    </nz-form-item>
+                </nz-comment-content>
+            </nz-comment>
+
+            <div style="padding: 1rem; border-radius: 15px; overflow-y: scroll; height: 50vh;">
+                <nz-comment *ngFor="let item of comments" nzAuthor="{{ item.author }}" [nzDatetime]="item.time">
+                    <nz-avatar nz-comment-avatar nzIcon="user"
+                        nzSrc="https://png.pngtree.com/png-clipart/20220111/original/pngtree-cute-little-girl-avatar-png-image_7085472.png"></nz-avatar>
+                    <nz-comment-content>
+                        <p>
+                            {{ item.content }}
+                        </p>
+                    </nz-comment-content>
+                    <nz-comment-action>
+                        <span nz-tooltip nzTitle="Like" nz-icon nzType="like"
+                            [nzTheme]="item.like > 0 ? 'twotone' : 'outline'" (click)="like()"></span>
+                        <span class="count like">{{ item.like }}</span>
+                    </nz-comment-action>
+                    <nz-comment-action>
+                        <span nz-tooltip nzTitle="Dislike" nz-icon nzType="dislike"
+                            [nzTheme]="item.dislike > 0 ? 'twotone' : 'outline'" (click)="dislike()"></span>
+                        <span class="count dislike">{{ item.dislike }}</span>
+                    </nz-comment-action>
+                </nz-comment>
+
+                <nz-list *ngIf="data.length" [nzDataSource]="data" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+                    <ng-template #item let-item>
+                        <nz-comment [nzAuthor]="item.author" [nzDatetime]="item.displayTime">
+                            <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
+                            <nz-comment-content>
+                                <p>{{ item.content }}</p>
+                            </nz-comment-content>
+                            <nz-comment-action>
+                                <span nz-tooltip nzTitle="Like" nz-icon nzType="like"
+                                    [nzTheme]="item.like > 0 ? 'twotone' : 'outline'" (click)="like()"></span>
+                                <span class="count like">{{ item.like }}</span>
+                            </nz-comment-action>
+                            <nz-comment-action>
+                                <span nz-tooltip nzTitle="Dislike" nz-icon nzType="dislike"
+                                    [nzTheme]="item.dislike > 0 ? 'twotone' : 'outline'" (click)="dislike()"></span>
+                                <span class="count dislike">{{ item.dislike }}</span>
+                            </nz-comment-action>
+                        </nz-comment>
+                    </ng-template>
+                </nz-list>
+            </div>
+        </nz-card>
+    </div>
+
+</div>

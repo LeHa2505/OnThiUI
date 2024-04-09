@@ -73,6 +73,9 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { WatchVideoComponent } from './user/videos/watch-video/watch-video.component';
 import { ListVideosComponent } from './user/videos/list-videos/list-videos.component';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { NzTreeModule } from 'ng-zorro-antd/tree';
+import { FileManageComponent } from './user/file-manage/file-manage.component';
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
 
 @NgModule({
   declarations: [
@@ -91,8 +94,11 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
     MyCalendarComponent,
     WatchVideoComponent,
     ListVideosComponent,
+    FileManageComponent,
   ],
+
   imports: [
+    NzTreeModule,
     NzPaginationModule,
     NzSkeletonModule,
     NzNotificationModule,
@@ -152,6 +158,7 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
     IgxButtonModule,
     IgxCalendarModule,
     IgxDialogModule,
+    // NgxDocViewerModule,
   ],
   providers: [
     { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },

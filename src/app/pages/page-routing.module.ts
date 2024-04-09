@@ -12,6 +12,7 @@ import { QuizComponent } from './user/course/quiz/quiz.component';
 import {MyCalendarComponent} from "./user/my-calendar/my-calendar.component";
 import { WatchVideoComponent } from './user/videos/watch-video/watch-video.component';
 import {ListVideosComponent} from "./user/videos/list-videos/list-videos.component";
+import { FileManageComponent } from './user/file-manage/file-manage.component';
 
 const routes: Routes = [
   {
@@ -57,15 +58,11 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'LCs',
+    path: 'files',
     children: [
       {
         path: '',
-        component: ListLCsComponent,
-      },
-      {
-        path: ':id',
-        component: DetailLcComponent,
+        component: FileManageComponent,
       },
     ],
   },
