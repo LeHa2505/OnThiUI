@@ -96,7 +96,7 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
     ListVideosComponent,
     FileManageComponent,
   ],
-  
+
   imports: [
     NzTreeModule,
     NzPaginationModule,
@@ -158,7 +158,7 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
     IgxButtonModule,
     IgxCalendarModule,
     IgxDialogModule,
-    NgxDocViewerModule,
+    // NgxDocViewerModule,
   ],
   providers: [
     { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
