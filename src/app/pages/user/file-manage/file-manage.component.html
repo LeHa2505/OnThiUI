@@ -1,0 +1,38 @@
+<div style="display: flex; align-items: center;">
+    <i class="fas fa-chevron-left" style="color: #7D7D7D; margin-right: 1rem; font-size: 18px; "></i>
+    <h6 style="color: #7D7D7D; font-size: 18px; font-weight: 600; margin-bottom: 0;">Tài liệu của tôi</h6>
+</div>
+
+<div style="display: flex; justify-content: space-between; align-items: flex-start;">
+    <div style=" width: 33%;">
+        <nz-tree style="margin: 1rem 0 0 1rem; border-radius: 1rem; padding: 1rem 0.5rem;" nzBlockNode [nzData]="nodes"
+            (nzClick)="activeNode($event)" (nzDblClick)="openFolder($event)" [nzTreeTemplate]="nzTreeTemplate">
+        </nz-tree>
+        <ng-template #nzTreeTemplate let-node let-origin="origin">
+            <span class="custom-node">
+                <span *ngIf="!node.isLeaf" (contextmenu)="contextMenu($event, menu)">
+                    <i style="color: #110D59; font-size: 1rem; margin-right: 0.5rem;"
+                        [ngClass]="{'fa-regular fa-folder-open': node.isExpanded, 'fas fa-folder': !node.isExpanded}"
+                        (click)="openFolder(node)"></i>
+                    <span class="folder-name">{{ node.title }}</span>
+                </span>
+                <span *ngIf="node.isLeaf" (contextmenu)="contextMenu($event, menu)">
+                    <i style="color: #110D59;font-size: 1rem; margin-right: 0.5rem;" class="fa-solid fa-file"></i>
+                    <span class="file-name">{{ node.title }}</span>
+                </span>
+            </span>
+        </ng-template>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+                <li nz-menu-item (click)="selectDropdown()">Action 1</li>
+                <li nz-menu-item (click)="selectDropdown()">Action 2</li>
+            </ul>
+        </nz-dropdown-menu>
+    </div>
+
+    <div style="width: 65%;">
+        <embed class="pdf" src="https://media.geeksforgeeks.org/wp-content/cdn-uploads/20210101201653/PDF.pdf"
+            width="800" height="500">
+    </div>
+
+</div>
