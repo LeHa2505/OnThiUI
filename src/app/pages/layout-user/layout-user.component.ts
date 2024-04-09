@@ -40,6 +40,7 @@ export class LayoutUserComponent implements OnInit {
       title: 'Tài liệu',
       icon: 'fas fa-book',
       role: 'student',
+      url: 'files'
     },
     {
       title: 'Nhóm',

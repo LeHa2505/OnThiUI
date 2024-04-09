@@ -89,12 +89,21 @@
   margin-bottom: 1rem;
 }
 
+
+.container-fluid2 {
+  width: 100%;
+  /* padding-right: 15px; */
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
 .short-video {
   width: 160px;
   border-radius: 12px !important;
   height: 100%;
   background-color: rgba(0, 0, 0, 0);
-  margin-bottom: 1rem;
+  // margin-bottom: 1rem;
 }
 
 .ant-card-head {
@@ -111,7 +120,7 @@
 .slider-wrap {
   position: relative;
   overflow: hidden;
-  height: 240px;
+  height: 341px;
 }
 
 .slider-main {
@@ -119,15 +128,17 @@
   width: 100%;
   left: 0px;
   // transition: transform 1.5s ease;
-  transition: left .8s cubic-bezier(0.77, 0, 0.175, 1);
+  transition: left 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+  display: flex;
+  justify-content: space-between;
 }
 
 .item {
   display: inline-block;
   width: 160px;
-  height: 240px;
+  height: 341px;
   position: relative;
-  margin: 0 1.5rem 0 0;
+  margin: 0 .5rem 0 0;
   transition: transform 1.5s ease;
   -webkit-animation: slide 0.5s forwards;
   -webkit-animation-delay: 2s;
@@ -137,11 +148,15 @@
 }
 
 @-webkit-keyframes item {
-  100% { left: 0; }
+  100% {
+    left: 0;
+  }
 }
 
 @keyframes item {
-  100% { left: 0; }
+  100% {
+    left: 0;
+  }
 }
 
 .slider-main .item:nth-child(n + 1):nth-child(-n + 2) {
