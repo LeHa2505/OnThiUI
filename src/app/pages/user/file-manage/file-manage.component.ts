@@ -174,6 +174,13 @@ export class FileManageComponent {
     },
   ];
 
+  name = 'Angular';
+  pdfSrc = 'http://www.pdf995.com/samples/pdf.pdf';
+
+  contentLoaded() {
+    console.log('File loaded');
+  }
+
   openFolder(data: NzTreeNode | NzFormatEmitEvent): void {
     // do something if u want
     if (data instanceof NzTreeNode) {
