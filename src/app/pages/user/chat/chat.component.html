@@ -1,0 +1,276 @@
+<div style="display: flex; justify-content: flex-start; align-items: flex-start; margin: -12px -24px;">
+    <div style=" width: 28%;">
+        <nz-card style="width:100%;" nzTitle="Tin nhắn" [nzExtra]="extraTemplate">
+            <input style="border-radius: 15px; margin-bottom: 0.5rem;" nz-input placeholder="Tìm kiếm bạn bè"
+                [(ngModel)]="searchFriend" type="text" />
+            <div style="overflow-y: scroll; height: 75vh; padding-right: 1rem;">
+                <div *ngFor="let item of friends">
+                    <div style="margin: 2rem 0;">
+                        <div style="display: flex;
+                    align-items: center;">
+                            <div class="avatar-friend">
+                                <nz-avatar style="margin-right: 1rem;" [nzSize]="48"
+                                    nzSrc="https://static.vecteezy.com/system/resources/thumbnails/021/770/059/small/avatar-of-a-student-character-free-vector.jpg"></nz-avatar>
+                            </div>
+                            <div style="width: 100%;" class="friend-info">
+                                <div style="
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            width: 100%;
+                        ">
+                                    <p style="margin-bottom: 0;">{{ item.name }}</p>
+                                    <p style="margin-bottom: 0; font-family: ReadexPro-light; font-size: 0.75rem;">{{
+                                        item.time }}</p>
+                                </div>
+                                <p style="margin-bottom: 0;" class="newsest-mess">{{ item.newestMess }}</p>
+                            </div>
+                        </div>
+                        <div class="tag-friend">
+                            <div>
+                                <nz-tag style="border-radius: 16px;" [nzColor]="'blue'">
+                                    Nhóm toán
+                                </nz-tag>
+                                <nz-tag style="border-radius: 16px;" [nzColor]="'magenta'">
+                                    Nhóm văn
+                                </nz-tag>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nz-card>
+        <ng-template #extraTemplate>
+            <div class="mess-title-icon"><i class="fa-solid fa-plus"></i></div>
+        </ng-template>
+    </div>
+
+    <div style="width: 70%; border-radius: 1rem;">
+        <div style="height: 100%;">
+            <nz-card style="width: 100%;" [nzTitle]="mainMessTitle" [nzExtra]="extraTemplate2">
+                <div class="--dark-theme" id="chat">
+                    <div class="chat__conversation-board">
+                        <div class="chat__conversation-board__message-container">
+                            <div class="chat__conversation-board__message__person">
+                                <div class="chat__conversation-board__message__person__avatar"><img
+                                        src="https://static.vecteezy.com/system/resources/thumbnails/021/770/056/small/avatar-of-a-student-character-free-vector.jpg"
+                                        alt="Monika Figi" /></div><span
+                                    class="chat__conversation-board__message__person__nickname">Monika Figi</span>
+                            </div>
+                            <div class="chat__conversation-board__message__context">
+                                <div class="chat__conversation-board__message__bubble"> <span>Có ai biết làm bài 1
+                                        chương 1 ở
+                                        file cô
+                                        gửi không?</span></div>
+                            </div>
+                            <div class="chat__conversation-board__message__options">
+                                <button
+                                    class="btn-icon chat__conversation-board__message__option-button option-item emoji-button">
+                                    <svg class="feather feather-smile sc-dnqmqq jxshSx"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" aria-hidden="true">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                                        <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                                        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                                    </svg>
+                                </button>
+                                <button
+                                    class="btn-icon chat__conversation-board__message__option-button option-item more-button">
+                                    <svg class="feather feather-more-horizontal sc-dnqmqq jxshSx"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" aria-hidden="true">
+                                        <circle cx="12" cy="12" r="1"></circle>
+                                        <circle cx="19" cy="12" r="1"></circle>
+                                        <circle cx="5" cy="12" r="1"></circle>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="chat__conversation-board__message-container">
+                            <div class="chat__conversation-board__message__person">
+                                <div class="chat__conversation-board__message__person__avatar"><img
+                                        src="https://cdn.vectorstock.com/i/preview-1x/32/50/little-student-boy-avatar-character-vector-33593250.jpg"
+                                        alt="Thomas Rogh" /></div><span
+                                    class="chat__conversation-board__message__person__nickname">Thomas Rogh</span>
+                            </div>
+                            <div class="chat__conversation-board__message__context">
+                                <div class="chat__conversation-board__message__bubble"> <span>Hmm để mình xem
+                                        lại!</span></div>
+                            </div>
+                            <div class="chat__conversation-board__message__options">
+                                <button
+                                    class="btn-icon chat__conversation-board__message__option-button option-item emoji-button">
+                                    <svg class="feather feather-smile sc-dnqmqq jxshSx"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" aria-hidden="true">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                                        <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                                        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                                    </svg>
+                                </button>
+                                <button
+                                    class="btn-icon chat__conversation-board__message__option-button option-item more-button">
+                                    <svg class="feather feather-more-horizontal sc-dnqmqq jxshSx"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" aria-hidden="true">
+                                        <circle cx="12" cy="12" r="1"></circle>
+                                        <circle cx="19" cy="12" r="1"></circle>
+                                        <circle cx="5" cy="12" r="1"></circle>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="chat__conversation-board__message-container">
+                            <div class="chat__conversation-board__message__person">
+                                <div class="chat__conversation-board__message__person__avatar"><img
+                                        src="https://img.freepik.com/premium-vector/boy-minimalistic-illustration-avatar-falt-vector_941466-7974.jpg"
+                                        alt="Monika Figi" /></div><span
+                                    class="chat__conversation-board__message__person__nickname">Monika Figi</span>
+                            </div>
+                            <div class="chat__conversation-board__message__context">
+                                <div class="chat__conversation-board__message__bubble"> <span>Tớ làm rồi này!</span>
+                                </div>
+                                <div class="chat__conversation-board__message__bubble"> <span>Tớ gửi lại lời giải
+                                        nhé</span>
+                                </div>
+                            </div>
+                            <div class="chat__conversation-board__message__options">
+                                <button
+                                    class="btn-icon chat__conversation-board__message__option-button option-item emoji-button">
+                                    <svg class="feather feather-smile sc-dnqmqq jxshSx"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" aria-hidden="true">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                                        <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                                        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                                    </svg>
+                                </button>
+                                <button
+                                    class="btn-icon chat__conversation-board__message__option-button option-item more-button">
+                                    <svg class="feather feather-more-horizontal sc-dnqmqq jxshSx"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" aria-hidden="true">
+                                        <circle cx="12" cy="12" r="1"></circle>
+                                        <circle cx="19" cy="12" r="1"></circle>
+                                        <circle cx="5" cy="12" r="1"></circle>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="chat__conversation-board__message-container reversed">
+                            <div class="chat__conversation-board__message__person">
+                                <div class="chat__conversation-board__message__person__avatar"><img
+                                        src="https://cdn-icons-png.flaticon.com/512/1993/1993167.png"
+                                        alt="Dennis Mikle" />
+                                </div><span class="chat__conversation-board__message__person__nickname">Dennis
+                                    Mikle</span>
+                            </div>
+                            <div class="chat__conversation-board__message__context">
+                                <div class="chat__conversation-board__message__bubble"> <span>Mình cũng muốn tham
+                                        khảo.</span>
+                                </div>
+                            </div>
+                            <div class="chat__conversation-board__message__options">
+                                <button
+                                    class="btn-icon chat__conversation-board__message__option-button option-item emoji-button">
+                                    <svg class="feather feather-smile sc-dnqmqq jxshSx"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" aria-hidden="true">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                                        <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                                        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                                    </svg>
+                                </button>
+                                <button
+                                    class="btn-icon chat__conversation-board__message__option-button option-item more-button">
+                                    <svg class="feather feather-more-horizontal sc-dnqmqq jxshSx"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" aria-hidden="true">
+                                        <circle cx="12" cy="12" r="1"></circle>
+                                        <circle cx="19" cy="12" r="1"></circle>
+                                        <circle cx="5" cy="12" r="1"></circle>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat__conversation-panel">
+                        <div class="chat__conversation-panel__container">
+                            <button class="chat__conversation-panel__button panel-item btn-icon add-file-button">
+                                <svg class="feather feather-plus sc-dnqmqq jxshSx" xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                            </button>
+                            <button class="chat__conversation-panel__button panel-item btn-icon emoji-button">
+                                <svg class="feather feather-smile sc-dnqmqq jxshSx" xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                                    <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                                    <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                                </svg>
+                            </button>
+                            <input class="chat-border chat__conversation-panel__input panel-item"
+                                placeholder="Nơi nhập tin nhắn..." />
+                            <button class="chat__conversation-panel__button panel-item btn-icon send-message-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" aria-hidden="true" data-reactid="1036">
+                                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </nz-card>
+            <ng-template #mainMessTitle>
+                <div style="display: flex;">
+                    <div style="margin-right: 1rem;">
+                        <nz-avatar [nzSize]="50"
+                            nzSrc="https://static.vecteezy.com/system/resources/thumbnails/021/770/059/small/avatar-of-a-student-character-free-vector.jpg"></nz-avatar>
+                    </div>
+                    <div style="width: 100%; display: flex;
+                    flex-direction: column;">
+                        <div style="display: flex; justify-content: space-between; 
+                    align-items: center; margin-bottom: 0.2rem;
+                    width: 100%; float: right;">
+                            <h6 style="color: #252641; font-size: 15px; margin-bottom: 0rem;">Nhóm học Toán</h6>
+                        </div>
+                        <div>
+                            <p style="font-size: 14px; font-weight: 200; color: #7A7E86; 
+                            font-family: ReadexPro-light; margin-bottom: 0.5rem">
+                                <nz-badge nzStatus="success"></nz-badge>
+                                Đang online
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template #extraTemplate2>
+                <div style="background-color: rgba(97, 94, 240, 0.1); padding: 0.5rem 1rem; border-radius: 1rem;">
+                    <i style="margin-right: 0.5rem;" class="fa-solid fa-phone"></i>
+                    <span style="font-size: 15px;">Gọi nhóm</span>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>

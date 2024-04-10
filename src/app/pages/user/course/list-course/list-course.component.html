@@ -4,7 +4,7 @@
   <div class="slider-wrap">
     <div class="slider-main">
       <div *ngFor="let item of listClass; let i = index" class="item" [routerLink]="['/courses', item.name]">
-        <div class="text">
+        <div class="text" style="cursor: pointer;">
           <nz-card [style]="'width: 350px; border-radius: 8px;'" [nzBordered]="false" [nzTitle]="item.name"
             [nzExtra]="extraTemplate">
             <p style="color: rgba(0, 0, 0, 0.6);" nz-typography nzEllipsis [nzEllipsisRows]="2">

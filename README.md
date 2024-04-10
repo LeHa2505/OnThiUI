@@ -9,5 +9,6 @@ This is a test project to demonstrate using Intern with Angular 4+. It contains 
 ```shell
 npm install -f
 npm install --save --force  tinymce @tinymce/tinymce-angular
+npm i ngx-doc-viewer@1.4.1
 ng s
 ```
