@@ -75,6 +75,8 @@ import { ListVideosComponent } from './user/videos/list-videos/list-videos.compo
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzTreeModule } from 'ng-zorro-antd/tree';
 import { FileManageComponent } from './user/file-manage/file-manage.component';
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
+import { ChatComponent } from './user/chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -94,9 +96,11 @@ import { FileManageComponent } from './user/file-manage/file-manage.component';
     WatchVideoComponent,
     ListVideosComponent,
     FileManageComponent,
+    ChatComponent,
   ],
 
   imports: [
+    NgxDocViewerModule,
     NzTreeModule,
     NzPaginationModule,
     NzSkeletonModule,

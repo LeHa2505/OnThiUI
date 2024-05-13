@@ -42,15 +42,16 @@ export class LayoutUserComponent implements OnInit {
       role: 'student',
       url: 'files'
     },
-    {
-      title: 'Nhóm',
-      icon: 'fas fa-user-group',
-      role: 'student',
-    },
+    // {
+    //   title: 'Nhóm',
+    //   icon: 'fas fa-user-group',
+    //   role: 'student',
+    // },
     {
       title: 'Tin nhắn',
       icon: 'fas fa-comment',
       role: 'student',
+      url: 'chat'
     },
   ];
 

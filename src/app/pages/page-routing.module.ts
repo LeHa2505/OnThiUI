@@ -13,6 +13,7 @@ import {MyCalendarComponent} from "./user/my-calendar/my-calendar.component";
 import { WatchVideoComponent } from './user/videos/watch-video/watch-video.component';
 import {ListVideosComponent} from "./user/videos/list-videos/list-videos.component";
 import { FileManageComponent } from './user/file-manage/file-manage.component';
+import { ChatComponent } from './user/chat/chat.component';
 
 const routes: Routes = [
   {
@@ -71,14 +72,8 @@ const routes: Routes = [
     component: ProfileComponent,
   },
   {
-    path: 'bank',
-    children: [
-      {
-        path: 'LCs', // Đường dẫn trống để đảm bảo đây là trang mặc định của layout chung
-        component: ListLCsComponent,
-      },
-      // Thêm các route con cho trang layout chung ở đây
-    ],
+    path: 'chat',
+    component: ChatComponent
   },
 ];
 
