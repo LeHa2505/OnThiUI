@@ -20,7 +20,6 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { RequestLCComponent } from './user/manage-lcs/request-lc/request-lc.component';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
@@ -29,8 +28,6 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzMessageModule } from 'ng-zorro-antd/message';
-import { ListLCsComponent } from './user/manage-lcs/list-lcs/list-lcs.component';
-import { DetailLcComponent } from './user/manage-lcs/detail-lc/detail-lc.component';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
@@ -77,13 +74,11 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 import { FileManageComponent } from './user/file-manage/file-manage.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { ChatComponent } from './user/chat/chat.component';
+import { MessageComponent } from './user/message/message.component';
 
 @NgModule({
   declarations: [
     LayoutUserComponent,
-    RequestLCComponent,
-    ListLCsComponent,
-    DetailLcComponent,
     ProfileComponent,
     HomePageComponent,
     ListCourseComponent,
@@ -97,6 +92,7 @@ import { ChatComponent } from './user/chat/chat.component';
     ListVideosComponent,
     FileManageComponent,
     ChatComponent,
+    MessageComponent,
   ],
 
   imports: [

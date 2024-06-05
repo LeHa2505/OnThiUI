@@ -9,7 +9,6 @@ import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
 import { AuthenticationService } from 'src/app/service/authentication/authentication.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Router } from '@angular/router';
-import getContract from 'src/helper/contract';
 import { ethers } from 'ethers';
 
 @Component({

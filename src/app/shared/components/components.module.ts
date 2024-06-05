@@ -43,6 +43,7 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { VideoPlayerIconComponent } from './video-player-icon/video-player-icon.component';
 import { FooterComponent } from './footer/footer.component';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NoResultComponent } from './no-result/no-result.component';
 
 
 @NgModule({
@@ -69,6 +70,7 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
     ScheduleCardComponent,
     VideoPlayerIconComponent,
     FooterComponent,
+    NoResultComponent,
   ],
   imports: [
     NzDividerModule,
@@ -116,7 +118,8 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
     NoneFileComponent,
     ScheduleCardComponent,
     VideoPlayerIconComponent,
-    FooterComponent
+    FooterComponent,
+    NoResultComponent
   ],
 })
 export class ComponentsModule {}

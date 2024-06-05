@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core';
+import { colorsArray } from 'src/constants';
 
 @Component({
   selector: 'app-schedule-card',
@@ -10,7 +11,7 @@ export class ScheduleCardComponent {
   @Input() subject: any;
   @Input() lessonName: any
 
-  colorsArray: string[] = ["#A4DDDE", "#F9EAA0", "#C6DDF7", "#eac4d5", "#e8dff5", "#ddedea"];
+  colorsArray = colorsArray;
 
   ngOnInit(): void {
     this.getRandomColor();

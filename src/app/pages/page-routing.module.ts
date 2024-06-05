@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RequestLCComponent } from './user/manage-lcs/request-lc/request-lc.component';
-import { ListLCsComponent } from './user/manage-lcs/list-lcs/list-lcs.component';
-import { DetailLcComponent } from './user/manage-lcs/detail-lc/detail-lc.component';
 import { ProfileComponent } from './user/profile/profile.component';
 import { HomePageComponent } from './user/home-page/home-page.component';
 import { ListCourseComponent } from './user/course/list-course/list-course.component';
@@ -14,6 +11,7 @@ import { WatchVideoComponent } from './user/videos/watch-video/watch-video.compo
 import {ListVideosComponent} from "./user/videos/list-videos/list-videos.component";
 import { FileManageComponent } from './user/file-manage/file-manage.component';
 import { ChatComponent } from './user/chat/chat.component';
+import { MessageComponent } from './user/message/message.component';
 
 const routes: Routes = [
   {
@@ -74,6 +72,10 @@ const routes: Routes = [
   {
     path: 'chat',
     component: ChatComponent
+  },
+  {
+    path: 'message',
+    component: MessageComponent
   },
 ];
 

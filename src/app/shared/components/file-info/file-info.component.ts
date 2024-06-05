@@ -12,5 +12,5 @@ export class FileInfoComponent {
   @Input() file: any;
   @Input() fileName: any;
   @Input() fileSize: any;
-
+  @Input() link: any;
 }

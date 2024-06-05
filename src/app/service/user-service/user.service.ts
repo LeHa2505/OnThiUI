@@ -14,6 +14,11 @@ export class UserService {
     }),
   };
 
+  public userId: number;
+  public userName: string;
+  public userAvatar: string;
+  public userInfo: any;
+
   constructor(private http: HttpClient) {}
 
   listBank(): Observable<any> {

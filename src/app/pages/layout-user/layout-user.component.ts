@@ -12,6 +12,7 @@ import { AuthenticationService } from 'src/app/service/authentication/authentica
 export class LayoutUserComponent implements OnInit {
   // role: any = localStorage.getItem('role');
   // username = localStorage.getItem('username');
+  idUser = localStorage.getItem('user_id');
   role: any;
   username: any;
   isCollapsed = false;
@@ -73,6 +74,7 @@ export class LayoutUserComponent implements OnInit {
       if (event instanceof NavigationEnd) {
         // Lấy URL hiện tại
         this.url = this.router.url;
+        // console.log('this.url',this.url);
         // Tạo breadcrumbs từ URL
         this.breadcrumbs = this.createBreadcrumbs(this.url);
       }
@@ -87,7 +89,7 @@ export class LayoutUserComponent implements OnInit {
 
   initUserInform() {
     this.role = 'student';
-    this.username = 'Hà Trang';
+    this.username = localStorage.getItem('username');
   }
 
   initNotification() {
@@ -149,10 +151,12 @@ export class LayoutUserComponent implements OnInit {
     }
     return breadcrumbs;
   }
+
   getMenuTitle(url: string): string {
     const menuItem = this.menus.find((item) => item.url === url);
     return menuItem ? menuItem.title : url;
   }
+  
   getMenuUrl(title: string): string {
     const menuItem = this.menus.find((item) => item.title === title);
     return menuItem ? menuItem.url : title;
@@ -160,24 +164,14 @@ export class LayoutUserComponent implements OnInit {
 
   showConfirm(): void {
     this.modal.confirm({
-      nzTitle: '<i>Do you Want to log out?</i>',
+      nzTitle: '<i>Bạn muốn đăng xuất?</i>',
       nzOnOk: () => {
         localStorage.clear();
         this.msg.success('Logout success');
         this.router.navigate(['/auth/login']);
         window.location.reload();
       },
-      //   new Promise((resolve, reject) => {
-      //       // this.authenSer.logout().subscribe((res) => {
-      //       //   localStorage.clear();
-      //       //   this.msg.success(res.message);
-      //       //   this.router.navigate(['/auth/login']);
-      //       //   window.location.reload();
-      //       // }, (error) =>
-      //       //   this.msg.error('Logout unsuccessfully')
-      //       // );
-      //     }).catch((error) => console.log(error)),
-      // });
+      nzCentered: true
     });
   }
 

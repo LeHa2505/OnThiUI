@@ -1,17 +1,12 @@
 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
     <div style="width:65%; border-radius: 1rem;">
 
-        <div style="display: flex; align-items: center;">
-            <h6 style="color: #7D7D7D; font-size: 18px; font-weight: 500; margin-bottom: 0.5rem; margin-right: 1rem;">
-                Học tiếp
-            </h6>
-        </div>
-
         <div class="video-continue" [routerLink]="['/courses/learning', 'item.name']">
             <div class="inner-video"
                 style="background-color: rgba(0, 0, 0, 0.4); width: 100%; height: 100%; border-radius: 15px;">
                 <div class="video-icon">
                     <app-video-player-icon></app-video-player-icon>
+                    <h5 style="color: #fff; margin-top: 1rem;">HỌC TIẾP</h5>
                 </div>
                 <div class="content-video">
                     <div>
@@ -40,7 +35,7 @@
                 <div class="slider-main">
                     <div *ngFor="let item of shorts; let i = index" class="item" [routerLink]="['/courses', item.name]">
                         <div class="text">
-                            <nz-card [style]="'width: 160px; border-radius: 8px;'" nzHoverable nz-tooltip
+                            <nz-card [style]="'width: 160px; border-radius: 8px;'" nz-tooltip
                                 [nzTooltipTitle]="item.name" [nzTooltipColor]="'#000'" nzTooltipPlacement="right"
                                 class="short-video" [routerLink]="['/shorts', item.name]" [nzCover]="coverTemplate">
                                 <nz-card-meta></nz-card-meta>

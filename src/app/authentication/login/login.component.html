@@ -6,7 +6,7 @@
 
       <span class="lnr lnr-user">Tên đăng nhập</span>
       <div class="form-holder" style="margin-top: 0.5rem;">
-        <input type="text" class="form-control" formControlName="username" placeholder="Hãy điền tên đăng nhập">
+        <input type="text" class="form-control" formControlName="email" placeholder="Hãy điền email đăng nhập">
       </div>
 
       <span class="lnr lnr-user">Mật khẩu</span>
@@ -30,7 +30,7 @@
             khẩu?</a>
         </div>
       </div>
-      <button>
+      <button nz-button [nzLoading]="isLoading">
         <span>Đăng nhập</span>
       </button>
       <div style="text-align: center;">

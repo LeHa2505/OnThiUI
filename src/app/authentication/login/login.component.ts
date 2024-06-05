@@ -7,6 +7,7 @@ import {
 import { AuthenticationService } from 'src/app/service/authentication/authentication.service';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
   selector: 'app-login',
@@ -28,25 +29,32 @@ export class LoginComponent implements OnInit {
     private fb: UntypedFormBuilder,
     private loginService: AuthenticationService,
     public router: Router,
-    private msg: NzMessageService
+    private msg: NzMessageService,
+    private notification: NzNotificationService
   ) {}
 
   submitForm(): void {
     this.isLoading = true;
     if (this.validateFormLogin.valid) {
-      this.requestLoginForm.email = this.validateFormLogin.value.username;
+      this.requestLoginForm.email = this.validateFormLogin.value.email;
       this.requestLoginForm.password = this.validateFormLogin.value.password;
 
       this.loginService.login(this.requestLoginForm).subscribe(
         (res) => {
-          this.msg.success('Login successfully!');
-          this.isLoading = false;
-          if (localStorage.getItem('role') == 'user') {
+          if (res.success) {
+            this.createSuccessNotification(res.message);
+            this.isLoading = false;
             this.router.navigateByUrl('/');
-          } else this.router.navigateByUrl('/agreements');
+          } else {
+            this.createFailNotification(res.message);
+            this.isLoginFailed = true;
+            this.isLoading = false;
+          }
         },
         (error) => {
-          this.msg.error('Login failed!')
+          this.createFailNotification(
+            'Sai email hoặc mật khẩu! Vui lòng nhập lại!'
+          );
           this.isLoginFailed = true;
           this.isLoading = false;
           // Xử lý lỗi nếu cần thiết
@@ -62,6 +70,27 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  createSuccessNotification(message: string): void {
+    this.notification.create('success', '', message).onClick.subscribe(() => {
+      console.log('notification clicked!');
+    });
+  }
+
+  createFailNotification(message: string): void {
+    this.notification
+      .create('error', '', message, {
+        nzStyle: {
+          width: '26.5rem',
+          marginLeft: '-265px',
+          backgroundColor: '#FFF',
+        },
+        nzClass: 'test-class',
+      })
+      .onClick.subscribe(() => {
+        console.log('notification clicked!');
+      });
+  }
+
   checkIsLogin() {
     if (localStorage.getItem('id_token')) {
       this.isLogin = true;
@@ -73,7 +102,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.validateFormLogin = this.fb.group({
-      username: [null, [Validators.required]],
+      email: [null, [Validators.required]],
       password: [null, [Validators.required]],
       remember: true,
     });

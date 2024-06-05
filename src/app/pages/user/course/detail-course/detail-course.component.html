@@ -1,33 +1,42 @@
-<div style="display: flex; align-items: center;">
+<div style="display: flex; align-items: center; cursor: pointer;" [routerLink]="['/courses']">
     <i class="fas fa-chevron-left" style="color: #7D7D7D; margin-right: 1rem; font-size: 18px; "></i>
     <h6 style="color: #7D7D7D; font-size: 18px; font-weight: 600; margin-bottom: 0;">Chi tiết khóa học</h6>
 </div>
+
+<nz-modal nzCentered="true" [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()" nzOkText="Có" nzCancelText="Không"
+    (nzOnOk)="handleOk()">
+    <ng-container *nzModalContent>
+        <i style="color: #faad14; margin-right: 0.5rem;" class="fas fa-circle-exclamation"></i>
+        <span>Bạn có chắc chắn muốn xóa bình luận không?</span>
+    </ng-container>
+</nz-modal>
 
 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
 
     <!-- Giới thiệu khóa học -->
     <nz-card style="width:65%; margin-top: 1rem; border-radius: 1rem;">
-        <h6 style="font-size: 1.1rem; margin-bottom: 1rem;">Tổng ôn kiến thức Toán 9 các dạng Nâng cao</h6>
+        <h6 style="font-size: 1.1rem; margin-bottom: 1rem;">{{ courseDetail.COURSE_NAME }}</h6>
         <div style="margin: 0.5rem 0 1.5rem 0; display: flex; align-items: center; justify-content: space-between">
             <div>
-                <nz-tag style="border-radius: 16px;" [nzColor]="'blue'">
-                    Toán
+                <nz-tag style="border-radius: 16px;" [nzColor]="getCategoryNameColor(courseDetail.CATEGORY_NAME)">
+                    {{ courseDetail.CATEGORY_NAME }}
                 </nz-tag>
-                <nz-tag style="border-radius: 16px;" [nzColor]="'magenta'">
-                    Nâng cao
+                <nz-tag style="border-radius: 16px;" [nzColor]="getCourseTypeColor(courseDetail.TYPE_COURSE)">
+                    {{ getCourseType(courseDetail.TYPE_COURSE) }}
                 </nz-tag>
                 <i style="color: #D9D9D9;" class="fas fa-clock"></i>
-                <span style="margin-left: 0.3rem; color: #696984;">3 tháng</span>
+                <span style="margin-left: 0.3rem; color: #696984;">Khoảng {{
+                    calculateMonthsDifference(courseDetail.START_DATE, courseDetail.END_DATE) }} tháng</span>
             </div>
         </div>
         <div style="margin-top: 1rem;">
-            <img style="width: 100%; border-radius: 8px; margin-bottom: 1rem;"
-                src="https://static.wixstatic.com/media/eb73de_243b7e0b32664301992de19d06fb39f6~mv2.jpg/v1/fill/w_1899,h_429,fp_0.50_0.50,q_85,usm_0.66_1.00_0.01,enc_auto/eb73de_243b7e0b32664301992de19d06fb39f6~mv2.jpg"
+            <img style="width: 100%; border-radius: 8px; margin-bottom: 1rem;" [src]="courseDetail.AVATAR_COURSE"
                 alt="">
             <button
                 style="width: 100%; display: flex; justify-content: center; align-items: center; background-color: #F18524 !important; border: none;"
                 nz-button nzType="primary" nzShape="round">
-                <span style="font-size: 14px; color: #fff;">Học tiếp thôi</span>
+                <span *ngIf="role == '1'" style="font-size: 14px; color: #fff;">Học tiếp thôi</span>
+                <span *ngif="role != '1'" style="font-size: 14px; color: #fff;">Học thử</span>
                 <span nz-icon nzType="play-circle" nzTheme="fill" style="font-size: 18px; color: #fff;"></span>
             </button>
         </div>
@@ -106,46 +115,102 @@
 
                 <nz-tab [nzTitle]="customizeTab2">
                     <ng-template #customizeTab2>
-                        <span [ngClass]="{'tabs-custome': activeTab === 2, 'tabs-custome-active': activeTab !== 2}">
-                            Reivews
+                        <span (click)="reviews()"
+                            [ngClass]="{'tabs-custome': activeTab === 2, 'tabs-custome-active': activeTab !== 2}">
+                            Reviews
                         </span>
                     </ng-template>
 
-                    <div style="background-color: rgba(157, 204, 255, 0.15); padding: 1rem; border-radius: 15px;">
+                    <div>
+                        <nz-skeleton [nzLoading]="isLoadingReview" [nzActive]="true" [nzAvatar]="true">
+                        </nz-skeleton>
+                    </div>
+
+                    <div *ngIf="!isLoadingReview"
+                        style="background-color: rgba(157, 204, 255, 0.15); padding: 1rem; border-radius: 15px;">
                         <div style="display: flex; margin-bottom: 1rem;">
                             <div class="rating-course">
                                 <span style="font-size: 16px;">Đánh giá</span>
-                                <span style="font-size: 20px;">4/5</span>
-                                <nz-rate [ngModel]="4" nzDisabled></nz-rate>
+                                <span *ngIf="this.average > 0" style="font-size: 20px;">{{ average.toFixed(2)
+                                    }}/5</span>
+                                <span *ngIf="!this.average" style="font-size: 16px;">Chưa có đánh giá nào!</span>
+                                <nz-rate *ngIf="this.ratings" [ngModel]="average" nzDisabled></nz-rate>
                             </div>
                             <div style="width: 60%;">
-                                <div *ngFor="let item of ratings" class="star-item">
-                                    <span>{{item.type}}</span>
-                                    <nz-progress nzSize="small" style="width: 80%;" [nzStrokeColor]="'#002766'"
-                                        [nzPercent]="item.percent">
+                                <div class="star-item">
+                                    <span>5 sao</span>
+                                    <nz-progress [nzFormat]="formatProgress" nzSize="small" style="width: 80%;"
+                                        [nzStrokeColor]="'#002766'" [nzPercent]="percent5Star">
+                                    </nz-progress>
+                                </div>
+                                <div class="star-item">
+                                    <span>4 sao</span>
+                                    <nz-progress [nzFormat]="formatProgress" nzSize="small" style="width: 80%;"
+                                        [nzStrokeColor]="'#002766'" [nzPercent]="percent4Star">
+                                    </nz-progress>
+                                </div>
+                                <div class="star-item">
+                                    <span>3 sao</span>
+                                    <nz-progress [nzFormat]="formatProgress" nzSize="small" style="width: 80%;"
+                                        [nzStrokeColor]="'#002766'" [nzPercent]="percent3Star">
+                                    </nz-progress>
+                                </div>
+                                <div class="star-item">
+                                    <span>2 sao</span>
+                                    <nz-progress [nzFormat]="formatProgress" nzSize="small" style="width: 80%;"
+                                        [nzStrokeColor]="'#002766'" [nzPercent]="percent2Star">
+                                    </nz-progress>
+                                </div>
+                                <div class="star-item">
+                                    <span>1 sao</span>
+                                    <nz-progress [nzFormat]="formatProgress" nzSize="small" style="width: 80%;"
+                                        [nzStrokeColor]="'#002766'" [nzPercent]="percent1Star">
                                     </nz-progress>
                                 </div>
                             </div>
                         </div>
 
-                        <nz-comment style="background-color: rgba(157, 204, 255, 0);" *ngFor="let item of comments" nzAuthor="{{ item.author }}" [nzDatetime]="item.time">
-                            <nz-avatar nz-comment-avatar nzIcon="user"
-                                nzSrc="https://png.pngtree.com/png-clipart/20220111/original/pngtree-cute-little-girl-avatar-png-image_7085472.png"></nz-avatar>
+                        <div *ngIf="ratings">
+                            <nz-comment style="background-color: rgba(157, 204, 255, 0);" *ngFor="let item of ratings"
+                                [nzAuthor]="item.USER_INFO.USERNAME" [nzDatetime]="formatDate(item.CREATED_DATE)">
+                                <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.USER_INFO.AVATAR">
+                                </nz-avatar>
+                                <nz-comment-content>
+                                    <p>
+                                        {{ item.CONTENT }}
+                                    </p>
+                                </nz-comment-content>
+                                <nz-comment-action>
+                                    <span nz-tooltip nzTitle="Like" nz-icon nzType="like"
+                                        [nzTheme]="checkLike(item) ? 'twotone' : 'outline'" (click)="like(item)">
+                                    </span>
+                                    <span class="count like">{{ item.LIKE }}</span>
+                                </nz-comment-action>
+                                <nz-comment-action>
+                                    <span nz-tooltip nzTitle="Dislike" nz-icon nzType="dislike"
+                                        [nzTheme]="checkDislike(item) ? 'twotone' : 'outline'" (click)="dislike(item)">
+                                    </span>
+                                    <span class="count dislike">{{ item.DISLIKE }}</span>
+                                </nz-comment-action>
+                                <nz-comment-action *ngIf="item.ID_USER == idUser">
+                                    <i (click)="openModal(item)" class="fas fa-trash-can"></i>
+                                </nz-comment-action>
+                            </nz-comment>
+                        </div>
+
+                        <nz-comment style="background-color: rgba(1, 1, 1, 0);">
+                            <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="userAvatar"></nz-avatar>
                             <nz-comment-content>
-                                <p>
-                                    {{ item.content }}
-                                </p>
+                                <nz-form-item style="border-radius: 15px;">
+                                    <textarea [(ngModel)]="userComment" nz-input rows="4"></textarea>
+                                </nz-form-item>
+                                <nz-form-item>
+                                    <button nz-button nzType="primary" [nzLoading]="submitting"
+                                        [disabled]="!userComment" (click)="handleSubmit()">
+                                        Thêm bình luận
+                                    </button>
+                                </nz-form-item>
                             </nz-comment-content>
-                            <nz-comment-action>
-                                <span nz-tooltip nzTitle="Like" nz-icon nzType="like"
-                                    [nzTheme]="item.like > 0 ? 'twotone' : 'outline'" (click)="like()"></span>
-                                <span class="count like">{{ item.like }}</span>
-                            </nz-comment-action>
-                            <nz-comment-action>
-                                <span nz-tooltip nzTitle="Dislike" nz-icon nzType="dislike"
-                                    [nzTheme]="item.dislike > 0 ? 'twotone' : 'outline'" (click)="dislike()"></span>
-                                <span class="count dislike">{{ item.dislike }}</span>
-                            </nz-comment-action>
                         </nz-comment>
                     </div>
                 </nz-tab>
@@ -158,11 +223,9 @@
                     </ng-template>
 
                     <div style="width: 100%;">
-                        <app-file-info *ngFor="let item of files" [fileType]="item.fileType"
-                        [isDownloaded]="item.isDownloaded"
-                        [fileName]="item.fileName"
-                        [fileSize]="item.fileSize"
-                        [isDownloading]="item.isDownloading">
+                        <app-file-info *ngFor="let item of files" [fileType]="item.TYPE_DOCUMENT" [isDownloaded]="false"
+                            [link]="item.DOCUMENT_LINK" [fileName]="item.DOCUMENT_NAME" [fileSize]="item.SIZE + ' MB'"
+                            [isDownloading]="false">
                         </app-file-info>
                     </div>
                 </nz-tab>
@@ -179,14 +242,14 @@
 
             <div style="display: flex;">
                 <div style="margin-right: 1rem;">
-                    <nz-avatar [nzSize]="50"
-                        nzSrc="https://img.freepik.com/free-photo/asian-woman-teacher-with-notebooks-smiling-looking-confident-isolated-white-background_1258-166523.jpg"></nz-avatar>
+                    <nz-avatar [nzSize]="50" [nzSrc]="courseDetail.TEACHER_INFO.AVATAR"></nz-avatar>
                 </div>
                 <div style="width: 100%;">
                     <div style="display: flex; justify-content: space-between; 
                 align-items: center; margin-bottom: 0.2rem;
                 width: 100%; float: right;">
-                        <h6 style="color: #252641; font-size: 15px; margin-bottom: 0rem;">Ngô Thị Lan</h6>
+                        <h6 style="color: #252641; font-size: 15px; margin-bottom: 0rem;">{{
+                            courseDetail.TEACHER_INFO.USERNAME }}</h6>
                         <div>
                             <a style="color: #3649F9 !important;" href="">Xem thêm <i
                                     class="fas fa-angles-right"></i></a>
@@ -195,7 +258,7 @@
                     <div>
                         <p style="font-size: 14px; font-weight: 200; color: #7A7E86; 
                         font-family: ReadexPro-light; margin-bottom: 0.5rem">
-                            Giáo viên toán Trường THPT Nguyễn Trường Tộ</p>
+                            {{courseDetail.TEACHER_INFO.SCHOOL_INFO.SCHOOL_NAME}}</p>
                     </div>
                 </div>
             </div>
@@ -205,16 +268,13 @@
                     <i style="font-size: 16px;" class="fa-brands fa-facebook"></i>
                 </div>
                 <div style="background-color: #FF0000;" class="item-social">
-                    <i style="font-size: 16px;" class="fa-brands fa-youtube"></i>
+                    <a [href]="courseDetail.TEACHER_INFO.FACEBOOK"><i style="font-size: 16px; color: #fff"
+                            class="fa-brands fa-youtube"></i></a>
                 </div>
                 <div class="item-social">
-                    <i style="font-size: 16px;" class="fa-brands fa-instagram"></i>
-                </div>
-                <div class="item-social">
-                    <i style="font-size: 16px;" class="fa-brands fa-linkedin"></i>
-                </div>
-                <div class="item-social">
-                    <i style="font-size: 16px;" class="fa-brands fa-whatsapp"></i>
+                    <a [href]="courseDetail.TEACHER_INFO.INSTAGRAM">
+                        <i style="font-size: 16px; color: #fff" class="fa-brands fa-instagram"></i>
+                    </a>
                 </div>
             </div>
 
@@ -223,14 +283,7 @@
                     <li>
                         <p style="font-size: 14px; font-weight: 200; color: #7A7E86; 
                         font-family: ReadexPro-light; margin-bottom: 0.2rem">
-                            Với hơn 20 năm kinh nghiệm giảng dạy môn Toán, cô là một nhà giáo yêu nghề, gắn bó sâu sắc
-                            với học sinh.</p>
-                    </li>
-                    <li>
-                        <p style="font-size: 14px; font-weight: 200; color: #7A7E86; 
-                        font-family: ReadexPro-light; margin-bottom: 0.2rem">
-                            Với hơn 20 năm kinh nghiệm giảng dạy môn Toán, cô là một nhà giáo yêu nghề, gắn bó sâu sắc
-                            với học sinh.</p>
+                            {{courseDetail.TEACHER_INFO.DESCRIPTION}}</p>
                     </li>
                 </ul>
             </div>
@@ -246,7 +299,7 @@
             <nz-collapse [nzExpandIconPosition]="'right'" nzGhost style="margin-top: 1rem; border-radius: 1rem;">
                 <nz-collapse-panel *ngFor="let panel of panels" style="border-radius: 1rem; 
                     border: 2px solid #002766; padding: 0 0; margin-bottom: 0.5rem;" #p [nzHeader]="panelHeader"
-                    [nzActive]="panel.active" [ngStyle]="panel.customStyle"
+                    [nzActive]="false" [ngStyle]="panel.customStyle"
                     [nzExpandedIcon]="!$first ? panel.icon || expandedIcon : undefined">
 
                     <ng-template #panelHeader>
@@ -254,7 +307,7 @@
                             <p style="font-size: 17px; margin-bottom: 0.2rem;">{{ panel.name }}</p>
                             <div style="display: flex; justify-content: space-between;">
                                 <p style="font-size: 14px; margin-bottom: 0; padding-left: 1.5rem;"><i
-                                        class="fa-regular fa-clock"></i> {{ panel.time }}</p>
+                                        class="fa-regular fa-clock"></i> {{ panel.time + ' phút' }}</p>
                                 <p style="font-size: 14px; margin-bottom: 0;"><i class="fa-solid fa-book"></i>
                                     {{panel.lesson.length}} bài học</p>
                             </div>
@@ -262,12 +315,9 @@
                     </ng-template>
 
                     <!-- Content -->
-                    <div class="content-lesson" 
-                    *ngFor="let item of panel.lesson; let i=index"
-                    [routerLink]="['/courses/learning', item.name]"
-                    >
-                        <p style="margin-bottom:0; font-size: 15px;">{{i+1}}. {{ item.name }}</p>
-                        <p style="margin-bottom:0; font-size: 14px;">{{ item.time }}</p>
+                    <div class="content-lesson" *ngFor="let item of panel.lesson; let i=index" (click)="learning(item)">
+                        <p style="margin-bottom:0; font-size: 15px; padding-right: 0.3rem">{{i+1}}. {{ item.name }}</p>
+                        <p style="margin-bottom:0; font-size: 14px; white-space: nowrap;">{{ item.time + ' phút'}}</p>
                     </div>
 
                     <ng-template #expandedIcon let-active>
@@ -280,3 +330,16 @@
         </nz-card>
     </div>
 </div>
+
+<input style="display: none;" type="file" class="file-input" (change)="onFileChange($event)" #file>
+
+<!-- <button nz-button class="file-input" (click)="file.click()" style="margin-left: 1rem;">
+    <span nz-icon nzType="upload"></span>
+    Click to Upload File
+</button>
+
+<a target="_blank"
+    href="https://res.cloudinary.com/djiv03sxd/image/upload/v1717519493/file/ootd5qumpnfzjsmsvrt8.pdf" download>
+    <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+    section_name
+</a> -->
