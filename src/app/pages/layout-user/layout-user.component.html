@@ -37,18 +37,7 @@
     <nz-header>
 
       <div class="app-header">
-        <div style="margin-left: 1.5rem;">
-          <nz-input-group style="border-radius: 16px; width: 600px;" [nzSuffix]="suffixIconSearch">
-            <input type="text" nz-input placeholder="Tìm kiếm" />
-          </nz-input-group>
-
-          <ng-template #suffixIconSearch>
-            <span nz-icon nzType="search"></span>
-          </ng-template>
-        </div>
-
         <div class="header-user">
-
           <div style="margin-right: 1.5rem;">
             <nz-badge [nzCount]="5" nz-dropdown [nzDropdownMenu]="noti" [nzPlacement]="'bottomRight'">
               <span nz-icon><i style="font-size: 20px;" class="fa-regular fa-bell"></i></span>
@@ -138,7 +127,7 @@
       </div>
     </nz-content>
 
-    <nz-footer style="text-align: center; padding: 5rem 0 0 0; margin-top: -8px; line-height: 20px;">
+    <nz-footer *ngIf="url != '/chat'" style="text-align: center; padding: 5rem 0 0 0; margin-top: -8px; line-height: 20px;">
       <nz-divider></nz-divider>
       <app-footer></app-footer>
     </nz-footer>

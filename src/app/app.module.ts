@@ -27,6 +27,8 @@ import { authInterceptorProviders } from './_guards/authInterceptor';
 import { HammerModule } from '@angular/platform-browser';
 import { GlobalService } from './global.service';
 import { myRxStompConfig } from './configs/my-rx-stomp.config';
+import { RxStompService } from './service/chat-service/rx-stomp.service';
+import { rxStompServiceFactory } from './configs/rx-stomp-service-factory';
 
 registerLocaleData(vi);
 
@@ -53,7 +55,7 @@ registerLocaleData(vi);
   providers: [
     { provide: NZ_I18N, useValue: vi_VN },
     AuthGuard,
-    // , authInterceptorProviders
+    authInterceptorProviders,
     GlobalService,
   ],
   bootstrap: [AppComponent],

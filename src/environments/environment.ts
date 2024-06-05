@@ -8,7 +8,7 @@ export const environment = {
     BASE_LETTER_OF_CREDIT_API: 'http://localhost:8899/letterofcredits',
     BASE_INVOICE_API: 'http://localhost:8899/invoices',
     BASE_SERVICE_API: 'http://localhost:8899',
-    BASE_SERVICE_TEST_API: 'http://localhost:8899',
+    BASE_SERVICE_ONTHI_API: 'http://localhost:8899/service-onthi/api',
   }, 
   production: true,
 };

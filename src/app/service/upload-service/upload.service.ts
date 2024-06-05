@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -7,18 +7,29 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class UploadService {
+
   constructor(private http: HttpClient) {}
 
-  upload(body: any): Observable<any> {
-    return this.http.post(
-      environment.BASE_API_URI.BASE_SERVICE_TEST_API + `/files/upload`,
-      body
-    );
-  }
+  // upload(formData: FormData): Observable<HttpEvent<string[]>> {
+  //   return this.http.post<string[]>(`${this.server}/file/upload`, formData, {
+  //     reportProgress: true,
+  //     observe: 'events'
+  //   });
+  // }
 
-  ocr_document(body: any): Observable<any> {
-    // return this.http.post('http://34.142.236.121:8089/ocr_document', body);
-    // return this.http.post('http://localhost:8000/ocr_document', body);
-    return this.http.post('https://ocr-v1.onrender.com/ocr_document', body);
+  // // define function to download files
+  // download(filename: string): Observable<HttpEvent<Blob>> {
+  //   return this.http.get(`${this.server}/file/download/${filename}/`, {
+  //     reportProgress: true,
+  //     observe: 'events',
+  //     responseType: 'blob'
+  //   });
+  // }
+
+  public upload(image: any): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', image);
+    return this.http.post<any>(environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + '/upload/image', 
+    formData);
   }
 }

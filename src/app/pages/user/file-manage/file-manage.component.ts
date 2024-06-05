@@ -175,7 +175,7 @@ export class FileManageComponent {
   ];
 
   name = 'Angular';
-  pdfSrc = 'http://www.pdf995.com/samples/pdf.pdf';
+  pdfSrc = 'https://res.cloudinary.com/djiv03sxd/image/upload/v1717519493/file/ootd5qumpnfzjsmsvrt8.pdf';
 
   contentLoaded() {
     console.log('File loaded');

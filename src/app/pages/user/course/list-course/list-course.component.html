@@ -1,3 +1,17 @@
+<ng-template #template>
+  <div class="ant-notification-notice-content" style="border-radius: 15px;">
+    <div class="ant-notification-notice-with-icon">
+      <span class="ant-notification-notice-icon">
+        <i class="fa-regular fa-face-sad-cry"></i>
+      </span>
+      <div class="ant-notification-notice-message" style="color: #389e0d !important;"></div>
+      <div class="ant-notification-notice-description">
+        {{ messageNotification }}
+      </div>
+    </div>
+  </div>
+</ng-template>
+
 <h6 style="color: #7D7D7D; font-size: 18px; font-weight: 600;">Khóa học của tôi</h6>
 
 <div class="container-fluid" style="padding-left: 0;">
@@ -64,143 +78,122 @@
       </div>
     </div>
     <div class="button-area">
-      <!-- <button type="button" class="prev" appPrev><i class="fas fa-chevron-left"></i></button> -->
       <button type="button" class="next" appNext><i class="fas fa-chevron-right"></i></button>
     </div>
   </div>
 </div>
 
-<h6 style="color: #7D7D7D; font-size: 18px; font-weight: 600; margin-bottom: 1rem;">Các khóa học của chúng mình</h6>
-
+<h6 style="color: #7D7D7D; font-size: 18px; font-weight: 600; margin-bottom: 0.5rem;">Các khóa học của chúng mình</h6>
 
 <!-- Các khóa học của chúng mình -->
-<ul nz-menu nzMode="horizontal" style="background-color: none !important; margin-bottom: 1rem;">
-  <li nz-menu-item>
+<ul nz-menu nzMode="horizontal"
+  style="background-color: none !important; margin-bottom: 0.5rem;  justify-content: center; display: flex;">
+  <li nz-menu-item (click)="selectMenuItem('Tất cả')" [nzSelected]="selectedMenuItem == 'Tất cả'">
     Tất cả
   </li>
-  <li nz-submenu nzPlacement="bottomCenter" nzTitle="Khóa cơ bản" nzIcon="down">
-    <ul style="display: flex;">
-      <li nz-menu-group nzTitle="Lớp 9">
-        <nz-checkbox-wrapper style="width: 100%;" (nzOnChange)="log($event)">
-        <div style="display: flex;">
-          <ul>
-            <li style="display: flex;" nz-menu-item nz-checkbox nzValue="Toán học">Toán học</li>
-            <li style="display: flex;"  nz-menu-item nz-checkbox nzValue="Hóa học">Hóa học</li>
-            <li style="display: flex;"  nz-menu-item nz-checkbox nzValue="Vật lý">Vật lý</li>
-            <li style="display: flex;"  nz-menu-item nz-checkbox nzValue="Sinh học">Sinh học</li>
-          </ul>
-          <ul>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Ngữ văn" style="display: flex;" >Ngữ văn</li>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Địa lý" style="display: flex;" >Địa lý</li>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Lịch sử" style="display: flex;" >Lịch sử</li>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Giáo dục công dân" style="display: flex;" >Giáo dục công dân</li>
-          </ul>
-          <ul>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Anh" style="display: flex;" >Tiếng Anh</li>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Nhật" style="display: flex;" >Tiếng Nhật</li>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Trung" style="display: flex;" >Tiếng Trung</li>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Pháp" style="display: flex;" >Tiếng Pháp</li>
-          </ul>
-        </div>
-      </nz-checkbox-wrapper>
-      </li>
-    </ul>
+  <li nz-menu-item (click)="selectMenuItem('Khóa cơ bản')">
+    Khóa cơ bản
   </li>
-  <li nz-submenu nzPlacement="bottomCenter" nzTitle="Khóa nâng cao" nzIcon="down">
-    <ul style="display: flex;">
-      <li nz-menu-group nzTitle="Lớp 9">
-        <nz-checkbox-wrapper style="width: 100%;" (nzOnChange)="log($event)">
-        <div style="display: flex;">
-          <ul>
-            <li style="display: flex;" nz-menu-item nz-checkbox nzValue="Toán học">Toán học</li>
-            <li style="display: flex;"  nz-menu-item nz-checkbox nzValue="Hóa học">Hóa học</li>
-            <li style="display: flex;"  nz-menu-item nz-checkbox nzValue="Vật lý">Vật lý</li>
-            <li style="display: flex;"  nz-menu-item nz-checkbox nzValue="Sinh học">Sinh học</li>
-          </ul>
-          <ul>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Ngữ văn" style="display: flex;" >Ngữ văn</li>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Địa lý" style="display: flex;" >Địa lý</li>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Lịch sử" style="display: flex;" >Lịch sử</li>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Giáo dục công dân" style="display: flex;" >Giáo dục công dân</li>
-          </ul>
-          <ul>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Anh" style="display: flex;" >Tiếng Anh</li>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Nhật" style="display: flex;" >Tiếng Nhật</li>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Trung" style="display: flex;" >Tiếng Trung</li>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Pháp" style="display: flex;" >Tiếng Pháp</li>
-          </ul>
-        </div>
-      </nz-checkbox-wrapper>
-      </li>
-    </ul>
+  <li nz-menu-item (click)="selectMenuItem('Khóa nâng cao')">
+    Khóa nâng cao
   </li>
-  <li nz-submenu nzPlacement="bottomCenter" nzTitle="Luyện đề theo tỉnh thành" nzIcon="down">
-    <ul style="display: flex;">
-      <li nz-menu-group nzTitle="Lớp 9">
-        <nz-checkbox-wrapper style="width: 100%;" (nzOnChange)="log($event)">
-        <div style="display: flex;">
-          <ul>
-            <li style="display: flex;" nz-menu-item nz-checkbox nzValue="Toán học">Toán học</li>
-            <li style="display: flex;"  nz-menu-item nz-checkbox nzValue="Hóa học">Hóa học</li>
-            <li style="display: flex;"  nz-menu-item nz-checkbox nzValue="Vật lý">Vật lý</li>
-            <li style="display: flex;"  nz-menu-item nz-checkbox nzValue="Sinh học">Sinh học</li>
-          </ul>
-          <ul>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Ngữ văn" style="display: flex;" >Ngữ văn</li>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Địa lý" style="display: flex;" >Địa lý</li>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Lịch sử" style="display: flex;" >Lịch sử</li>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Giáo dục công dân" style="display: flex;" >Giáo dục công dân</li>
-          </ul>
-          <ul>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Anh" style="display: flex;" >Tiếng Anh</li>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Nhật" style="display: flex;" >Tiếng Nhật</li>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Trung" style="display: flex;" >Tiếng Trung</li>
-            <li nz-menu-item nz-menu-item nz-checkbox nzValue="Tiếng Pháp" style="display: flex;" >Tiếng Pháp</li>
-          </ul>
-        </div>
-      </nz-checkbox-wrapper>
-      </li>
-    </ul>
+  <li nz-menu-item (click)="selectMenuItem('Luyện đề theo tỉnh thành')">
+    Luyện đề theo tỉnh thành
   </li>
-
 </ul>
 
+<div style="margin-left: 2rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-end;
+  justify-content: center;">
+  <div class="search-group">
+    <div style="margin-left: 1.5rem; width: 400px;">
+      <label>Tìm kiếm theo tên khóa học hoặc giáo viên: </label>
+      <nz-input-group style="border-radius: 16px; width: 400px;" [nzSuffix]="suffixIconSearch">
+        <input type="text" [(ngModel)]="courseName" nz-input placeholder="Nhập tên khóa học" style="margin-right: 1rem;" />
+        <input type="text" [(ngModel)]="teacherName" nz-input placeholder="Nhập tên giáo viên" />
+      </nz-input-group>
+      {{courseName}}
 
-<div style="display: flex; flex-wrap: wrap; flex-direction: row;">
-  <nz-card *ngFor="let item of listCourse" [routerLink]="['/courses', item.id]"
-    style="width:300px; border-radius: 8px; margin-right: 1rem; margin-bottom: 1rem; cursor: pointer;">
-    <img style="border-radius: 16px;" width="100%"
-      src="https://img.freepik.com/premium-photo/student-girl-laughs-smiles-looking-away-isolated-blue-background-copy-space-web-banner_101969-2491.jpg"
-      alt="" />
+      <ng-template #suffixIconSearch>
+        <span nz-icon nzType="search"></span>
+      </ng-template>
+    </div>
+    <div style="margin-top: 1rem;">
+      <button (click)="resetValueSelected()" nz-button nzType="dashed" nzShape="circle"
+        style="padding: 0.3rem 0.8rem 0.3rem 0.8rem; border: none; margin-right: 1rem;">
+        <span nz-icon>
+          <i class="fas fa-trash"></i>
+        </span>
+        Đặt lại
+      </button>
+
+      <button [nzLoading]="isLoading" (click)="searchCourse()" nz-button nzType="primary"
+        style="background-color: #110D59; padding: 0.3rem 0.8rem 0.3rem 0.8rem; border: none;" nzShape="circle">
+        <span nz-icon nzType="search"></span>
+        Tìm kiếm
+      </button>
+    </div>
+  </div>
+  <nz-checkbox-wrapper style="width: 60%;" (nzOnChange)="onChangeSelectedSubject($event)">
+    <div nz-row>
+      <div *ngFor="let item of checkOptions" nz-col nzSpan="6" style="margin-bottom: 0.5rem;">
+        <label nz-checkbox [nzValue]="item.value" [(ngModel)]="item.checked">
+          {{ item.label }}
+        </label>
+      </div>
+    </div>
+  </nz-checkbox-wrapper>
+</div>
+
+<div *ngIf="!isLoading" style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: flex-start;">
+  <nz-card *ngFor="let item of listCourse" (click)="getCourseDetail(item.ID_COURSE)"
+    style="max-width:305px; border-radius: 8px; margin-right: 1rem; margin-bottom: 1rem; cursor: pointer;">
+    <img style="border-radius: 16px;" width="100%" [src]="item.AVATAR_COURSE" alt="" />
     <div style="margin: 0.5rem 0; display: flex; align-items: center; justify-content: space-between">
       <div>
-        <nz-tag *ngFor="let tag of item.tags" style="border-radius: 16px;" [nzColor]="tag.colorTag">
-          {{ tag.nameTag }}
+        <nz-tag style="border-radius: 16px;" [nzColor]="getCategoryNameColor(item.CATEGORY_NAME)">
+          {{ item.CATEGORY_NAME }}
+        </nz-tag>
+        <nz-tag style="border-radius: 16px;" [nzColor]="getCourseTypeColor(item.TYPE_COURSE)">
+          {{ getCourseType(item.TYPE_COURSE) }}
         </nz-tag>
       </div>
       <div>
         <i style="color: #D9D9D9;" class="fas fa-clock"></i>
-        <span style="margin-left: 0.3rem; color: #696984;">{{ item.time }}</span>
+        <span style="margin-left: 0.3rem; color: #696984; font-size: 0.7rem">Khoảng {{
+          calculateMonthsDifference(item.START_DATE, item.END_DATE) }} tháng</span>
       </div>
     </div>
 
     <div style="margin: 0.5rem 0 1rem 0;">
-      <h6 style="font-size: 1.1rem;">{{ item.title }}</h6>
-      <p style="color: #696984; margin: 0; padding: 0;"><strong>{{ item.lessons }}</strong> Bài giảng</p>
-      <p style="color: #696984; margin: 0; padding: 0;"><strong>{{ item.quizs }}</strong> Câu hỏi ôn tập</p>
+      <h6 style="font-size: 1rem; min-height: 2.5rem;">{{ item.COURSE_NAME }}</h6>
+      <p style="color: #696984; margin: 0; padding: 0;"><strong>{{ item.LESSON_QUANTITY }}</strong> Bài giảng</p>
+      <p style="color: #696984; margin: 0; padding: 0;"><strong>{{ item.QUIZ_QUANTITY }}</strong> Câu hỏi ôn tập</p>
     </div>
 
     <div style="display: flex; align-items: center; justify-content: space-between">
       <div>
-        <nz-avatar nzSrc="https://hikosen-cara.vn/wp-content/uploads/2022/03/4-2-400x400.jpg"></nz-avatar>
-        <span style="margin-left: 0.3rem;">{{ item.teacher }}</span>
+        <nz-avatar [nzSrc]="item.TEACHER_INFO.AVATAR"></nz-avatar>
+        <span style="margin-left: 0.3rem;">{{ item.TEACHER_INFO.USERNAME }}</span>
       </div>
       <div style="display: flex; align-items: center; justify-content: space-between">
-        <p style="color: #808080; margin: 0; padding: 0; font-size: 1rem;"><em><s>{{ item.price }}K</s></em></p>
-        <p style="color: #49BBBD; margin: 0; padding: 0; font-size: 1.2rem; margin-left: 0.5rem;"><strong>{{
-            item.discount }}K</strong></p>
+        <p style="color: #808080; margin: 0; padding: 0; font-size: 1rem;"><em><s>{{ item.PRICE }}K</s></em></p>
+        <p style="color: #49BBBD; margin: 0; padding: 0; font-size: 1.2rem; margin-left: 0.5rem;"><strong>
+            {{ item.DISCOUNT }}K</strong></p>
       </div>
     </div>
-
   </nz-card>
+</div>
+
+<nz-skeleton *ngIf="isLoading"></nz-skeleton>
+
+<app-no-result *ngIf="listCourse.length < 1 && !isLoading"></app-no-result>
+
+<div style="display: flex; justify-content: center; margin-top: 0.6rem;">
+  <nz-pagination [nzPageIndex]="currentPage" [nzTotal]="totalCourses" [nzPageSize]="8"
+    (nzPageIndexChange)="onPageChange($event)">
+  </nz-pagination>
 </div>

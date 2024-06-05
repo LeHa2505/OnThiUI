@@ -1,33 +1,44 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { CourseFilterModel } from 'src/app/models/CourseFilterModel.model';
+import { CourseService } from 'src/app/service/course-service/course.service';
+import { colorsArray } from 'src/constants';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-course',
   templateUrl: './list-course.component.html',
   styleUrls: ['./list-course.component.less'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ListCourseComponent implements OnInit {
-  
   listCourse: any[] = [];
-  listClass: any[]  = [];
-  checkOptionsOne = [
-    { label: 'Toán học', value: 'Toán học', checked: true },
-    { label: 'Ngữ Văn', value: 'Ngữ Văn' },
-    { label: 'Tiếng Anh', value: 'Tiếng Anh' },
-    { label: 'Hóa học', value: 'Hóa học' },
-    { label: 'Vật lý', value: 'Vật lý' },
-    { label: 'Sinh học', value: 'Sinh học' },
-    { label: 'Tiếng Anh', value: 'Tiếng Anh' },
-    { label: 'Tiếng Nhật', value: 'Tiếng Nhật' },
-    { label: 'Tiếng Trung', value: 'Tiếng Trung' },
-    { label: 'Tiếng Pháp', value: 'Tiếng Pháp' },
-    { label: 'Giáo dục công dân', value: 'Giáo dục công dân' },
-  ];
+  listClass: any[] = [];
+  checkOptions: any[] = [];
+  selectedSubject: object[];
+  selectedMenuItem: string;
+  courseFilter: CourseFilterModel = new CourseFilterModel();
+  colorsArray = colorsArray;
+  totalCourses: number;
+  currentPage: number = 1;
+  allCourses: any[] = [];
+  courseName: string;
+  teacherName: string;
+  isLoading = false;
+  messageNotification: string;
 
-  constructor() {}
+  @ViewChild('template', { static: true }) template!: TemplateRef<any>;
+
+  constructor(
+    private courseService: CourseService,
+    private notification: NzNotificationService,
+    public router: Router
+  ) {}
 
   ngOnInit(): void {
     this.initListCourse();
     this.initListClass();
+    this.initCheckOptions();
   }
 
   initListClass() {
@@ -89,131 +100,204 @@ export class ListCourseComponent implements OnInit {
   }
 
   initListCourse() {
-    this.listCourse = [
+    this.selectedMenuItem = 'Tất cả';
+    this.courseFilter.LIST_CATEGORY_NAME = [];
+    this.courseFilter.COURSE_NAME = '';
+    this.courseFilter.TYPE_COURSE = null;
+    this.courseFilter.USERNAME = '';
+
+    this.searchApi();
+  }
+
+  initCheckOptions() {
+    this.checkOptions = [
+      { label: 'Toán học', value: 'toán học', checked: false },
+      { label: 'Ngữ Văn', value: 'ngữ văn', checked: false },
+      { label: 'Hóa học', value: 'hóa học', checked: false },
+      { label: 'Vật lý', value: 'vật lý', checked: false },
+      { label: 'Sinh học', value: 'sinh học', checked: false },
+      { label: 'Địa lý', value: 'địa lý', checked: false },
+      { label: 'Lịch sử', value: 'lịch sử', checked: false },
+      { label: 'Tiếng Anh', value: 'tiếng anh', checked: false },
+      { label: 'Tiếng Nhật', value: 'tiếng nhật', checked: false },
+      { label: 'Tiếng Trung', value: 'tiếng trung', checked: false },
+      { label: 'Tiếng Pháp', value: 'tiếng pháp', checked: false },
       {
-        id: 'abc',
-        title: 'Tổng ôn kiến thức Toán 9 các dạng Nâng cao',
-        time: '3 tháng',
-        teacher: 'Cô Lan',
-        tags: [
-          {
-            nameTag: 'Toán',
-            colorTag: 'blue' 
-          },
-          {
-            nameTag: 'Nâng cao',
-            colorTag: 'magenta' 
-          }
-        ],
-        lessons: 80,
-        quizs: 200,
-        price: 599,
-        discount: 499,
+        label: 'Giáo dục công dân',
+        value: 'giáo dục công dân',
+        checked: false,
       },
-      {
-        id: 'abc',
-        title: 'Tổng ôn kiến thức Toán 9 các dạng Nâng cao',
-        time: '3 tháng',
-        teacher: 'Cô Lan',
-        tags: [
-          {
-            nameTag: 'Toán',
-            colorTag: 'blue' 
-          },
-          {
-            nameTag: 'Nâng cao',
-            colorTag: 'magenta' 
-          }
-        ],
-        lessons: 80,
-        quizs: 200,
-        price: 599,
-        discount: 499,
-      },
-      {
-        id: 'abc',
-        title: 'Tổng ôn kiến thức Toán 9 các dạng Nâng cao',
-        time: '3 tháng',
-        teacher: 'Cô Lan',
-        tags: [
-          {
-            nameTag: 'Toán',
-            colorTag: 'blue' 
-          },
-          {
-            nameTag: 'Nâng cao',
-            colorTag: 'magenta' 
-          }
-        ],
-        lessons: 80,
-        quizs: 200,
-        price: 599,
-        discount: 499,
-      },
-      {
-        id: 'abc',
-        title: 'Tổng ôn kiến thức Toán 9 các dạng Nâng cao',
-        time: '3 tháng',
-        teacher: 'Cô Lan',
-        tags: [
-          {
-            nameTag: 'Toán',
-            colorTag: 'blue' 
-          },
-          {
-            nameTag: 'Nâng cao',
-            colorTag: 'magenta' 
-          }
-        ],
-        lessons: 80,
-        quizs: 200,
-        price: 599,
-        discount: 499,
-      },
-      {
-        id: 'abc',
-        title: 'Tổng ôn kiến thức Toán 9 các dạng Nâng cao',
-        time: '3 tháng',
-        teacher: 'Cô Lan',
-        tags: [
-          {
-            nameTag: 'Toán',
-            colorTag: 'blue' 
-          },
-          {
-            nameTag: 'Nâng cao',
-            colorTag: 'magenta' 
-          }
-        ],
-        lessons: 80,
-        quizs: 200,
-        price: 599,
-        discount: 499,
-      },
-      {
-        id: 'abc',
-        title: 'Tổng ôn kiến thức Toán 9 các dạng Nâng cao',
-        time: '3 tháng',
-        teacher: 'Cô Lan',
-        tags: [
-          {
-            nameTag: 'Toán',
-            colorTag: 'blue' 
-          },
-          {
-            nameTag: 'Nâng cao',
-            colorTag: 'magenta' 
-          }
-        ],
-        lessons: 80,
-        quizs: 200,
-        price: 599,
-        discount: 499,
-      }
     ];
   }
 
-  log(value: string[]): void {
+  updatePaginatedCourses(pageIndex: number, pageSize: number = 12) {
+    const startIndex = (pageIndex - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    this.listCourse = this.allCourses.slice(startIndex, endIndex);
+  }
+
+  onPageChange(pageIndex: number) {
+    this.currentPage = pageIndex;
+    this.updatePaginatedCourses(pageIndex);
+  }
+
+  getCourseType(type: number): string {
+    switch (type) {
+      case 0:
+        return 'Cơ bản';
+      case 1:
+        return 'Nâng cao';
+      case 2:
+        return 'Luyện đề';
+      default:
+        return 'Unknown';
+    }
+  }
+
+  getCourseTypeColor(type: number): string {
+    switch (type) {
+      case 0:
+        return 'green';
+      case 1:
+        return 'magenta';
+      case 2:
+        return 'blue';
+      default:
+        return 'cyan';
+    }
+  }
+
+  typeCourseToCode(type: string): number {
+    switch (type) {
+      case 'Khóa cơ bản':
+        return 0;
+      case 'Khóa nâng cao':
+        return 1;
+      case 'Luyện đề theo tỉnh thành':
+        return 2;
+      default:
+        return null;
+    }
+  }
+
+  getCategoryNameColor(type: string): string {
+    const categoryName = type.toLowerCase();
+    switch (categoryName) {
+      case 'toán':
+        return 'red';
+      case 'ngữ văn':
+        return 'geekblue';
+      case 'hóa học':
+        return 'orange';
+      case 'vật lý':
+        return 'gold';
+      case 'sinh học':
+        return 'volcano';
+      case 'địa lý':
+        return 'lime';
+      case 'lịch sử':
+        return 'purple';
+      case 'tiếng pháp':
+        return 'volcano';
+      case 'tiếng trung':
+        return 'gold';
+      case 'tiếng nhật':
+        return 'geekblue';
+      case 'tiếng anh':
+        return 'lime';
+      case 'gdcd':
+        return 'purple';
+      default:
+        return '#A4DDDE';
+    }
+  }
+
+  getRandomColor(): string {
+    const randomIndex = Math.floor(Math.random() * this.colorsArray.length);
+    return this.colorsArray[randomIndex];
+  }
+
+  selectMenuItem(item: string): void {
+    this.selectedMenuItem = item;
+  }
+
+  calculateMonthsDifference(startDate: Date, endDate: Date): number {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    const yearDiff = end.getFullYear() - start.getFullYear();
+    const monthDiff = end.getMonth() - start.getMonth();
+    const dayDiff = end.getDate() - start.getDate();
+
+    let totalMonths = yearDiff * 12 + monthDiff;
+
+    // If the end day is greater than the start day, add one more month to the total
+    if (dayDiff > 0) {
+      totalMonths += 1;
+    }
+
+    return totalMonths;
+  }
+
+  onChangeSelectedSubject(value: object[]): void {
+    this.selectedSubject = value;
     console.log(value);
+  }
+
+  searchCourse() {
+    this.courseFilter.LIST_CATEGORY_NAME = this.selectedSubject;
+    this.courseFilter.COURSE_NAME = this.courseName;
+    this.courseFilter.TYPE_COURSE = this.typeCourseToCode(
+      this.selectedMenuItem
+    );
+    this.courseFilter.USERNAME = this.teacherName;
+
+    this.searchApi();
+  }
+
+  searchApi() {
+    this.isLoading = true;
+    this.courseService
+      .getListCoursesByInputCondition(this.courseFilter)
+      .subscribe(
+        (res) => {
+          this.isLoading = false;
+          this.allCourses = res.data; // Lưu toàn bộ danh sách khóa học
+          if (this.allCourses) {
+            this.totalCourses = this.allCourses.length; // Lưu tổng số khóa học
+            this.updatePaginatedCourses(1);
+            this.createSuccessNotification(res.message);
+          }
+          else {
+            this.listCourse = [];
+            this.totalCourses = 0;
+            this.createBasicNotification(this.template, res.message);
+          }
+      });
+  }
+
+  createSuccessNotification(message: string): void {
+    this.notification.create('success', '', message).onClick.subscribe(() => {
+      console.log('notification clicked!');
+    });
+  }
+
+  createBasicNotification(template: TemplateRef<{}>, message: string): void {
+    this.messageNotification = message;
+    this.notification.template(template);
+  }
+
+  resetValueSelected() {
+    this.selectedSubject = null;
+    this.checkOptions = this.checkOptions.map((option) => ({
+      ...option,
+      checked: false,
+    }));
+  }
+
+  getCourseDetail(item: any) {
+    this.courseService.idCourse = Number(item);
+    localStorage.setItem('idCourse', item);
+    this.router.navigateByUrl('/courses/course-detail');
   }
 }

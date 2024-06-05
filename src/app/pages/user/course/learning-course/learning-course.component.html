@@ -3,29 +3,38 @@
     <h6 style="color: #7D7D7D; font-size: 18px; font-weight: 600; margin-bottom: 0;">Chi tiết khóa học</h6>
 </div>
 
+<nz-modal nzCentered="true" [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()" nzOkText="Có" nzCancelText="Không"
+    (nzOnOk)="handleOk()">
+    <ng-container *nzModalContent>
+        <i style="color: #faad14; margin-right: 0.5rem;" class="fas fa-circle-exclamation"></i>
+        <span>Bạn có chắc chắn muốn xóa bình luận không?</span>
+    </ng-container>
+</nz-modal>
+
 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
 
     <!-- Giới thiệu khóa học -->
     <nz-card style="width:65%; margin-top: 1rem; border-radius: 1rem;">
-        <h6 style="font-size: 1.1rem; margin-bottom: 1rem;">Tổng ôn kiến thức Toán 9 các dạng Nâng cao</h6>
+        <h6 style="font-size: 1.1rem; margin-bottom: 1rem;">{{courseDetail.COURSE_NAME}}</h6>
         <div style="margin: 0.5rem 0 1.5rem 0; display: flex; align-items: center; justify-content: space-between">
             <div>
-                <nz-tag style="border-radius: 16px;" [nzColor]="'blue'">
-                    Toán
+                <nz-tag style="border-radius: 16px;" [nzColor]="getCategoryNameColor(courseDetail.CATEGORY_NAME)">
+                    {{ courseDetail.CATEGORY_NAME}}
                 </nz-tag>
-                <nz-tag style="border-radius: 16px;" [nzColor]="'magenta'">
-                    Nâng cao
+                <nz-tag style="border-radius: 16px;" [nzColor]="getCourseTypeColor(courseDetail.TYPE_COURSE)">
+                    {{ getCourseType(courseDetail.TYPE_COURSE) }}
                 </nz-tag>
             </div>
         </div>
 
         <!-- Đây là chỗ viết video này -->
         <div style="margin-top: 1rem;">
-            <h6 style="margin-bottom: 1rem; padding-right: 0.5rem;">Chủ đề 1 - Bài 1: Giải phương trình</h6>
-            <video width="100%" controls style="border-radius: 15px;">
-                <source src="../../../../../assets/videos/can-bac-2.mp4" type="video/mp4">
+            <h6 style="margin-bottom: 1rem; padding-right: 0.5rem;">{{detailLesson.LESSON_NAME}}</h6>
+            <video #videoPlayer width="100%" controls style="border-radius: 15px;" (pause)="onPause(videoPlayer)" (loadedmetadata)="onLoadedMetadata(videoPlayer)">
+                <source [src]="detailLesson.LINK_VIDEO" type="video/mp4">
                 Your browser does not support HTML5 video.
             </video>
+            
         </div>
 
         <!-- Đây là chỗ có nhiều tab này -->
@@ -39,7 +48,7 @@
                     </ng-template>
 
                     <div>
-                        <editor [init]="editorConfig"></editor>
+                        <editor [init]="editorConfig" [(ngModel)]="takeNote"></editor>
                     </div>
                 </nz-tab>
 
@@ -51,39 +60,46 @@
                     </ng-template>
 
                     <div style="width: 100%;">
-                        <app-file-info *ngFor="let item of files" [fileType]="item.fileType"
-                            [isDownloaded]="item.isDownloaded" [fileName]="item.fileName" [fileSize]="item.fileSize"
-                            [isDownloading]="item.isDownloading">
+                        <app-file-info *ngFor="let item of files" [fileType]="item.fileType" [isDownloaded]="false"
+                            [fileName]="item.DOCUMENT_NAME" [fileSize]="item.SIZE + ' MB'" [isDownloading]="false">
                         </app-file-info>
                     </div>
                 </nz-tab>
 
                 <nz-tab [nzTitle]="customizeTab3">
                     <ng-template #customizeTab3>
-                        <span [ngClass]="{'tabs-custome': activeTab === 3, 'tabs-custome-active': activeTab !== 3}">
+                        <span (click)="getComments()"
+                            [ngClass]="{'tabs-custome': activeTab === 3, 'tabs-custome-active': activeTab !== 3}">
                             Thảo luận
                         </span>
                     </ng-template>
 
-                    <div style="padding: 1rem; border-radius: 15px;">
-                        <nz-comment *ngFor="let item of comments" nzAuthor="{{ item.author }}" [nzDatetime]="item.time">
-                            <nz-avatar nz-comment-avatar nzIcon="user"
-                                nzSrc="https://png.pngtree.com/png-clipart/20220111/original/pngtree-cute-little-girl-avatar-png-image_7085472.png"></nz-avatar>
+                    <div>
+                        <nz-skeleton [nzLoading]="isLoadingReview" [nzActive]="true" [nzAvatar]="true">
+                        </nz-skeleton>
+                    </div>
+
+                    <div *ngIf="!isLoadingReview" style="padding: 1rem; border-radius: 15px;">
+                        <nz-comment *ngFor="let item of ratings" nzAuthor="{{ item.author }}" [nzDatetime]="item.time">
+                            <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.USER_INFO.AVATAR"></nz-avatar>
                             <nz-comment-content>
                                 <p>
-                                    {{ item.content }}
+                                    {{ item.CONTENT }}
                                 </p>
                             </nz-comment-content>
                             <nz-comment-action>
                                 <span nz-tooltip nzTitle="Like" nz-icon nzType="like"
                                     [nzTheme]="item.like > 0 ? 'twotone' : 'outline'" (click)="like()"></span>
-                                <span class="count like">{{ item.like }}</span>
+                                <span class="count like">{{ item.LIKE }}</span>
                             </nz-comment-action>
                             <nz-comment-action>
                                 <span nz-tooltip nzTitle="Dislike" nz-icon nzType="dislike"
                                     [nzTheme]="item.dislike > 0 ? 'twotone' : 'outline'" (click)="dislike()"></span>
-                                <span class="count dislike">{{ item.dislike }}</span>
+                                <span class="count dislike">{{ item.DISLIKE }}</span>
                             </nz-comment-action>
+                            <nz-comment-action *ngIf="item.ID_USER == idUser">
+                                <i (click)="openModal(item)" class="fas fa-trash-can"></i>
+                            </nz-comment-action> 
                         </nz-comment>
 
                         <nz-list *ngIf="data.length" [nzDataSource]="data" [nzRenderItem]="item"
@@ -141,8 +157,7 @@
                                 <div class="info-detail">
                                     <p style="font-family: ReadexPro-regular; font-size: 14px; margin: 0;">{{ item.name
                                         }}</p>
-                                    <p *ngIf="!item.isFinish" [routerLink]="['/courses/quizs', item.name]"
-                                        style="font-family: ReadexPro-regular; cursor: pointer;
+                                    <p *ngIf="!item.isFinish" [routerLink]="['/courses/quizs', item.name]" style="font-family: ReadexPro-regular; cursor: pointer;
                                         font-size: 14px; margin: 0; color: #EE7777;">
                                         Làm bài
                                         <i style="margin-left: 0.5rem;" class="fa-solid fa-pencil"></i>
@@ -175,7 +190,7 @@
             <nz-collapse [nzExpandIconPosition]="'right'" nzGhost style="margin-top: 1rem; border-radius: 1rem;">
                 <nz-collapse-panel *ngFor="let panel of panels" style="border-radius: 1rem; 
                     border: 2px solid #002766; padding: 0 0; margin-bottom: 0.5rem;" #p [nzHeader]="panelHeader"
-                    [nzActive]="panel.active" [ngStyle]="panel.customStyle"
+                    [nzActive]="false" [ngStyle]="panel.customStyle"
                     [nzExpandedIcon]="!$first ? panel.icon || expandedIcon : undefined">
 
                     <ng-template #panelHeader>
@@ -183,7 +198,7 @@
                             <p style="font-size: 17px; margin-bottom: 0.2rem;">{{ panel.name }}</p>
                             <div style="display: flex; justify-content: space-between;">
                                 <p style="font-size: 14px; margin-bottom: 0; padding-left: 1.5rem;"><i
-                                        class="fa-regular fa-clock"></i> {{ panel.time }}</p>
+                                        class="fa-regular fa-clock"></i> {{ panel.time + ' phút' }}</p>
                                 <p style="font-size: 14px; margin-bottom: 0;"><i class="fa-solid fa-book"></i>
                                     {{panel.lesson.length}} bài học</p>
                             </div>
@@ -191,10 +206,9 @@
                     </ng-template>
 
                     <!-- Content -->
-                    <div class="content-lesson" [routerLink]="['/courses/learning', item.name]"
-                        *ngFor="let item of panel.lesson; let i=index">
-                        <p style="margin-bottom:0; font-size: 15px;">{{i+1}}. {{ item.name }}</p>
-                        <p style="margin-bottom:0; font-size: 14px;">{{ item.time }}</p>
+                    <div class="content-lesson" *ngFor="let item of panel.lesson; let i=index" (click)="learning(item)">
+                        <p style="margin-bottom:0; font-size: 15px; padding-right: 0.3rem">{{i+1}}. {{ item.name }}</p>
+                        <p style="margin-bottom:0; font-size: 14px; white-space: nowrap;">{{ item.time + ' phút'}}</p>
                     </div>
 
                     <ng-template #expandedIcon let-active>

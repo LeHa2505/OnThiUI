@@ -1,4 +1,3 @@
-const CONTRACT_ADDRESS = "0xbD0a2Da0E8D29d2E3c3b40D055481fB971FE7041"
-export {
-    CONTRACT_ADDRESS,
-}
+export const colorsArray: string[] = [
+  "#A4DDDE", "#F9EAA0", "#C6DDF7", "#eac4d5", "#e8dff5", "#ddedea"
+  ];
