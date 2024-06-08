@@ -49,17 +49,6 @@ export class ProfileComponent {
   }
 
   getUserInfo() {
-    this.userSer.getInfo().subscribe(
-      (res) => {
-        console.log(res);
-        this.userInfo.username = res.username;
-        this.userInfo.email = res.email;
-        this.userInfo.phoneNumber = res.phoneNumber;
-        this.userInfo.address = res.address;
-        this.isLoadingPage = false;
-      },
-      (e) => this.msg.error('Something is wrong!')
-    );
   }
 
   edit() {
@@ -67,28 +56,6 @@ export class ProfileComponent {
   }
 
   save() {
-    if (this.validateForm.valid) {
-      this.isButtonLoading = true;
-      console.log('submit', this.validateForm.value);
-      this.userSer.updateInfo(this.validateForm.value).subscribe(
-        (res) => {
-          this.msg.success('Change infomation successfully');
-          this.isEditing = false;
-          this.isButtonLoading = false;
-        },
-        (e) => {
-          this.msg.error('Change infomation unsuccessfully');
-          this.isButtonLoading = false;
-        }
-      );
-    } else {
-      Object.values(this.validateForm.controls).forEach((control) => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
-    }
   }
 
   openForm() {

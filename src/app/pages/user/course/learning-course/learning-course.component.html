@@ -15,7 +15,21 @@
 
     <!-- Giới thiệu khóa học -->
     <nz-card style="width:65%; margin-top: 1rem; border-radius: 1rem;">
-        <h6 style="font-size: 1.1rem; margin-bottom: 1rem;">{{courseDetail.COURSE_NAME}}</h6>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h6 style="font-size: 1.1rem; margin-bottom: 1rem;">{{courseDetail.COURSE_NAME}}</h6>
+            <div style="cursor: pointer;" *ngIf="isLearning">
+                <nz-tag (click)="saveLearn()" [nzColor]="'blue'" style="border: none; font-size: 14px; border-radius: 1rem; padding: 0rem 1rem">
+                    <i *ngIf="!isLearned" style="margin-right: 0.5rem;" class="fa-regular fa-bookmark"></i>
+                    <i *ngIf="isLearned" style="margin-right: 0.5rem;" class="fa-solid fa-bookmark"></i>
+                    <span *ngIf="!isLearned" >
+                        Đánh dấu đã học xong
+                    </span>
+                    <span *ngIf="isLearned" >
+                        Đã học
+                    </span>
+                </nz-tag>
+            </div>
+        </div>
         <div style="margin: 0.5rem 0 1.5rem 0; display: flex; align-items: center; justify-content: space-between">
             <div>
                 <nz-tag style="border-radius: 16px;" [nzColor]="getCategoryNameColor(courseDetail.CATEGORY_NAME)">
@@ -29,12 +43,12 @@
 
         <!-- Đây là chỗ viết video này -->
         <div style="margin-top: 1rem;">
-            <h6 style="margin-bottom: 1rem; padding-right: 0.5rem;">{{detailLesson.LESSON_NAME}}</h6>
-            <video #videoPlayer width="100%" controls style="border-radius: 15px;" (pause)="onPause(videoPlayer)" (loadedmetadata)="onLoadedMetadata(videoPlayer)">
+            <video #videoPlayer width="100%" controls style="border-radius: 15px;" (pause)="onPause(videoPlayer)"
+                (loadedmetadata)="onLoadedMetadata(videoPlayer)">
                 <source [src]="detailLesson.LINK_VIDEO" type="video/mp4">
                 Your browser does not support HTML5 video.
             </video>
-            
+            <h6 style="margin-top: 1rem; padding-right: 0.5rem;"><b>Bài học:</b> {{detailLesson.LESSON_NAME}}</h6>
         </div>
 
         <!-- Đây là chỗ có nhiều tab này -->
@@ -50,11 +64,18 @@
                     <div>
                         <editor [init]="editorConfig" [(ngModel)]="takeNote"></editor>
                     </div>
+
+                    <button nz-button *ngIf="isLearning"
+                        style="background-color: rgb(0, 39, 102); border: none; margin-top: 1rem; float: right;"
+                        (click)="saveNote()" nzType="primary">
+                        <span nz-icon nzType="save" nzTheme="outline"></span>
+                        Lưu lại ghi chú
+                    </button>
                 </nz-tab>
 
                 <nz-tab [nzTitle]="customizeTab2">
                     <ng-template #customizeTab2>
-                        <span [ngClass]="{'tabs-custome': activeTab === 2, 'tabs-custome-active': activeTab !== 2}">
+                        <span [ngClass]="{'tabs-custome': activeTab === 2, 'tabs-custome-active ': activeTab !== 2}">
                             Tài liệu
                         </span>
                     </ng-template>
@@ -99,7 +120,7 @@
                             </nz-comment-action>
                             <nz-comment-action *ngIf="item.ID_USER == idUser">
                                 <i (click)="openModal(item)" class="fas fa-trash-can"></i>
-                            </nz-comment-action> 
+                            </nz-comment-action>
                         </nz-comment>
 
                         <nz-list *ngIf="data.length" [nzDataSource]="data" [nzRenderItem]="item"
@@ -125,7 +146,7 @@
                             </ng-template>
                         </nz-list>
 
-                        <nz-comment>
+                        <nz-comment *ngIf="isLearning">
                             <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="user.avatar"></nz-avatar>
                             <nz-comment-content class="comment">
                                 <nz-form-item style="width: 85%;">

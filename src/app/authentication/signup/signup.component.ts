@@ -10,6 +10,7 @@ import { AuthenticationService } from 'src/app/service/authentication/authentica
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Router } from '@angular/router';
 import { ethers } from 'ethers';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
   selector: 'app-signup',
@@ -19,11 +20,10 @@ import { ethers } from 'ethers';
 export class SignupComponent implements OnInit {
   validateForm!: UntypedFormGroup;
   requestRegisterForm = {
-    contractId: 0,
     username: String,
     email: String,
     password: String,
-    role: '',
+    typeUser: Number(0),
   };
   captchaTooltipIcon: NzFormTooltipIcon = {
     type: 'info-circle',
@@ -37,6 +37,7 @@ export class SignupComponent implements OnInit {
     private fb: UntypedFormBuilder,
     private registerService: AuthenticationService,
     private mess: NzMessageService,
+    private notification: NzNotificationService,
     private router: Router
   ) {}
 
@@ -46,18 +47,21 @@ export class SignupComponent implements OnInit {
       this.requestRegisterForm.username = this.validateForm.value.username;
       this.requestRegisterForm.email = this.validateForm.value.email;
       this.requestRegisterForm.password = this.validateForm.value.password;
-      this.requestRegisterForm.role = this.validateForm.value.role;
+      this.requestRegisterForm.typeUser = Number(this.validateForm.value.role);
       this.registerService
         .register(this.requestRegisterForm)
         .subscribe((res) => {
-          if (res.message == 'Register successfully') {
-            this.mess.success('Register successfully!');
+          if (res.success) {
+            this.createNotification(res.message, 'success');
             this.isButtonLoading = false;
             this.router.navigate(['/auth/login']);
-          } else this.mess.error('Register unsuccessfully!');
+          } else {
+            console.log(this.requestRegisterForm);
+            this.createNotification(res.message, 'error');
+          }
         }),
         (e) => {
-          this.mess.error('Something is wrong!');
+          this.createNotification('Có lỗi xảy ra', 'warning');
           this.isButtonLoading = false;
         };
     } else {
@@ -92,15 +96,19 @@ export class SignupComponent implements OnInit {
     e.preventDefault();
   }
 
+  createNotification(message: string, type: string): void {
+    this.notification.create(type, '', message).onClick.subscribe(() => {
+      console.log('notification clicked!');
+    });
+  }
+
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      contractId: '',
       email: [null, [Validators.email, Validators.required]],
       password: [null, [Validators.required]],
       checkPassword: [null, [Validators.required, this.confirmationValidator]],
-      nickname: [null, [Validators.required]],
+      username: [null, [Validators.required]],
       role: [null, [Validators.required]],
-      agree: [false],
     });
   }
 }

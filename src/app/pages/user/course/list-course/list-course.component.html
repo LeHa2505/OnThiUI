@@ -14,30 +14,42 @@
 
 <h6 style="color: #7D7D7D; font-size: 18px; font-weight: 600;">Khóa học của tôi</h6>
 
-<div class="container-fluid" style="padding-left: 0;">
+<nz-skeleton *ngIf="isLoadingClass" [nzAvatar]="true" [nzParagraph]="{ rows: 5 }"></nz-skeleton>
+
+<div *ngIf="!listClass">
+  <nz-tag nzColor="success" style="padding: 0.5rem 2rem; font-size: 1rem; border-radius: 1rem; width: 100%; margin-bottom: 1rem; ">
+    <span>
+      Bạn chưa tham gia khóa học nào
+    </span>
+    <i class="fa-regular fa-face-sad-cry" style="margin-left: 1rem;"></i>
+  </nz-tag>
+</div>
+
+<div *ngIf="!isLoadingClass && listClass" class="container-fluid" style="padding-left: 0;">
   <div class="slider-wrap">
     <div class="slider-main">
-      <div *ngFor="let item of listClass; let i = index" class="item" [routerLink]="['/courses', item.name]">
+      <div *ngFor="let item of listClass; let i = index" class="item" (click)="getCourseDetail(item.ID_COURSE)">
         <div class="text" style="cursor: pointer;">
-          <nz-card [style]="'width: 350px; border-radius: 8px;'" [nzBordered]="false" [nzTitle]="item.name"
-            [nzExtra]="extraTemplate">
+          <nz-card [style]="'width: 350px; border-radius: 8px;'" [nzBordered]="false"
+            [nzTitle]="item.COURSE_INFO.COURSE_NAME" [nzExtra]="extraTemplate">
             <p style="color: rgba(0, 0, 0, 0.6);" nz-typography nzEllipsis [nzEllipsisRows]="2">
-              {{item.description}}</p>
+              {{item.COURSE_INFO.DESCRIPTION}}</p>
 
             <div style="margin-top: 1rem;" class="courses">
               <div>
                 <div style="margin-bottom: 0.5rem;">
                   <i class="fas fa-calendar-days" style="color: #828282; margin-right: 0.5rem;"></i>
-                  <span style="color: #828282;">{{ item.schedule }}</span>
+                  <span style="color: #828282;">{{ item.COURSE_INFO.SCHEDULE }}</span>
                 </div>
                 <div style="margin-bottom: 0.5rem;">
                   <i class="fas fa-clock" style="color: #828282; margin-right: 0.5rem;"></i>
-                  <span style="color: #828282;">{{ item.timeDetail }}</span>
+                  <span style="color: #828282;" *ngIf="item.TIME_SCHEDULE">{{ item.TIME_SCHEDULE }}</span>
+                  <span style="color: #828282;" *ngIf="!item.TIME_SCHEDULE">Chưa có gì</span>
                 </div>
               </div>
               <div style="margin-bottom: 0.5rem;">
                 <i class="fas fa-user" style="color: #828282; margin-right: 0.5rem;"></i>
-                <span style="color: #828282;">{{ item.teacherName }}</span>
+                <span style="color: #828282;">{{ item.COURSE_INFO.TEACHER_INFO.USERNAME }}</span>
               </div>
             </div>
 
@@ -47,19 +59,16 @@
               <div style="display: flex; align-items: center; justify-content: space-between;">
                 <div style="display: flex; align-items: center;">
                   <nz-avatar-group>
-                    <nz-avatar
-                      nzSrc="https://www.nicepng.com/png/detail/971-9717270_girl-avatar-download-png-image-cartoon.png"></nz-avatar>
-                    <nz-avatar
-                      nzSrc="https://img.freepik.com/premium-vector/flat-design-character-illustration-character-cartoon-avatar-vector-design-face-girl-boy_659115-35.jpg"
+                    <nz-avatar [nzSrc]="item.CLASSMATES[0].AVATAR"></nz-avatar>
+                    <nz-avatar *ngIf="item.CLASSMATES.length > 1" nzSrc="item.CLASSMATES[1].AVATAR"
                       style="background-color: #f56a00" nzText="U"></nz-avatar>
-                    <nz-avatar
-                      nzSrc="https://static.vecteezy.com/system/resources/previews/028/597/534/original/young-cartoon-female-avatar-student-character-wearing-eyeglasses-file-no-background-ai-generated-png.png"
+                    <nz-avatar *ngIf="item.CLASSMATES.length > 2" nzSrc="item.CLASSMATES[2].AVATAR"
                       style="background-color: #f56a00" nzText="U"></nz-avatar>
-                    <nz-avatar
-                      nzSrc="https://png.pngtree.com/png-vector/20240204/ourlarge/pngtree-avatar-job-student-flat-portrait-of-man-png-image_11606889.png"
+                    <nz-avatar *ngIf="item.CLASSMATES.length > 3" nzSrc="item.CLASSMATES[3].AVATAR"
                       style="background-color: #f56a00" nzText="U"></nz-avatar>
                   </nz-avatar-group>
-                  <span style="color: #595959; margin-left: 0.5rem;">+ {{ item.memberList }} người bạn
+                  <span *ngIf="item.CLASSMATES.length > 4" style="color: #595959; margin-left: 0.5rem;">+ {{
+                    item.CLASSMATES.length - 4 }} người bạn
                     khác</span>
                 </div>
                 <nz-badge [nzCount]="5">
@@ -77,7 +86,7 @@
         </div>
       </div>
     </div>
-    <div class="button-area">
+    <div *ngIf="listClass && listClass.length > 1" class="button-area">
       <button type="button" class="next" appNext><i class="fas fa-chevron-right"></i></button>
     </div>
   </div>
@@ -109,13 +118,29 @@
   align-items: flex-end;
   justify-content: center;">
   <div class="search-group">
-    <div style="margin-left: 1.5rem; width: 400px;">
-      <label>Tìm kiếm theo tên khóa học hoặc giáo viên: </label>
-      <nz-input-group style="border-radius: 16px; width: 400px;" [nzSuffix]="suffixIconSearch">
-        <input type="text" [(ngModel)]="courseName" nz-input placeholder="Nhập tên khóa học" style="margin-right: 1rem;" />
-        <input type="text" [(ngModel)]="teacherName" nz-input placeholder="Nhập tên giáo viên" />
-      </nz-input-group>
-      {{courseName}}
+    <div style="    margin-left: 1.5rem;
+    width: 400px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;">
+      <div>
+        <label>Tìm theo tên khóa/giáo viên: </label>
+        <nz-input-group style="border-radius: 16px;
+        width: 200px;
+        margin-right: 1rem;" [nzSuffix]="suffixIconSearch">
+          <input type="text" [(ngModel)]="courseName" nz-input placeholder="Khóa học"
+            style="margin-right: 1rem;" />
+          <input type="text" [(ngModel)]="teacherName" nz-input placeholder="Giáo viên" />
+        </nz-input-group>
+      </div>
+      <div>
+        <label>Tìm theo tỉnh thành: </label>
+        <nz-select style="min-width: 150px;" nzMode="multiple" nzPlaceHolder="Chọn tỉnh thành"
+          [(ngModel)]="listOfSelectedValue">
+          <nz-option *ngFor="let option of listProvinces" [nzLabel]="option.name" [nzValue]="option.slug"
+            [nzHide]="!isNotSelected(option)"></nz-option>
+        </nz-select>
+      </div>
 
       <ng-template #suffixIconSearch>
         <span nz-icon nzType="search"></span>
@@ -140,7 +165,7 @@
   <nz-checkbox-wrapper style="width: 60%;" (nzOnChange)="onChangeSelectedSubject($event)">
     <div nz-row>
       <div *ngFor="let item of checkOptions" nz-col nzSpan="6" style="margin-bottom: 0.5rem;">
-        <label nz-checkbox [nzValue]="item.value" [(ngModel)]="item.checked">
+        <label style="white-space: nowrap;" nz-checkbox [nzValue]="item.value" [(ngModel)]="item.checked">
           {{ item.label }}
         </label>
       </div>
@@ -180,9 +205,9 @@
         <span style="margin-left: 0.3rem;">{{ item.TEACHER_INFO.USERNAME }}</span>
       </div>
       <div style="display: flex; align-items: center; justify-content: space-between">
-        <p style="color: #808080; margin: 0; padding: 0; font-size: 1rem;"><em><s>{{ item.PRICE }}K</s></em></p>
-        <p style="color: #49BBBD; margin: 0; padding: 0; font-size: 1.2rem; margin-left: 0.5rem;"><strong>
-            {{ item.DISCOUNT }}K</strong></p>
+        <p style="color: #808080; margin: 0; padding: 0; font-size: 1rem;"><em><s>{{ item.PRICE.toLocaleString() }}</s></em></p>
+        <p style="color: #f56a00; margin: 0; padding: 0; font-size: 1.1rem; margin-left: 0.5rem;"><strong>
+            {{ item.DISCOUNT.toLocaleString() }} VND</strong></p>
       </div>
     </div>
   </nz-card>

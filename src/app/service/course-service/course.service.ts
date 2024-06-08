@@ -34,6 +34,13 @@ export class CourseService {
     );
   }   
 
+  userGetDetailCourse(id: number): Observable<any> {
+    return this.http.get(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/getDetailCourse/${id}`,
+      this.httpOptions
+    );
+  }   
+
   userGetListReview(id: any): Observable<any> {
     return this.http.get(
       environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/getReview/${id}`,
@@ -82,6 +89,22 @@ export class CourseService {
   userGetListComment(id: any): Observable<any> {
     return this.http.get(
       environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/getComment/${id}`,
+      this.httpOptions
+    );  
+  }
+
+  enrollCourse(body: any): Observable<any> {
+    return this.http.post(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/enrollCourse`,
+      body,
+      this.httpOptions
+    );  
+  }
+
+  updateLearningProcess(body: any): Observable<any> {
+    return this.http.post(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/updateLearningProcess`,
+      body,
       this.httpOptions
     );  
   }

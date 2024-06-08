@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { AuthenticationService } from 'src/app/service/authentication/authentication.service';
 
 @Component({
@@ -10,11 +11,10 @@ import { AuthenticationService } from 'src/app/service/authentication/authentica
   styleUrls: ['./layout-user.component.less'],
 })
 export class LayoutUserComponent implements OnInit {
-  // role: any = localStorage.getItem('role');
-  // username = localStorage.getItem('username');
   idUser = localStorage.getItem('user_id');
-  role: any;
-  username: any;
+  role = localStorage.getItem('role');;
+  username = localStorage.getItem('username');
+  avatar =  localStorage.getItem('avatar');
   isCollapsed = false;
   notifications: any;
 
@@ -23,26 +23,20 @@ export class LayoutUserComponent implements OnInit {
       title: 'Trang chủ',
       icon: 'fas fa-house',
       url: '',
-      role: 'student',
+      role: '1',
     },
     {
       title: 'Khoá học',
       icon: 'fas fa-person-chalkboard',
       url: 'courses',
-      role: 'student',
+      role: '1',
     },
-    {
-      title: 'Lịch học',
-      icon: 'fas fa-calendar',
-      url: 'my-calendar',
-      role: 'student',
-    },
-    {
-      title: 'Tài liệu',
-      icon: 'fas fa-book',
-      role: 'student',
-      url: 'files'
-    },
+    // {
+    //   title: 'Lịch học',
+    //   icon: 'fas fa-calendar',
+    //   url: 'my-calendar',
+    //   role: 'student',
+    // },
     // {
     //   title: 'Nhóm',
     //   icon: 'fas fa-user-group',
@@ -51,7 +45,7 @@ export class LayoutUserComponent implements OnInit {
     {
       title: 'Tin nhắn',
       icon: 'fas fa-comment',
-      role: 'student',
+      role: '1',
       url: 'chat'
     },
   ];
@@ -65,8 +59,11 @@ export class LayoutUserComponent implements OnInit {
     private router: Router,
     private modal: NzModalService,
     private authenSer: AuthenticationService,
-    private msg: NzMessageService
+    private msg: NzMessageService,
   ) {
+  }
+
+  ngOnInit(): void {
     this.initUserInform();
     this.initNotification();
     // Theo dõi sự kiện thay đổi URL
@@ -79,17 +76,18 @@ export class LayoutUserComponent implements OnInit {
         this.breadcrumbs = this.createBreadcrumbs(this.url);
       }
     });
-  }
-
-  ngOnInit(): void {
     // Lấy breadcrumbs cho URL ban đầu
     const initialUrl = this.router.url;
     this.breadcrumbs = this.createBreadcrumbs(initialUrl);
   }
 
+  // createNotification(message: string, type: string): void {
+  //   this.notification.create(type, '', message).onClick.subscribe(() => {
+  //     console.log('notification clicked!');
+  //   });
+  // }
+
   initUserInform() {
-    this.role = 'student';
-    this.username = localStorage.getItem('username');
   }
 
   initNotification() {
@@ -167,15 +165,12 @@ export class LayoutUserComponent implements OnInit {
       nzTitle: '<i>Bạn muốn đăng xuất?</i>',
       nzOnOk: () => {
         localStorage.clear();
-        this.msg.success('Logout success');
+        // this.createNotification('Bạn đã đăng xuất thành công', 'success');
+        // this.msg.success('Logout success');
         this.router.navigate(['/auth/login']);
         window.location.reload();
       },
       nzCentered: true
     });
-  }
-
-  uploadFile() {
-
   }
 }

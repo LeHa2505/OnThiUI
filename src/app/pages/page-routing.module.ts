@@ -12,6 +12,7 @@ import {ListVideosComponent} from "./user/videos/list-videos/list-videos.compone
 import { FileManageComponent } from './user/file-manage/file-manage.component';
 import { ChatComponent } from './user/chat/chat.component';
 import { MessageComponent } from './user/message/message.component';
+import { BuyCourseComponent } from './user/buy-course/buy-course.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,10 @@ const routes: Routes = [
       {
         path: '',
         component: ListCourseComponent
+      },
+      {
+        path: 'buy',
+        component: BuyCourseComponent
       },
       {
         path: ':id',

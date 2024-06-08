@@ -75,6 +75,7 @@ import { FileManageComponent } from './user/file-manage/file-manage.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { ChatComponent } from './user/chat/chat.component';
 import { MessageComponent } from './user/message/message.component';
+import { BuyCourseComponent } from './user/buy-course/buy-course.component';
 
 @NgModule({
   declarations: [
@@ -93,6 +94,7 @@ import { MessageComponent } from './user/message/message.component';
     FileManageComponent,
     ChatComponent,
     MessageComponent,
+    BuyCourseComponent,
   ],
 
   imports: [

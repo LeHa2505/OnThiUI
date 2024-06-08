@@ -1,9 +1,16 @@
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 import { CourseFilterModel } from 'src/app/models/CourseFilterModel.model';
 import { CourseService } from 'src/app/service/course-service/course.service';
 import { colorsArray } from 'src/constants';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/service/user-service/user.service';
 
 @Component({
   selector: 'app-list-course',
@@ -13,6 +20,9 @@ import { Router } from '@angular/router';
 })
 export class ListCourseComponent implements OnInit {
   listCourse: any[] = [];
+  role = localStorage.getItem('role');
+  idUser = localStorage.getItem('user_id');
+  userAvatar = localStorage.getItem('avatar');
   listClass: any[] = [];
   checkOptions: any[] = [];
   selectedSubject: object[];
@@ -26,11 +36,15 @@ export class ListCourseComponent implements OnInit {
   teacherName: string;
   isLoading = false;
   messageNotification: string;
-
+  isLoadingClass = false;
+  listProvinces: any;
+  listOfOption = ['Apples', 'Nails', 'Bananas', 'Helicopters'];
+  listOfSelectedValue: string[] = [];
   @ViewChild('template', { static: true }) template!: TemplateRef<any>;
 
   constructor(
     private courseService: CourseService,
+    private userService: UserService,
     private notification: NzNotificationService,
     public router: Router
   ) {}
@@ -39,64 +53,32 @@ export class ListCourseComponent implements OnInit {
     this.initListCourse();
     this.initListClass();
     this.initCheckOptions();
+    this.initProvinces();
+  }
+
+  initProvinces() {
+    this.userService.getAllProvinces().subscribe((res) => {
+      this.listProvinces = res.data.data;
+      console.log(this.listProvinces);
+      
+    });
   }
 
   initListClass() {
-    this.listClass = [
-      {
-        name: 'Toán 1',
-        description:
-          'Chiến thần môn toán, quyết tâm lấy điểm cao để zô trường top nhé các iem',
-        noti: 'LIVE',
-        liveTime: '5pm',
-        schedule: 'Thứ 2, 3 hằng tuần',
-        timeDetail: '02.00 -03.30 PM',
-        teacherName: 'Cô Liên',
-        memberList: '25',
-      },
-      {
-        name: 'Ngữ Văn 2',
-        description:
-          'Bậc thầy văn chương, nắm vững những ý chính để triển khai bài viết mượt mà nha',
-        schedule: 'Thứ 2, 3 hằng tuần',
-        timeDetail: '02.00 -03.30 PM',
-        teacherName: 'Cô Liên',
-        memberList: '25',
-      },
-      {
-        name: 'Tiếng Anh 3',
-        description:
-          'Chiến thần môn toán, quyết tâm lấy điểm cao để zô trường top nhé các iem',
-        noti: 'LIVE',
-        liveTime: '5pm',
-        schedule: 'Thứ 2, 3 hằng tuần',
-        timeDetail: '02.00 -03.30 PM',
-        teacherName: 'Cô Liên',
-        memberList: '25',
-      },
-      {
-        name: 'Toán 4',
-        description:
-          'Chiến thần môn toán, quyết tâm lấy điểm cao để zô trường top nhé các iem',
-        noti: 'LIVE',
-        liveTime: '5pm',
-        schedule: 'Thứ 2, 3 hằng tuần',
-        timeDetail: '02.00 -03.30 PM',
-        teacherName: 'Cô Liên',
-        memberList: '25',
-      },
-      {
-        name: 'Toán 5',
-        description:
-          'Chiến thần môn toán, quyết tâm lấy điểm cao để zô trường top nhé các iem',
-        noti: 'LIVE',
-        liveTime: '5pm',
-        schedule: 'Thứ 2, 3 hằng tuần',
-        timeDetail: '02.00 -03.30 PM',
-        teacherName: 'Cô Liên',
-        memberList: '25',
-      },
-    ];
+    this.isLoadingClass = true;
+    this.userService.getListCourses(this.idUser).subscribe((res) => {
+      if (res.success) {
+        if (res.data.length > 0) {
+          this.listClass = res.data;
+        }
+        else {
+          this.listClass = null;
+        }
+        this.isLoadingClass = false;
+      }
+    });
+    console.log(this.listClass);
+    
   }
 
   initListCourse() {
@@ -128,6 +110,10 @@ export class ListCourseComponent implements OnInit {
         checked: false,
       },
     ];
+  }
+
+  isNotSelected(value: string): boolean {
+    return this.listOfSelectedValue.indexOf(value) === -1;
   }
 
   updatePaginatedCourses(pageIndex: number, pageSize: number = 12) {
@@ -219,6 +205,8 @@ export class ListCourseComponent implements OnInit {
 
   selectMenuItem(item: string): void {
     this.selectedMenuItem = item;
+    console.log(this.selectMenuItem);
+    
   }
 
   calculateMonthsDifference(startDate: Date, endDate: Date): number {
@@ -259,20 +247,18 @@ export class ListCourseComponent implements OnInit {
     this.isLoading = true;
     this.courseService
       .getListCoursesByInputCondition(this.courseFilter)
-      .subscribe(
-        (res) => {
-          this.isLoading = false;
-          this.allCourses = res.data; // Lưu toàn bộ danh sách khóa học
-          if (this.allCourses) {
-            this.totalCourses = this.allCourses.length; // Lưu tổng số khóa học
-            this.updatePaginatedCourses(1);
-            this.createSuccessNotification(res.message);
-          }
-          else {
-            this.listCourse = [];
-            this.totalCourses = 0;
-            this.createBasicNotification(this.template, res.message);
-          }
+      .subscribe((res) => {
+        this.isLoading = false;
+        this.allCourses = res.data; // Lưu toàn bộ danh sách khóa học
+        if (this.allCourses) {
+          this.totalCourses = this.allCourses.length; // Lưu tổng số khóa học
+          this.updatePaginatedCourses(1);
+          this.createSuccessNotification(res.message);
+        } else {
+          this.listCourse = [];
+          this.totalCourses = 0;
+          this.createBasicNotification(this.template, res.message);
+        }
       });
   }
 
