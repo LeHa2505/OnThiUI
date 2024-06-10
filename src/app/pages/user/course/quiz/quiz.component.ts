@@ -8,6 +8,10 @@ import {
 import { SimpleChanges } from '@angular/core';
 import { GlobalService } from 'src/app/global.service';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { ActivatedRoute } from '@angular/router';
+import { CourseService } from 'src/app/service/course-service/course.service';
+import { UserService } from 'src/app/service/user-service/user.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-quiz',
@@ -15,153 +19,13 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
   styleUrls: ['./quiz.component.less'],
 })
 export class QuizComponent implements OnInit {
-  quizs = [
-    {
-      quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
-      choices: [
-        'A. $$\\sqrt{a}$$',
-        'B. $$-\\sqrt{a}$$',
-        'C. $$\\sqrt{2a}$$',
-        'D. $$2\\sqrt{a}$$',
-      ],
-      answer: 'A. $$\\sqrt{a}$$',
-      chosenAnswer: '',
-      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).',
-    },
-    {
-      quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
-      choices: [
-        'A. $$\\sqrt{a}$$',
-        'B. $$-\\sqrt{a}$$',
-        'C. $$\\sqrt{2a}$$',
-        'D. $$2\\sqrt{a}$$',
-      ],
-      answer: 'A. $$\\sqrt{a}$$',
-      chosenAnswer: '',
-      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).',
-    },
-    {
-      quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
-      choices: [
-        'A. $$\\sqrt{a}$$',
-        'B. $$-\\sqrt{a}$$',
-        'C. $$\\sqrt{2a}$$',
-        'D. $$2\\sqrt{a}$$',
-      ],
-      answer: 'A. $$\\sqrt{a}$$',
-      chosenAnswer: '',
-      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).',
-    },
-    {
-      quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
-      choices: [
-        'A. $$\\sqrt{a}$$',
-        'B. $$-\\sqrt{a}$$',
-        'C. $$\\sqrt{2a}$$',
-        'D. $$2\\sqrt{a}$$',
-      ],
-      answer: 'A. $$\\sqrt{a}$$',
-      chosenAnswer: '',
-      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).',
-    },
-    {
-      quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
-      choices: [
-        'A. $$\\sqrt{a}$$',
-        'B. $$-\\sqrt{a}$$',
-        'C. $$\\sqrt{2a}$$',
-        'D. $$2\\sqrt{a}$$',
-      ],
-      answer: 'A. $$\\sqrt{a}$$',
-      chosenAnswer: '',
-      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).',
-    },
-    {
-      quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
-      choices: [
-        'A. $$\\sqrt{a}$$',
-        'B. $$-\\sqrt{a}$$',
-        'C. $$\\sqrt{2a}$$',
-        'D. $$2\\sqrt{a}$$',
-      ],
-      answer: 'A. $$\\sqrt{a}$$',
-      chosenAnswer: '',
-      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).',
-    },
-    {
-      quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
-      choices: [
-        'A. $$\\sqrt{a}$$',
-        'B. $$-\\sqrt{a}$$',
-        'C. $$\\sqrt{2a}$$',
-        'D. $$2\\sqrt{a}$$',
-      ],
-      answer: 'A. $$\\sqrt{a}$$',
-      chosenAnswer: '',
-      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).',
-    },
-    {
-      quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
-      choices: [
-        'A. $$\\sqrt{a}$$',
-        'B. $$-\\sqrt{a}$$',
-        'C. $$\\sqrt{2a}$$',
-        'D. $$2\\sqrt{a}$$',
-      ],
-      answer: 'A. $$\\sqrt{a}$$',
-      chosenAnswer: '',
-      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).',
-    },
-    {
-      quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
-      choices: [
-        'A. $$\\sqrt{a}$$',
-        'B. $$-\\sqrt{a}$$',
-        'C. $$\\sqrt{2a}$$',
-        'D. $$2\\sqrt{a}$$',
-      ],
-      answer: 'A. $$\\sqrt{a}$$',
-      chosenAnswer: '',
-      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).',
-    },
-    {
-      quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
-      choices: [
-        'A. $$\\sqrt{a}$$',
-        'B. $$-\\sqrt{a}$$',
-        'C. $$\\sqrt{2a}$$',
-        'D. $$2\\sqrt{a}$$',
-      ],
-      answer: 'A. $$\\sqrt{a}$$',
-      chosenAnswer: '',
-      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).',
-    },
-    {
-      quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
-      choices: [
-        'A. $$\\sqrt{a}$$',
-        'B. $$-\\sqrt{a}$$',
-        'C. $$\\sqrt{2a}$$',
-        'D. $$2\\sqrt{a}$$',
-      ],
-      answer: 'A. $$\\sqrt{a}$$',
-      chosenAnswer: '',
-      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).',
-    },
-    {
-      quiz: 'Cho số thực $$a > 0$$. Số nào sau đây là căn bậc 2 của số thực a?',
-      choices: [
-        'A. $$\\sqrt{a}$$',
-        'B. $$-\\sqrt{a}$$',
-        'C. $$\\sqrt{2a}$$',
-        'D. $$2\\sqrt{a}$$',
-      ],
-      answer: 'A. $$\\sqrt{a}$$',
-      chosenAnswer: '',
-      note: 'Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\). Với số dương \\( a \\), số \\( \\sqrt{a} \\) được gọi là căn bậc hai số học của \\( a \\).',
-    },
-  ];
-
+  quizs = [];
+  detailExercise: any;
+  idCourse: any;
+  idLesson: any;
+  detailCourse: any;
+  detailLesson: any;
+  idExercise: number;
   isFinished = false;
   isFinishLoading = false;
   isVisible = false;
@@ -170,23 +34,111 @@ export class QuizComponent implements OnInit {
   constructor(
     public gs: GlobalService,
     private el: ElementRef,
-    private notification: NzNotificationService
+    private notification: NzNotificationService,
+    private route: ActivatedRoute,
+    private courseService: CourseService,
+    private userService: UserService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.idLesson = Number(this.courseService.idLesson);
+    this.idCourse = Number(this.courseService.idCourse);
+
+    if (!this.idLesson || !this.idCourse) {
+      this.idCourse = Number(localStorage.getItem('idCourse'));
+      this.idLesson = Number(localStorage.getItem('idLesson'));
+    }
+
+    this.idExercise = Number(this.route.snapshot.paramMap.get('id'));
+
+    try {
+      await this.getDetailExerciseAPI();
+      await this.getDetailCourseAPI();
+      await this.getDetailLessonAPI();
+    } catch (error) {
+      console.error('Error during API calls:', error);
+    }
+
     this.loadMathConfig();
     this.renderMath();
     this.actionWithinOneSecond();
   }
 
-  onFinish() {
-    this.showModal();
+  async getDetailExerciseAPI() {
+    const res = await firstValueFrom(this.courseService.getDetailExercise(this.idExercise));
+    if (res.success) {
+      this.detailExercise = res.data;
+      this.formatQuiz();
+      console.log(this.detailExercise);
+    }
   }
 
-  actionWithinOneSecond(): void {
+  formatQuiz() {
+    const formattedQuizs = this.detailExercise.QUIZ_INFO.map((quiz) => ({
+      quiz: quiz.CONTENT_QUIZ,
+      choices: quiz.OPTIONS.split('||'),
+      answer: quiz.ANSWER,
+      chosenAnswer: '',
+      note: quiz.DESCRIPTION,
+      order: quiz.ORDER
+    }))
+    .sort((a, b) => a.order - b.order)
+    .map(({ order, ...rest }) => rest);
+
+    this.quizs = formattedQuizs;
+  }
+
+  async getDetailCourseAPI() {
+    const res = await firstValueFrom(this.courseService.userGetDetailCourse(this.idCourse));
+    if (res.success) {
+      this.detailCourse = res.data;
+    }
+  }
+
+  async getDetailLessonAPI() {
+    const res = await firstValueFrom(this.courseService.userGetLessonDetail(this.idLesson));
+    if (res.success) {
+      this.detailLesson = res.data;
+    }
+  }
+
+  renderMath() {
+    this.mathJaxObject = this.gs.nativeGlobal()['MathJax'];
+    let angObj = this;
+    setTimeout(() => {
+      angObj.mathJaxObject.Hub.Queue(
+        ['Typeset', angObj.mathJaxObject.Hub],
+        'mathContent'
+      );
+    }, 1000);
+  }
+
+  loadMathConfig() {
+    console.log('load config');
+    this.mathJaxObject = this.gs.nativeGlobal()['MathJax'];
+    this.mathJaxObject.Hub.Config({
+      showMathMenu: false,
+      tex2jax: {
+        inlineMath: [
+          ['$', '$'],
+          ['\\(', '\\)'],
+        ],
+      },
+      menuSettings: { zoom: 'Double-Click', zscale: '150%' },
+      CommonHTML: { linebreaks: { automatic: true } },
+      'HTML-CSS': { linebreaks: { automatic: true } },
+      SVG: { linebreaks: { automatic: true } },
+    });
+  }
+
+  actionWithinOneSecond() {
     setTimeout(() => {
       this.isFinishLoading = true;
     }, 1000); // 1000 milliseconds = 1 giây
+  }
+
+  onFinish() {
+    this.showModal();
   }
 
   showModal(): void {
@@ -246,37 +198,7 @@ export class QuizComponent implements OnInit {
     }
   }
 
-  renderMath() {
-    // console.log("render math")
-    // MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-
-    this.mathJaxObject = this.gs.nativeGlobal()['MathJax'];
-    //setInterval(()=>{},1)
-    let angObj = this;
-    setTimeout(() => {
-      angObj.mathJaxObject.Hub.Queue(
-        ['Typeset', angObj.mathJaxObject.Hub],
-        'mathContent'
-      );
-    }, 1000);
-  }
-
-  loadMathConfig() {
-    console.log('load config');
-
-    this.mathJaxObject = this.gs.nativeGlobal()['MathJax'];
-    this.mathJaxObject.Hub.Config({
-      showMathMenu: false,
-      tex2jax: {
-        inlineMath: [
-          ['$', '$'],
-          ['\\(', '\\)'],
-        ],
-      },
-      menuSettings: { zoom: 'Double-Click', zscale: '150%' },
-      CommonHTML: { linebreaks: { automatic: true } },
-      'HTML-CSS': { linebreaks: { automatic: true } },
-      SVG: { linebreaks: { automatic: true } },
-    });
+  doAgain() {
+    window.location.reload();
   }
 }

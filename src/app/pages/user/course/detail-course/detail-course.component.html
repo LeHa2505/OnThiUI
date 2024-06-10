@@ -45,7 +45,7 @@
             <button *ngIf="isLearning"
                 style="width: 100%; display: flex; justify-content: center; align-items: center; background-color: #F18524 !important; border: none;"
                 nz-button nzType="primary" nzShape="round">
-                <span style="font-size: 16px; color: #fff;" *ngIf="isStarted">Học tiếp thôi</span>
+                <span (click)="continueLearn()" style="font-size: 16px; color: #fff;" *ngIf="isStarted">Học tiếp thôi</span>
                 <span (click)="learnTry(courseDetail.LESSON_INFO[0])" style="font-size: 16px; color: #fff;" *ngIf="!isStarted">Bắt đầu học</span>
                 <span nz-icon nzType="play-circle" nzTheme="fill" style="font-size: 18px; color: #fff;"></span>
             </button>
@@ -319,8 +319,6 @@
         <nz-ribbon *ngIf="!isLearning" nzText="Click vào bài học để học thử!" nzStatus="processing" nzColor="#002766">
             <nz-card style="margin-top: 1rem; border-radius: 1rem;">
                 <h6 style="color: #252641; font-size: 16px; margin-bottom: 0.5rem;">Nội dung khóa học</h6>
-                <!-- <h6 style="color: #002766; font-size: 14px; text-transform: uppercase;">2/5 HOÀN THÀNH</h6> -->
-
                 <nz-progress [nzStrokeColor]="'#002766'" [nzPercent]="40" *ngIf="isLearning"></nz-progress>
 
                 <nz-collapse [nzExpandIconPosition]="'right'" nzGhost style="margin-top: 1rem; border-radius: 1rem; cursor: pointer;">

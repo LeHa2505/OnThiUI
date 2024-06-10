@@ -25,6 +25,8 @@ export class LearningCourseComponent implements OnInit {
   pauseMinutes: number;
   pauseSecond: number;
   pauseTime: number;
+  idNote: number;
+  isNoted = false;
   editorConfig = {
     base_url: '/tinymce',
     suffix: '.min',
@@ -42,20 +44,8 @@ export class LearningCourseComponent implements OnInit {
   panels = [];
   ratings = [];
   files = [];
-  quizs = [
-    {
-      name: 'Bài tập về Căn thức',
-      isFinish: true,
-    },
-    {
-      name: 'Bài tập về Căn thức',
-      isFinish: false,
-    },
-    {
-      name: 'Bài tập về Căn thức',
-      isFinish: false,
-    },
-  ];
+  learnedLessons = [];
+  quizs = [];
 
   data: any[] = [];
   submitting = false;
@@ -63,6 +53,7 @@ export class LearningCourseComponent implements OnInit {
     author: this.username,
     avatar: this.userAvatar,
   };
+  isLoadingQuiz = false;
 
   inputValue = '';
   courseDetail: any;
@@ -89,7 +80,6 @@ export class LearningCourseComponent implements OnInit {
       this.idLeson = Number(localStorage.getItem('idLesson'));
     }
     // this.initCourseDetails();
-    this.userGetLessonDetail();
     this.checkAcessToCourse();
   }
 
@@ -113,9 +103,16 @@ export class LearningCourseComponent implements OnInit {
         this.userCourseDTO = foundItem;
         this.isLearning = true;
         if (foundItem.LEARNED_LESSON) {
+          this.getLearnedLessonArray(foundItem.LEARNED_LESSON);
+          this.isLearned = this.checkIsLearned(
+            this.learnedLessons,
+            this.idLeson
+          );
           this.isStarted = true;
         } else this.isStarted = false;
         this.userInitCourseDetails();
+        this.userGetLessonDetail();
+        this.userGetNoteAPI();
       } else {
         this.isLearning = false;
         this.guestInitCourseDetails();
@@ -147,7 +144,7 @@ export class LearningCourseComponent implements OnInit {
   }
 
   async userInitCourseDetails() {
-    await this.guestGetDetailCourseApi();
+    await this.userGetDetailCourseApi();
   }
 
   async guestGetDetailCourseApi() {
@@ -223,6 +220,10 @@ export class LearningCourseComponent implements OnInit {
               order: Number(item.ORDER),
               time: item.DURATION,
               lesson: listChild,
+              isLearned: this.checkIsLearned(
+                this.learnedLessons,
+                item.ID_LESSON
+              ),
               disabled: false,
             };
             listChild.push(child);
@@ -600,12 +601,12 @@ export class LearningCourseComponent implements OnInit {
     }
   }
 
-  saveNote() {
-    console.log(this.takeNote);
-  }
-
   startEdit() {
     this.videoPlayer.nativeElement.pause();
+    if (!this.pauseMinutes || !this.pauseSecond) {
+      this.pauseMinutes = 0;
+      this.pauseSecond = 0;
+    }
     this.takeNote =
       this.takeNote +
       `<p>Thời gian ${this.pauseMinutes}m${this.pauseSecond}s: </p>`;
@@ -617,18 +618,150 @@ export class LearningCourseComponent implements OnInit {
         ID_USER_COURSE: this.userCourseDTO.ID_USER_COURSE,
         ID_USER: this.idUser,
         ID_COURSE: this.idCourse,
-        LEARNING_LESSON: this.idCourse,
+        LEARNING_LESSON: this.idLeson,
         LEARNED_LESSON: this.userCourseDTO.LEARNED_LESSON
           ? this.userCourseDTO.LEARNED_LESSON + `,${this.idLeson}`
           : `${this.idLeson}`,
       })
       .subscribe((res) => {
         if (res.success) {
-          this.createNotification(res.message, 'success');
+          this.createNotification('Đánh dấu đã học thành công!', 'success');
           this.isLearned = !this.isLearned;
         } else {
           this.createNotification(res.message, 'error');
         }
       });
+  }
+
+  deleteLearn() {
+    this.courseService
+      .updateLearningProcess({
+        ID_USER_COURSE: this.userCourseDTO.ID_USER_COURSE,
+        ID_USER: this.idUser,
+        ID_COURSE: this.idCourse,
+        LEARNING_LESSON: this.idLeson,
+        LEARNED_LESSON: this.removeNumberFromString(
+          this.userCourseDTO.LEARNED_LESSON,
+          this.idLeson
+        ),
+      })
+      .subscribe((res) => {
+        if (res.success) {
+          this.createNotification('Đánh dấu thành chưa học!', 'success');
+          this.isLearned = !this.isLearned;
+        } else {
+          this.createNotification(res.message, 'error');
+        }
+      });
+  }
+
+  removeNumberFromString(numberString: string, deleteNumber: number): string {
+    return numberString
+      .split(',')
+      .filter((num) => Number(num) !== deleteNumber)
+      .join(',');
+  }
+
+  learning(item: any) {
+    this.courseService.idLesson = Number(item.id);
+    this.courseDetail.idCourse = this.idCourse;
+    localStorage.setItem('idCourse', this.idCourse.toString());
+    localStorage.setItem('idLesson', item.id.toString());
+    this.router.navigateByUrl(`/courses/learning/${item.name}`);
+    window.location.reload();
+  }
+
+  getLearnedLessonArray(learnedLesson: string) {
+    this.learnedLessons = learnedLesson.split(',').map((id) => Number(id));
+  }
+
+  checkIsLearned(learnedLessons: any, idLesson: any): boolean {
+    if (learnedLessons.find((item) => Number(item) == Number(idLesson))) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  saveNote() {
+    this.courseService
+      .saveNote({
+        ID_USER: Number(this.idUser),
+        ID_LESSON: this.idLeson,
+        CONTENT: this.takeNote,
+        NOTE_TIME: 1.1,
+      })
+      .subscribe((res) => {
+        if (res.success) {
+          this.createNotification(res.message, 'success');
+        } else {
+          this.createNotification(res.message, 'error');
+        }
+      });
+  }
+
+  updateNote() {
+    this.courseService
+      .updateNote({
+        ID_NOTE: this.idNote,
+        ID_USER: Number(this.idUser),
+        ID_LESSON: this.idLeson,
+        CONTENT: this.takeNote,
+        NOTE_TIME: 1.1,
+      })
+      .subscribe((res) => {
+        if (res.success) {
+          this.createNotification(res.message, 'success');
+        } else {
+          this.createNotification(res.message, 'error');
+        }
+      });
+  }
+
+  userGetNoteAPI() {
+    this.courseService
+      .userGetNote({
+        ID_USER: Number(this.idUser),
+        ID_LESSON: this.idLeson,
+      })
+      .subscribe((res) => {
+        if (res.success) {
+          if (!res.data.CONTENT) {
+            this.isNoted = false;
+          } else {
+            this.isNoted = true;
+            this.idNote = res.data.ID_NOTE;
+            this.takeNote = res.data.CONTENT;
+          }
+        }
+      });
+  }
+
+  getListExerciseAPI() {
+    this.isLoadingQuiz = true;
+    this.courseService.getListExercise({
+      ID_LESSON: Number(this.idLeson),
+      ID_USER: Number(this.idUser)
+    }).subscribe((res) => {
+      if (res.success) {
+        this.quizs = res.data;
+        this.isLoadingQuiz = false;
+      }
+    })
+  }
+
+  checkIsFinish(input: any): boolean {
+    const userAnswer = input.QUIZ_INFO.find((item) => item.QUIZ_USER_INFO.length > 0);
+    if (userAnswer) {
+      return true;
+    }
+    else return false;
+  }
+
+  doExercise() {
+    this.courseService.idCourse = Number(this.idCourse);
+    this.courseService.idLesson = Number(this.idLeson)
+    localStorage.setItem('idCourse', this.idCourse.toString());
+    localStorage.setItem('idLesson', this.idLeson.toString());
   }
 }

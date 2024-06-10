@@ -31,6 +31,8 @@ export class DetailCourseComponent implements OnInit {
   fileStatus = { status: '', requestType: '', percent: 0 };
   isLearning = false;
   isStarted = false;
+  learnedLessons= [];
+  learningLeson: any;
 
   panels = [];
 
@@ -88,7 +90,9 @@ export class DetailCourseComponent implements OnInit {
       );
       if (foundItem) {
         this.isLearning = true;
+        this.learningLeson = foundItem.LEARNING_LESSON;
         if (foundItem.LEARNED_LESSON) {
+          this.getLearnedLessonArray(foundItem.LEARNED_LESSON);
           this.isStarted = true;
         } else this.isStarted = false;
         this.userInitCourseDetails();
@@ -710,5 +714,24 @@ export class DetailCourseComponent implements OnInit {
     this.courseDetail.idCourse = this.idCourse;
     localStorage.setItem('idCourse', this.idCourse.toString());
     this.router.navigateByUrl(`/courses/buy`);
+  }
+
+  getLearnedLessonArray(learnedLesson: string) {
+    this.learnedLessons = learnedLesson.split(',').map((id) => Number(id));
+  }
+
+  continueLearn() {
+    this.courseService.idLesson = Number(this.learningLeson);
+    this.courseDetail.idCourse = this.idCourse;
+    localStorage.setItem('idCourse', this.idCourse.toString());
+    localStorage.setItem('idLesson', this.learningLeson);
+    this.courseService.userGetLessonDetail(this.learningLeson).subscribe((res) => {
+      if (res.success) {
+        this.router.navigateByUrl(`/courses/learning/${res.data.LESSON_NAME}`);
+      }
+      else {
+        this.createNotification('Có lỗi xảy ra', 'error');
+      }
+    })
   }
 }

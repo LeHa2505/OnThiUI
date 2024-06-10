@@ -1,145 +1,180 @@
-<div *ngIf="isLoadingPage == false" class="content-main">
-    <h5 style="text-align: center;">Profile</h5>
-    <div style="padding: 48px 40px 20px 40px;">
-        <div nz-row [nzGutter]="24">
-            <div nz-col [nzSpan]="6">
-                <div style="display: flex; flex-direction: column; align-content: center; align-items: center;">
-                    <span class="avartar-img"><strong>{{ username[0] }}</strong></span>
-                    <button style="margin-top: 2rem;" nz-button nzType="primary" nzShape="round" (click)="openForm()">
-                        <span nz-icon nzType="edit" nzTheme="outline"></span> Change password
-                    </button>
+<div class="container">
+    <div class="main-body">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                            <span class="avartar-img">
+                                <div *ngIf="userAvatar=='null'">
+                                    <strong>{{username[0].toUpperCase()}}</strong>
+                                </div>
+                                <img *ngIf="userAvatar!='null'" style="width: 100%;" [src]="userAvatar" alt="">
+                            </span>
+                            <div class="mt-3">
+                                <h4>{{username}}</h4>
+                                <p  class="text-muted font-size-sm" *ngIf="role == '1'">
+                                    Học sinh
+                                </p>
+                                <p  class="text-muted font-size-sm" *ngIf="role == '2'">
+                                    Giáo viên
+                                </p>
+                                <p  class="text-muted font-size-sm" *ngIf="role == '0'">
+                                    Người quản trị hệ thống
+                                </p>
+                                <p  class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
+                                <button class="btn btn-primary">Follow</button>
+                                <button class="btn btn-outline-primary">Message</button>
+                            </div>
+                        </div>
+                        <hr class="my-4">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="feather feather-globe me-2 icon-inline">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                                        <path
+                                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                                        </path>
+                                    </svg>Website</h6>
+                                <span class="text-secondary">https://bootdey.com</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="feather feather-github me-2 icon-inline">
+                                        <path
+                                            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                                        </path>
+                                    </svg>Github</h6>
+                                <span class="text-secondary">bootdey</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="feather feather-twitter me-2 icon-inline text-info">
+                                        <path
+                                            d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z">
+                                        </path>
+                                    </svg>Twitter</h6>
+                                <span class="text-secondary">@bootdey</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="feather feather-instagram me-2 icon-inline text-danger">
+                                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                    </svg>Instagram</h6>
+                                <span class="text-secondary">bootdey</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="feather feather-facebook me-2 icon-inline text-primary">
+                                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z">
+                                        </path>
+                                    </svg>Facebook</h6>
+                                <span class="text-secondary">bootdey</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-
             </div>
-            <div nz-col [nzSpan]="1"></div>
-            <div nz-col [nzSpan]="11">
-                <form nz-form [formGroup]="validateForm" class="login-form">
-                    <nz-form-item>
-                        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="username"><strong>Username</strong></nz-form-label>
-                        <nz-form-control *ngIf="isEditing == false" [nzSm]="18" [nzXs]="24"
-                            nzErrorTip="The input is not valid username">
-                            <span>{{userInfo.username}}</span>
-                        </nz-form-control>
-                        <nz-form-control *ngIf="isEditing" [nzSm]="18" [nzXs]="24"
-                            nzErrorTip="The input is not valid username">
-                            <input nz-input formControlName="username" id="username" [(ngModel)]="userInfo.username" />
-                        </nz-form-control>
-                    </nz-form-item>
-
-                    <nz-form-item>
-                        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="email">
-                            <span><strong>E-mail</strong></span>
-                        </nz-form-label>
-                        <nz-form-control *ngIf="isEditing == false" [nzSm]="18" [nzXs]="24"
-                            nzErrorTip="Please input your email!">
-                            <span>{{userInfo.email}}</span>
-                        </nz-form-control>
-                        <nz-form-control *ngIf="isEditing" [nzSm]="18" [nzXs]="24"
-                            nzErrorTip="Please input your email!">
-                            <input nz-input id="email" formControlName="email" [(ngModel)]="userInfo.email" />
-                        </nz-form-control>
-                    </nz-form-item>
-
-                    <nz-form-item>
-                        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="phoneNumber">
-                            <span><strong>Phone</strong></span>
-                        </nz-form-label>
-                        <nz-form-control *ngIf="isEditing == false" [nzSm]="18" [nzXs]="24"
-                            nzErrorTip="Please input your phoneNumber!">
-                            <span>{{userInfo.phoneNumber || 'No information'}}</span>
-                        </nz-form-control>
-                        <nz-form-control *ngIf="isEditing" [nzSm]="18" [nzXs]="24"
-                            nzErrorTip="Please input your phoneNumber!">
-                            <input nz-input id="phoneNumber" formControlName="phoneNumber"
-                                [(ngModel)]="userInfo.phoneNumber" />
-                        </nz-form-control>
-                    </nz-form-item>
-
-                    <nz-form-item>
-                        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="address">
-                            <span><strong>Address</strong></span>
-                        </nz-form-label>
-                        <nz-form-control *ngIf="isEditing == false" [nzSm]="18" [nzXs]="24"
-                            nzErrorTip="Please input your address!">
-                            <span>{{userInfo.address || 'No information'}}</span>
-                        </nz-form-control>
-                        <nz-form-control *ngIf="isEditing" [nzSm]="18" [nzXs]="24"
-                            nzErrorTip="Please input your address!">
-                            <input nz-input id="address" formControlName="address" [(ngModel)]="userInfo.address" />
-                        </nz-form-control>
-                    </nz-form-item>
-
-                    <nz-divider></nz-divider>
-
-                    <nz-form-item>
-                        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="role">
-                            <span><strong>Role</strong></span>
-                        </nz-form-label>
-                        <nz-form-control [nzSm]="14" [nzXs]="24">
-                            <span>{{role==='bank'?'Bank':'User'}}</span>
-                        </nz-form-control>
-                    </nz-form-item>
-
-                </form>
-            </div>
-            <div nz-col [nzSpan]="6"
-                style="display: flex; justify-content: flex-start; align-items: flex-start; flex-direction: column;">
-                <button *ngIf="isEditing == false" nz-button nzType="primary" nzShape="round" (click)="edit()">
-                    <span nz-icon nzType="edit" nzTheme="outline"></span> Edit Profile
-                </button>
-                <button style="background-color: #52c41a;" *ngIf="isEditing == true" nz-button nzType="primary"
-                    nzShape="round" (click)="save()" [nzLoading]="isButtonLoading">
-                    <span nz-icon nzType="save" nzTheme="outline"></span> Save
-                </button>
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Full Name</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input nz-input type="text" class="form-control" value="John Doe">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Email</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input nz-input type="text" class="form-control" value="john@example.com">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Phone</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input nz-input type="text" class="form-control" value="(239) 816-9029">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Mobile</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input nz-input type="text" class="form-control" value="(320) 380-4539">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Address</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input nz-input type="text" class="form-control" value="Bay Area, San Francisco, CA">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-9 text-secondary">
+                                <button nz-button nzType="primary">Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="d-flex align-items-center mb-3">Project Status</h5>
+                                <p>Web Design</p>
+                                <div class="progress mb-3" style="height: 5px">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 80%"
+                                        aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <p>Website Markup</p>
+                                <div class="progress mb-3" style="height: 5px">
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 72%"
+                                        aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <p>One Page</p>
+                                <div class="progress mb-3" style="height: 5px">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 89%"
+                                        aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <p>Mobile Template</p>
+                                <div class="progress mb-3" style="height: 5px">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 55%"
+                                        aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <p>Backend API</p>
+                                <div class="progress" style="height: 5px">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 66%"
+                                        aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
     </div>
 </div>
-
-<div *ngIf="isLoadingPage">
-    <div class="example">
-        <nz-spin nzSimple nzTip="Loading..."></nz-spin>
-    </div>
-</div>
-
-<nz-modal [(nzVisible)]="isVisible" [nzTitle]="addTitle" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
-    nzCancelText="Cancel">
-    <ng-template #addTitle style="text-align: center">Change password</ng-template>
-    <div *nzModalContent>
-        <div style="margin: 1rem 0;">
-            <label for="full-name">Enter old password</label> <br />
-            <nz-input-group [nzSuffix]="suffixTemplate1">
-                <input [type]="oldpasswordVisible ? 'text' : 'password'" nz-input [(ngModel)]="oldPassword" />
-            </nz-input-group>
-            <ng-template #suffixTemplate1>
-                <span nz-icon [nzType]="oldpasswordVisible ? 'eye-invisible' : 'eye'"
-                    (click)="oldpasswordVisible = !oldpasswordVisible"></span>
-            </ng-template>
-        </div>
-
-        <div style="margin: 1rem 0;">
-            <label for="full-name">Enter new password</label> <br />
-            <nz-input-group [nzSuffix]="suffixTemplate2">
-                <input [type]="passwordVisible ? 'text' : 'password'" nz-input [(ngModel)]="password" />
-            </nz-input-group>
-            <ng-template #suffixTemplate2>
-                <span nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
-                    (click)="passwordVisible = !passwordVisible"></span>
-            </ng-template>
-        </div>
-
-        <div style="margin: 1rem 0;">
-            <label for="full-name">Confirm new password</label> <br />
-            <nz-input-group [nzSuffix]="suffixTemplate3">
-                <input [type]="againpasswordVisible ? 'text' : 'password'" nz-input
-                    [(ngModel)]="passwordEnteredAgain" />
-            </nz-input-group>
-            <ng-template #suffixTemplate3>
-                <span nz-icon [nzType]="againpasswordVisible ? 'eye-invisible' : 'eye'"
-                    (click)="againpasswordVisible = !againpasswordVisible"></span>
-            </ng-template>
-        </div>
-
-    </div>
-</nz-modal>

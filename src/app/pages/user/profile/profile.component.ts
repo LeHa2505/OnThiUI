@@ -14,6 +14,10 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   styleUrls: ['./profile.component.less'],
 })
 export class ProfileComponent {
+  role = localStorage.getItem('role');
+  idUser = localStorage.getItem('user_id');
+  userAvatar = localStorage.getItem('avatar');
+  username = localStorage.getItem('username');
   userInfo = {
     username: '',
     email: '',
@@ -21,9 +25,6 @@ export class ProfileComponent {
     address: '',
   };
   isButtonLoading = false;
-
-  role = localStorage.getItem('role');
-  username = localStorage.getItem('username');
   isLoadingPage = true;
   isEditing = false;
   validateForm!: UntypedFormGroup;
@@ -48,15 +49,13 @@ export class ProfileComponent {
     });
   }
 
-  getUserInfo() {
-  }
+  getUserInfo() {}
 
   edit() {
     this.isEditing = true;
   }
 
-  save() {
-  }
+  save() {}
 
   openForm() {
     this.isVisible = true;

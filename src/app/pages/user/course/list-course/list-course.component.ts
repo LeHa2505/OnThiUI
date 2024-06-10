@@ -60,13 +60,12 @@ export class ListCourseComponent implements OnInit {
     this.userService.getAllProvinces().subscribe((res) => {
       this.listProvinces = res.data.data;
       console.log(this.listProvinces);
-      
     });
   }
 
   initListClass() {
     this.isLoadingClass = true;
-    this.userService.getListCourses(this.idUser).subscribe((res) => {
+    this.userService.getListCourses(Number(this.idUser)).subscribe((res) => {
       if (res.success) {
         if (res.data.length > 0) {
           this.listClass = res.data;

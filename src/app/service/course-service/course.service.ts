@@ -108,4 +108,43 @@ export class CourseService {
       this.httpOptions
     );  
   }
+
+  userGetNote(body: any): Observable<any> {
+    return this.http.post(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/getNote`,
+      body,
+      this.httpOptions
+    );  
+  }
+
+  getListExercise(body: any): Observable<any> {
+    return this.http.post(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/getListExercise`,
+      body,
+      this.httpOptions
+    );  
+  }
+
+  updateNote(body: any): Observable<any> {
+    return this.http.post(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/updateNote`,
+      body,
+      this.httpOptions
+    );  
+  }
+
+  saveNote(body: any): Observable<any> {
+    return this.http.post(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/saveNote`,
+      body,
+      this.httpOptions
+    );  
+  }
+
+  getDetailExercise(id: any): Observable<any> {
+    return this.http.get(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/getDetailExercise/${id}`,
+      this.httpOptions
+    );  
+  }
 }
