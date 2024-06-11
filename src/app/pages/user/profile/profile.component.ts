@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { t } from 'chart.js/dist/chunks/helpers.core';
 import { UserService } from 'src/app/service/user-service/user.service';
 import {
@@ -13,17 +13,13 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.less'],
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
   role = localStorage.getItem('role');
   idUser = localStorage.getItem('user_id');
   userAvatar = localStorage.getItem('avatar');
   username = localStorage.getItem('username');
-  userInfo = {
-    username: '',
-    email: '',
-    phoneNumber: '',
-    address: '',
-  };
+  email = localStorage.getItem('email');
+  userInfo: any;
   isButtonLoading = false;
   isLoadingPage = true;
   isEditing = false;
@@ -35,6 +31,12 @@ export class ProfileComponent {
   oldPassword = '';
   password = '';
   passwordEnteredAgain = '';
+  newUserName: string;
+  phoneNumber: string;
+  address: string;
+  facebook: string;
+  instagram: string;
+  gender: any;
 
   constructor(
     private userSer: UserService,
@@ -42,14 +44,32 @@ export class ProfileComponent {
     private msg: NzMessageService
   ) {
     this.validateForm = this.fb.group({
-      username: [this.userInfo.username, [Validators.required]],
-      email: [this.userInfo.email, [Validators.required]],
-      phoneNumber: '',
-      address: '',
+      username: [this.newUserName, [Validators.required]],
+      email: [this.phoneNumber, [Validators.required]],
+      phoneNumber: this.phoneNumber,
+      address: this.address,
     });
   }
 
-  getUserInfo() {}
+  ngOnInit(): void {
+    this.getUserInfo();
+  }
+
+  getUserInfo() {
+    this.userSer.getUserInfo(this.email).subscribe((res) => {
+      if (res.success) {
+        this.userInfo = res.data;
+        this.newUserName = res.data.USERNAME;
+
+        if (res.data.GENDER) {
+          this.gender = res.data.GENDER;
+        }
+        if (res.data.ADDRESS) {
+          this.address = res.data.ADDRESS;
+        }
+      }
+    });
+  }
 
   edit() {
     this.isEditing = true;
@@ -70,7 +90,7 @@ export class ProfileComponent {
 
   handleOk() {}
 
-  ngOnInit(): void {
-    this.getUserInfo();
+  updateInfo() {
+    this.isEditing = true;
   }
 }

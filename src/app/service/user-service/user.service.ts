@@ -38,6 +38,14 @@ export class UserService {
     );
   }
 
+  getUserInfo(email: string): Observable<any> {
+    return this.http.get(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API +
+        `/getUserInfo?email=${email}`,
+      this.httpOptions
+    );
+  }
+
   getAllProvinces(): Observable<any> {
     return this.http.get<any>(this.jsonURL);
   }
