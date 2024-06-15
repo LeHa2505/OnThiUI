@@ -48,6 +48,30 @@ export class LayoutUserComponent implements OnInit {
       role: '1',
       url: 'chat'
     },
+    {
+      title: 'Quản lý học viên',
+      icon: 'fas fa-user',
+      role: '2',
+      url: 'student-manager'
+    },
+    {
+      title: 'Quản lý khóa học',
+      icon: 'fas fa-person-chalkboard',
+      role: '2',
+      url: 'course-manager'
+    },
+    {
+      title: 'Quản lý người dùng',
+      icon: 'fas fa-user',
+      role: '0',
+      url: 'admin/user-manage'
+    },
+    {
+      title: 'Quản lý khóa học',
+      icon: 'fas fa-person-chalkboard',
+      role: '0',
+      url: 'admin/course-manage'
+    },
   ];
 
   breadcrumbs: string[] = [];

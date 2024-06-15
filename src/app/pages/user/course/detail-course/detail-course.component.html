@@ -16,25 +16,25 @@
     <!-- Giới thiệu khóa học -->
     <nz-card style="width:65%; margin-top: 1rem; border-radius: 1rem;">
         <div style="margin-top: 0rem;">
-            <img style="width: 100%; border-radius: 8px; margin-bottom: 1rem;" [src]="courseDetail.AVATAR_COURSE"
+            <img *ngIf="courseDetail.AVATAR_COURSE" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;" [src]="courseDetail.AVATAR_COURSE"
                 alt="">
 
             <div style="display: flex; align-items: center; justify-content: space-between;">
-                <h6 style="font-size: 1.1rem; margin-bottom: 1rem;">{{ courseDetail.COURSE_NAME }}</h6>
+                <h6 style="font-size: 1.1rem; margin-bottom: 1rem;">{{ courseDetail.COURSE_NAME || ''  }}</h6>
                 <div style="display: flex; align-items: center; justify-content: space-between">
-                    <p style="color: #808080; margin: 0; padding: 0; font-size: 1rem;"><em><s>{{ courseDetail.PRICE.toLocaleString()
+                    <p style="color: #808080; margin: 0; padding: 0; font-size: 1rem;"><em><s>{{ courseDetail.PRICE.toLocaleString() || ''
                                 }} VND</s></em></p>
                     <p style="color: #f56a00; margin: 0; padding: 0; font-size: 1.5rem; margin-left: 0.5rem;"><strong>
-                            {{ courseDetail.DISCOUNT.toLocaleString() }} VND</strong></p>
+                            {{ courseDetail.DISCOUNT.toLocaleString() || ''}} VND</strong></p>
                 </div>
             </div>
             <div style="margin: 0.5rem 0 1.5rem 0; display: flex; align-items: center; justify-content: space-between">
                 <div>
-                    <nz-tag style="border-radius: 16px;" [nzColor]="getCategoryNameColor(courseDetail.CATEGORY_NAME)">
-                        {{ courseDetail.CATEGORY_NAME }}
+                    <nz-tag *ngIf="courseDetail.CATEGORY_NAME" style="border-radius: 16px;" [nzColor]="getCategoryNameColor(courseDetail.CATEGORY_NAME)">
+                        {{ courseDetail.CATEGORY_NAME || '' }}
                     </nz-tag>
                     <nz-tag style="border-radius: 16px;" [nzColor]="getCourseTypeColor(courseDetail.TYPE_COURSE)">
-                        {{ getCourseType(courseDetail.TYPE_COURSE) }}
+                        {{ getCourseType(courseDetail.TYPE_COURSE) || ''}}
                     </nz-tag>
                     <i style="color: #D9D9D9;" class="fas fa-clock"></i>
                     <span style="margin-left: 0.3rem; color: #696984;">Khoảng {{
@@ -202,20 +202,20 @@
                                 </nz-avatar>
                                 <nz-comment-content>
                                     <p>
-                                        {{ item.CONTENT }}
+                                        {{ item.CONTENT || ''}}
                                     </p>
                                 </nz-comment-content>
                                 <nz-comment-action>
                                     <span nz-tooltip nzTitle="Like" nz-icon nzType="like"
                                         [nzTheme]="checkLike(item) ? 'twotone' : 'outline'" (click)="like(item)">
                                     </span>
-                                    <span class="count like">{{ item.LIKE }}</span>
+                                    <span class="count like">{{ item.LIKE || 0}}</span>
                                 </nz-comment-action>
                                 <nz-comment-action>
                                     <span nz-tooltip nzTitle="Dislike" nz-icon nzType="dislike"
                                         [nzTheme]="checkDislike(item) ? 'twotone' : 'outline'" (click)="dislike(item)">
                                     </span>
-                                    <span class="count dislike">{{ item.DISLIKE }}</span>
+                                    <span class="count dislike">{{ item.DISLIKE || 0}}</span>
                                 </nz-comment-action>
                                 <nz-comment-action *ngIf="item.ID_USER == idUser && isLearning">
                                     <i (click)="openModal(item)" class="fas fa-trash-can"></i>
@@ -284,7 +284,7 @@
                     <div>
                         <p style="font-size: 14px; font-weight: 200; color: #7A7E86; 
                         font-family: ReadexPro-light; margin-bottom: 0.5rem">
-                            {{courseDetail.TEACHER_INFO.SCHOOL_INFO.SCHOOL_NAME}}</p>
+                            {{courseDetail.TEACHER_INFO.SCHOOL_INFO.SCHOOL_NAME || ''}}</p>
                     </div>
                 </div>
             </div>
@@ -309,7 +309,7 @@
                     <li>
                         <p style="font-size: 14px; font-weight: 200; color: #7A7E86; 
                         font-family: ReadexPro-light; margin-bottom: 0.2rem">
-                            {{courseDetail.TEACHER_INFO.DESCRIPTION}}</p>
+                            {{courseDetail.TEACHER_INFO.DESCRIPTION || ''}}</p>
                     </li>
                 </ul>
             </div>

@@ -1,0 +1,127 @@
+<h3
+  nz-typography
+  style="text-align: center; font-size: 24px; margin-bottom: 3rem"
+>
+  <strong>Thông tin học viên</strong>   
+</h3>
+
+<!--table-->
+<div>
+  <nz-table #basicTable [nzData]="listOfData">
+    <thead>
+      <tr class="head-style" style="text-align: center">
+        <th style="text-align: center">Tên người dùng</th>
+        <th style="text-align: center">Giới tính</th>
+        <th style="text-align: center">Ngày sinh</th>
+        <th style="text-align: center">Số điện thoại</th>
+        <th style="text-align: center">Email</th>
+        <th style="text-align: center">Sửa</th>
+        <th style="text-align: center">Xóa</th>
+      </tr>
+    </thead>
+    <tbody style="text-align: center">
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{ data.firstName + " " + data.lastName }}</td>
+        <td>{{ data.sex }}</td>
+        <td>{{ data.dateOfBirth }}</td>
+        <td>{{ data.phoneNumber }}</td>
+        <td>{{ data.user.email }}</td>
+        <td style="text-align: center; font-size: 1.2rem">
+          <span
+            (click)="showModal(data)"
+            style="cursor: pointer"
+            nz-icon
+            nzType="edit"
+            nzTheme="fill"
+          ></span>
+        </td>
+        <td
+          style="
+            border-radius: 0rem 1.5rem 1.5rem 0rem;
+            text-align: center;
+            font-size: 1.2rem;
+          "
+        >
+          <span
+            (click)="showDeleteConfirm(data)"
+            style="cursor: pointer"
+            nz-icon
+            nzType="delete"
+            nzTheme="fill"
+          ></span>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>
+
+<!--Modal Edit-->
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzTitle]="addTitle"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+>
+  <ng-template #addTitle style="text-align: center"
+    >Chỉnh sửa thông tin người dùng</ng-template
+  >
+  <div *nzModalContent>
+    <div>
+      <label for="full-name">Họ</label> <br />
+      <input
+        nz-input
+        style="margin-bottom: 1rem"
+        placeholder=""
+        [(ngModel)]="firstName"
+        id="first-name"
+      />
+      <br />
+    </div>
+    <div>
+        <label for="full-name">Tên</label> <br />
+        <input
+          nz-input
+          style="margin-bottom: 1rem"
+          placeholder=""
+          [(ngModel)]="lastName"
+          id="first-name"
+        />
+        <br />
+      </div>
+    <div>
+      <label for="full-name">Giới tính</label> <br />
+      <input
+        nz-input
+        style="margin-bottom: 1rem"
+        placeholder=""
+        [(ngModel)]="gender"
+        id="gender"
+      />
+      <br />
+    </div>
+
+    <div style="margin-bottom: 1rem">
+      <label for="age_value">Ngày sinh</label> <br />
+      <input
+        nz-input
+        style="margin-bottom: 1rem"
+        placeholder=""
+        [(ngModel)]="bod"
+        id="age_value"
+      />
+      <br />
+    </div>
+
+    <div style="margin-bottom: 1rem">
+      <label for="phone">Số điện thoại</label> <br />
+      <input
+        nz-input
+        style="margin-bottom: 1rem"
+        placeholder=""
+        [(ngModel)]="phoneNumber"
+        id="phone"
+      />
+      <br />
+    </div>
+  </div>
+</nz-modal>

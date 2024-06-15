@@ -17,7 +17,8 @@
 <nz-skeleton *ngIf="isLoadingClass" [nzAvatar]="true" [nzParagraph]="{ rows: 5 }"></nz-skeleton>
 
 <div *ngIf="!listClass">
-  <nz-tag nzColor="success" style="padding: 0.5rem 2rem; font-size: 1rem; border-radius: 1rem; width: 100%; margin-bottom: 1rem; ">
+  <nz-tag nzColor="success"
+    style="padding: 0.5rem 2rem; font-size: 1rem; border-radius: 1rem; width: 100%; margin-bottom: 1rem; ">
     <span>
       Bạn chưa tham gia khóa học nào
     </span>
@@ -128,8 +129,7 @@
         <nz-input-group style="border-radius: 16px;
         width: 200px;
         margin-right: 1rem;" [nzSuffix]="suffixIconSearch">
-          <input type="text" [(ngModel)]="courseName" nz-input placeholder="Khóa học"
-            style="margin-right: 1rem;" />
+          <input type="text" [(ngModel)]="courseName" nz-input placeholder="Khóa học" style="margin-right: 1rem;" />
           <input type="text" [(ngModel)]="teacherName" nz-input placeholder="Giáo viên" />
         </nz-input-group>
       </div>
@@ -175,7 +175,7 @@
 
 <div *ngIf="!isLoading" style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: flex-start;">
   <nz-card *ngFor="let item of listCourse" (click)="getCourseDetail(item.ID_COURSE)"
-    style="max-width:305px; border-radius: 8px; margin-right: 1rem; margin-bottom: 1rem; cursor: pointer;">
+    style="max-width:18.6rem; border-radius: 8px; margin-right: 1rem; margin-bottom: 1rem; cursor: pointer;">
     <img style="border-radius: 16px;" width="100%" [src]="item.AVATAR_COURSE" alt="" />
     <div style="margin: 0.5rem 0; display: flex; align-items: center; justify-content: space-between">
       <div>
@@ -204,9 +204,13 @@
         <nz-avatar [nzSrc]="item.TEACHER_INFO.AVATAR"></nz-avatar>
         <span style="margin-left: 0.3rem;">{{ item.TEACHER_INFO.USERNAME }}</span>
       </div>
-      <div style="display: flex; align-items: center; justify-content: space-between">
-        <p style="color: #808080; margin: 0; padding: 0; font-size: 1rem;"><em><s>{{ item.PRICE.toLocaleString() }}</s></em></p>
-        <p style="color: #f56a00; margin: 0; padding: 0; font-size: 1.1rem; margin-left: 0.5rem;"><strong>
+    </div>
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <div style="margin-top: 0.5rem">Giá:</div>
+      <div style="display: flex; align-items: center; justify-content: flex-end">
+        <p style="color: #808080; margin: 0; padding: 0; font-size: 0.9rem;"><em><s>{{ item.PRICE.toLocaleString()
+              }}</s></em></p>
+        <p style="color: #f56a00; margin: 0; padding: 0; font-size: 1rem; margin-left: 0.5rem;"><strong>
             {{ item.DISCOUNT.toLocaleString() }} VND</strong></p>
       </div>
     </div>

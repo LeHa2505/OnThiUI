@@ -1,6 +1,6 @@
 <nz-layout class="layout">
 
-  <nz-sider class="menu-sidebar" nzTheme="dark" nzCollapsible nzWidth="180px" nzBreakpoint="md"
+  <nz-sider class="menu-sidebar" nzTheme="dark" nzCollapsible nzWidth="200px" nzBreakpoint="md"
     [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
     <div class="sidebar-logo" [routerLink]="'/'">
       <div style="width: 2.3rem; height: 2.3rem; border-radius: 8px; background-color: #fff; transform: rotate(45deg);">
@@ -90,7 +90,7 @@
                   Giáo viên
                 </span>
                 <span *ngIf="role == '0'" style="font-size: 12px">
-                  Người quản trị hệ thống
+                  Quản trị viên
                 </span>
               </div>
               <div style="margin-left: 0.5rem;">
@@ -133,7 +133,7 @@
       </nz-breadcrumb-item>
     </nz-breadcrumb> -->
     <nz-content>
-      <div class="inner-content">
+      <div [class]="role == '0'? 'inner-content-admin':'inner-content'">
         <router-outlet></router-outlet>
       </div>
     </nz-content>

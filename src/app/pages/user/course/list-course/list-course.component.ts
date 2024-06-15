@@ -11,6 +11,7 @@ import { colorsArray } from 'src/constants';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/service/user-service/user.service';
+import { UploadService } from 'src/app/service/upload-service/upload.service';
 
 @Component({
   selector: 'app-list-course',
@@ -46,7 +47,8 @@ export class ListCourseComponent implements OnInit {
     private courseService: CourseService,
     private userService: UserService,
     private notification: NzNotificationService,
-    public router: Router
+    public router: Router,
+    private fileService: UploadService
   ) {}
 
   ngOnInit(): void {

@@ -1,0 +1,287 @@
+<h3 nz-typography style="text-align: center; font-size: 24px">
+    <strong>QUẢN LÝ NGƯỜI DÙNG</strong>
+  </h3>
+  
+  <div>
+  </div>
+  
+  <!--Filter box-->
+  
+  <div nz-row class="filter-block">
+    <div nz-col [nzSpan]="8">
+      <nz-input-group [nzSuffix]="suffixIconSearch">
+        <input
+          type="text"
+          nz-input
+          placeholder="Tìm kiếm"
+          [(ngModel)]="searchValue"
+          (ngModelChange)="search()"
+        />
+      </nz-input-group>
+      <ng-template #suffixIconSearch>
+        <span nz-icon nzType="search"></span>
+      </ng-template>
+      <br />
+    </div>
+    <div
+      class="filter-item"
+      nz-col
+      [nzSpan]="4"
+      style="display: flex; justify-content: center; align-items: center"
+    >
+      <nz-select
+        style="width: 100px;"
+        nzPlaceHolder=""
+        [(ngModel)]="inOutcomeSelect"
+        (ngModelChange)="search()"
+      >
+        <nz-option [nzLabel]="'Tất cả'" [nzValue]="0"></nz-option>
+        <nz-option [nzLabel]="'Thu'" [nzValue]="1"></nz-option>
+        <nz-option [nzLabel]="'Chi'" [nzValue]="-1"></nz-option>
+      </nz-select>
+    </div>
+    <div
+      nz-col
+      [nzSpan]="12"
+      style="display: flex; justify-content: space-evenly; align-items: center"
+    >
+      <span style="margin-right: 1rem; font-weight: bold">Thời gian:</span>
+      <nz-range-picker
+        style="min-width: 27rem; margin: 0"
+        [(ngModel)]="date"
+        (ngModelChange)="search()"
+      ></nz-range-picker>
+      <br />
+    </div>
+  </div>
+  
+  <!--Alert-->
+  <div *ngIf="warning">
+    <nz-alert
+      nzType="warning"
+      nzMessage="Thông báo"
+      nzCloseable
+      nzDescription="Số tiền chi tiêu của bạn đã vượt quá hạn mức!"
+      nzShowIcon
+    ></nz-alert>
+  </div>
+  
+  <!--Table-->
+  <div>
+    <nz-table #basicTable [nzData]="listOfDisplayData">
+      <thead>
+        <tr class="head-style">
+          <th>Danh mục</th>
+          <th>Loại</th>
+          <th>Số tiền</th>
+          <th>Thời gian giao dịch</th>
+          <th>Ghi chú</th>
+          <th>Sửa</th>
+          <th>Xóa</th>
+        </tr>
+      </thead>
+      <tbody style="text-align: center">
+        <tr
+          *ngFor="
+            let data of basicTable.data;
+            let i = index
+          "
+        >
+          <td
+            class="catalogue-name"
+            style="border-radius: 1.5rem 0rem 0rem 1.5rem; padding: 0.5rem 2rem"
+          >
+            <app-icon-image
+              [iconImg]="data.icon"
+              style="margin-right: 2rem; margin-left: 3rem"
+            ></app-icon-image>
+            <span>{{ data.category }}</span>
+          </td>
+          <td *ngIf="data.type==1">Thu</td>
+          <td *ngIf="data.type==-1">Chi</td>
+          <td style="color: #fd3c4a; font-weight: bold">
+            {{ data.amount.toString() }} đ
+          </td>
+          <td>{{ data.time | date : "yyyy-MM-dd" }}</td>
+          <td>{{ data.note }}</td>
+          <td style="text-align: center; font-size: 1.2rem">
+            <span
+              (click)="showModalEdit(data)"
+              style="cursor: pointer"
+              nz-icon
+              nzType="edit"
+              nzTheme="fill"
+            ></span>
+          </td>
+          <td
+            style="
+              border-radius: 0rem 1.5rem 1.5rem 0rem;
+              text-align: center;
+              font-size: 1.2rem;
+            "
+          >
+            <span
+              (click)="showDeleteConfirm(data)"
+              style="cursor: pointer"
+              nz-icon
+              nzType="delete"
+              nzTheme="fill"
+            ></span>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+  
+  <!--Modal add item-->
+  <nz-modal
+    [(nzVisible)]="isVisible"
+    [nzTitle]="addTitle"
+    (nzOnCancel)="handleCancel()"
+    (nzOnOk)="handleOk()"
+    nzOkText="{{ comfirmText }}"
+  >
+    <ng-template #addTitle style="text-align: center"
+      >Tạo giao dịch mới</ng-template
+    >
+    <div *nzModalContent>
+  
+      <div>
+        <label for="transaction-name" style="margin-top: 1rem">Số tiền</label>
+        <br />
+        <div nz-row class="select-box">
+          <div nz-col [nzSpan]="18">
+            <input
+            type="number"
+              nz-input
+              placeholder=""
+              [(ngModel)]="transactionAmount"
+              id="transaction-name"
+            />
+            <br />
+          </div>
+          <div nz-col [nzSpan]="6">
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-left: 1rem;
+              "
+            >
+              <nz-select
+                [(ngModel)]="transactionType"
+                (ngModelChange)="getListCatalogue()"
+                style="width: 100%"
+              >
+                <nz-option [nzLabel]="'Thu'" [nzValue]="1"></nz-option>
+                <nz-option [nzLabel]="'Chi'" [nzValue]="-1"></nz-option>
+              </nz-select>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <label for="transaction-name">Danh mục</label> <br />
+      <div nz-row class="select-box">
+        <div nz-col [nzSpan]="16">
+          <nz-select
+            [(ngModel)]="transactionCategory"
+            style="width: 100%"
+          >
+            <nz-option
+              *ngFor="let item of listCatalogue"
+              [nzLabel]="item.name"
+              [nzValue]="item.id"
+            ></nz-option>
+          </nz-select>
+          <br />
+        </div>
+        <div nz-col [nzSpan]="8" style="padding-left: 1rem;">
+          <nz-date-picker
+            [(ngModel)]="dateTransaction"
+            (ngModelChange)="onChangeTime($event)"
+          ></nz-date-picker>
+          <br />
+        </div>
+      </div>
+  
+      <div>
+        <label for="transaction-note">Ghi chú</label> <br />
+        <input
+          nz-input
+          style="margin-bottom: 1rem"
+          [(ngModel)]="transactionNote"
+          id="transaction-note"
+        />
+        <br />
+      </div>
+    </div>
+  </nz-modal>
+  
+  <!--Modal update item-->
+  <nz-modal
+    [(nzVisible)]="isVisibleUpdate"
+    [nzTitle]="editTitle"
+    (nzOnCancel)="handleEditCancel()"
+    (nzOnOk)="handleEditOk()"
+    nzOkText="{{ comfirmText }}"
+  >
+    <ng-template #editTitle style="text-align: center"
+      >Cập nhật giao dịch</ng-template
+    >
+    <div *nzModalContent>
+  
+      <div>
+        <label for="transaction-name" style="margin-top: 1rem">Số tiền</label>
+        <br />
+        <div nz-row class="select-box">
+          <div nz-col [nzSpan]="24">
+            <input
+            type="number"
+              nz-input
+              placeholder=""
+              [(ngModel)]="transactionAmount"
+              id="transaction-name"
+            />
+            <br />
+          </div>
+        </div>
+      </div>
+      <label for="transaction-name">Danh mục</label> <br />
+      <div nz-row class="select-box">
+        <div nz-col [nzSpan]="16">
+          <nz-select
+            [(ngModel)]="transactionCategory"
+            style="width: 100%"
+          >
+            <nz-option
+              *ngFor="let item of listCatalogue"
+              [nzLabel]="item.name"
+              [nzValue]="item.id"
+            ></nz-option>
+          </nz-select>
+          <br />
+        </div>
+        <div nz-col [nzSpan]="8" style="padding-left: 1rem;">
+          <nz-date-picker
+            [(ngModel)]="dateTransaction"
+            (ngModelChange)="onChangeTime($event)"
+          ></nz-date-picker>
+          <br />
+        </div>
+      </div>
+  
+      <div>
+        <label for="transaction-note">Ghi chú</label> <br />
+        <input
+          nz-input
+          style="margin-bottom: 1rem"
+          [(ngModel)]="transactionNote"
+          id="transaction-note"
+        />
+        <br />
+      </div>
+    </div>
+  </nz-modal>
+  
