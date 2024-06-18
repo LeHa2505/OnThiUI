@@ -1,12 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { tr } from 'date-fns/locale';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { BehaviorSubject } from 'rxjs';
+import { UploadService } from 'src/app/service/upload-service/upload.service';
+import { UserService } from 'src/app/service/user-service/user.service';
 
 @Component({
   selector: 'app-user-manage',
   templateUrl: './user-manage.component.html',
   styleUrls: ['./user-manage.component.less'],
 })
-export class UserManageComponent {
+export class UserManageComponent implements OnInit {
   listCatalogue: any[] = [];
   listOfData = [];
   listOfDisplayData = [];
@@ -20,32 +26,37 @@ export class UserManageComponent {
   dateTransaction = null;
   editedItem: any;
   warning = false;
-
+  isDetailVisible = false;
+  detailTitle = 'Thông tin chi tiết về người dùng';
   searchValue = '';
   aa: boolean = false;
-
-  constructor(private mess: NzMessageService) {}
-  setIndex(ii) {
-    this.aa = ii;
-  }
-
-  inOutcomeSelect = 0;
+  gender = null;
+  active = null;
+  userRole = null;
   date = [];
-
-  compareLimit() {}
-
   isVisible = false;
   isVisibleUpdate = false;
-  comfirmText = 'Xác nhận';
+  comfirmText = 'Xác nhận chỉnh sửa';
+  userInfo: any;
+  userInfoOld: any;
+  listProvinces: any;
+  searchChange$ = new BehaviorSubject('');
+  filteredProvinces: any[] = [];
 
-  showModal() {
-    this.isVisible = true;
-    this.transactionName = '';
-    this.transactionType = -1;
-    this.transactionAmount = '';
-    this.transactionCategory = '';
-    this.transactionNote = '';
-    this.getListCatalogue();
+  constructor(
+    private mess: NzMessageService,
+    private userService: UserService,
+    private modal: NzModalService,
+    private fileService: UploadService,
+    private notification: NzNotificationService
+  ) {}
+
+  ngOnInit(): void {
+    this.getAllUserAPI();
+    this.initProvinces();
+  }
+  setIndex(ii) {
+    this.aa = ii;
   }
 
   padTo2Digits(num: number) {
@@ -65,175 +76,188 @@ export class UserManageComponent {
     this.dateTransaction = this.formatDate(result);
   }
 
-  addTransaction() {
-    // this.serTransaction
-    //   .addTransaction({
-    //     userId: localStorage.getItem('userId'),
-    //     walletId: localStorage.getItem('walletId'),
-    //     userCategoryId: this.transactionCategory,
-    //     type: Number(this.transactionType),
-    //     amount: Number(this.transactionAmount),
-    //     note: this.transactionNote,
-    //     createAt: this.formatDate(this.dateTransaction),
-    //   })
-    //   .subscribe(
-    //     (res: any) => {
-    //       if (res.message == 'Thêm giao dịch thành công') {
-    //         this.mess.success(res.message);
-    //       }
-    //       if (res.message == 'Vượt hạn mức') {
-    //         this.mess.error(res.message);
-    //       }
-    //       this.getListTransaction();
-    //     },
-    //     (error: any) => {
-    //       this.mess.error('Vui lòng thử lại!');
-    //     }
-    //   );
-  }
-
   handleOk(): void {
     this.isVisible = false;
-    this.addTransaction();
   }
 
   showModalEdit(data) {
     this.isVisibleUpdate = true;
-    this.transactionAmount = data.amount;
-    this.transactionCategory = data.categoryId;
-    this.transactionNote = data.note;
-    this.transactionType = data.type;
-    this.transactionId = data.id;
-    this.dateTransaction = data.time;
-    this.getListCatalogue();
+    this.userInfo = data;
+    this.userInfoOld = data;
   }
 
   handleEditOk() {
     this.isVisibleUpdate = false;
-    this.updateTransaction();
-  }
-
-  updateTransaction() {
-    // this.serTransaction
-    //   .updateTransaction({
-    //     id: this.transactionId,
-    //     userId: localStorage.getItem('userId'),
-    //     walletId: localStorage.getItem('walletId'),
-    //     userCategoryId: this.transactionCategory,
-    //     type: Number(this.transactionType),
-    //     amount: Number(this.transactionAmount),
-    //     note: this.transactionNote,
-    //     createAt: this.formatDate(this.dateTransaction) + ' 00:00:00',
-    //   })
-    //   .subscribe(
-    //     (res: any) => {
-    //       if (res.message == 'Cập nhật giao dịch thành công') {
-    //         this.mess.success(res.message);
-    //       }
-    //       if (res.message == 'Vượt hạn mức') {
-    //         this.mess.error(res.message);
-    //         // this.warning=true
-    //       }
-    //       this.getListTransaction();
-    //     },
-    //     (error: any) => {
-    //       this.mess.error('Vui lòng thử lại!');
-    //     }
-    //   );
+    this.userService.updateUserInfo(this.userInfo).subscribe((res) => {
+      if (res.success) {
+        this.createNotification(res.message, 'success');
+      } else {
+        this.createNotification(res.message, 'error');
+        this.userInfo = this.userInfoOld;
+      }
+    });
   }
 
   handleEditCancel(): void {
     this.isVisibleUpdate = false;
   }
 
-  showDeleteConfirm(data): void {
-    // const deleteId = this.listOfData.indexOf(data);
-  //   this.modal.confirm({
-  //     nzTitle: 'Xác nhận xóa?',
-  //     nzContent: '',
-  //     nzOkText: 'Xóa',
-  //     nzOkType: 'primary',
-  //     nzOkDanger: true,
-  //     nzOnOk: () => this.delete(data),
-  //     nzCancelText: 'Hủy',
-  //   });
-  }
-
   handleCancel(): void {
     this.isVisible = false;
   }
 
-  getListTransaction() {
+  getAllUserAPI() {
     this.listOfData = [];
-    // this.serTransaction
-    //   .getListTransaction(localStorage.getItem('userId'))
-    //   .subscribe((res: any) => {
-    //     res.transactions.forEach((element: any) => {
-    //       let item = {
-    //         id: element.id,
-    //         icon: element.userCategory.icon,
-    //         category: element.userCategory.name,
-    //         categoryId: element.userCategory.id,
-    //         amount: element.amount,
-    //         note: element.note,
-    //         time: element.createAt,
-    //         type: element.type,
-    //       };
-    //       this.listOfData.push(item);
-    //     });
-    //     this.listOfDisplayData = [...this.listOfData];
-    //   });
+    this.userService.getAllUser().subscribe((res: any) => {
+      if (res.success) {
+        res.data.forEach((element) => {
+          let item = {
+            ID_USER: element.ID_USER,
+            ID_SCHOOL: element.ID_SCHOOL,
+            TYPE_USER: element.TYPE_USER,
+            USERNAME: element.USERNAME,
+            EMAIL: element.EMAIL,
+            PHONE: element.PHONE,
+            GENDER: element.GENDER,
+            BOD: element.BOD,
+            ADDRESS: element.ADDRESS,
+            AVATAR: element.AVATAR,
+            DESCRIPTION: element.DESCRIPTION,
+            FACEBOOK: element.FACEBOOK,
+            INSTAGRAM: element.INSTAGRAM,
+            ACTIVE: element.ACTIVE,
+            SCHOOL_INFO: element.SCHOOL_INFO,
+          };
+          if (element.TYPE_USER != 0) {
+            this.listOfData.push(item);
+          }
+        });
+        this.listOfDisplayData = [...this.listOfData];
+      }
+    });
   }
 
-  delete(item: any) {
-    // this.serTransaction.deleteTransaction(item.id).subscribe(
-    //   (res: any) => {
-    //     this.mess.success('Thành công!');
-    //     this.getListTransaction();
-    //   },
-    //   (err: any) => {
-    //     this.mess.error('Vui lòng thử lại!');
-    //   }
-    // );
+  initProvinces() {
+    this.userService.getAllProvinces().subscribe((res) => {
+      this.listProvinces = res.data.data;
+      this.filteredProvinces = [...this.listProvinces];
+    });
   }
 
-  getListCatalogue() {
-    // this.serDashboard
-    //   .getAllCategory(localStorage.getItem('userId'), this.transactionType)
-    //   .subscribe((res: any) => {
-    //     this.listCatalogue = res;
-    //   });
+  onSearch(value: string): void {
+    if (value) {
+      const searchValueLower = value.trim().toLowerCase();
+      this.filteredProvinces = this.listProvinces.filter((item: any) => {
+        return item.name.toLowerCase().includes(searchValueLower);
+      });
+    } else {
+      this.filteredProvinces = [...this.listProvinces]; // Reset to original list if search is cleared
+    }
+  }
+
+  showModalDetail(data: any) {
+    this.userInfo = data;
+    this.isDetailVisible = true;
+  }
+
+  handleDetailCancel(): void {
+    this.isDetailVisible = false;
+  }
+
+  handleDetailOk(): void {
+    this.isDetailVisible = false;
   }
 
   search() {
-    if (this.inOutcomeSelect != 0) {
-      this.listOfDisplayData = this.listOfData.filter(
-        (item: any) => item.type == this.inOutcomeSelect
-      );
-    } else this.listOfDisplayData = [...this.listOfData];
-
     if (this.searchValue != null) {
+      this.listOfDisplayData = this.listOfData.filter((item: any) => {
+        const searchValueLower = this.searchValue.trim().toLowerCase();
+        return (
+          (item.PHONE &&
+            item.PHONE.toLowerCase().indexOf(searchValueLower) > -1) ||
+          (item.EMAIL &&
+            item.EMAIL.toLowerCase().indexOf(searchValueLower) > -1) ||
+          (item.USERNAME &&
+            item.USERNAME.toLowerCase().indexOf(searchValueLower) > -1) ||
+          (item.ADDRESS &&
+            item.ADDRESS.toLowerCase().indexOf(searchValueLower) > -1) ||
+          (item.FACEBOOK &&
+            item.FACEBOOK.toLowerCase().indexOf(searchValueLower) > -1) ||
+          (item.INSTAGRAM &&
+            item.INSTAGRAM.toLowerCase().indexOf(searchValueLower) > -1)
+        );
+      });
+    }
+
+    if (this.gender != null && this.gender != 'Tất cả') {
       this.listOfDisplayData = this.listOfDisplayData.filter(
-        (item: any) =>
-          item.category
-            .toLowerCase()
-            .indexOf(this.searchValue.trim().toLowerCase()) > -1 ||
-          item.amount
-            .toString()
-            .indexOf(this.searchValue.trim().toLowerCase()) > -1
+        (item: any) => item.GENDER == this.gender
+      );
+      if (this.gender == 3) {
+        this.listOfDisplayData = this.listOfDisplayData.filter(
+          (item: any) => item.GENDER == null || item.GENDER == ''
+        );
+      }
+    }
+
+    if (this.active != null && this.active != 'Tất cả') {
+      this.listOfDisplayData = this.listOfDisplayData.filter(
+        (item: any) => item.ACTIVE == this.active
       );
     }
 
-    if (this.date.length > 0) {
+    if (this.userRole != null && this.userRole != 'Tất cả') {
       this.listOfDisplayData = this.listOfDisplayData.filter(
-        (item: any) => Date.parse(item.time) >= Date.parse(this.date[0])
-      );
-
-      this.listOfDisplayData = this.listOfDisplayData.filter(
-        (item: any) =>
-          Date.parse(item.time) <=
-          Date.parse(this.date[1]) + Date.parse('02 Jan 1970 00:00:00 GMT')
+        (item: any) => item.TYPE_USER == this.userRole
       );
     }
+  }
+
+  resetValueSelected() {
+    this.active = null;
+    this.gender = null;
+    this.userRole = null;
+    this.searchValue = '';
+    this.search();
+  }
+
+  image: File | null = null;
+  imageMin: File | null = null;
+  images: any[] = [];
+  formData = new FormData();
+
+  onUpload(): void {
+    if (this.image) {
+      this.fileService.upload(this.image).subscribe(
+        (data) => {
+          this.userInfo.AVATAR = data.url;
+        },
+        (err) => {}
+      );
+    }
+  }
+
+  onFileSelected(event) {
+    const file: File = event.target.files[0];
+    this.formData.append('file', file);
+  }
+
+  onFileChange(event: any) {
+    this.image = event.target.files[0];
+    this.imageMin = null;
+    const fr = new FileReader();
+    fr.onload = (evento: any) => {
+      this.imageMin = evento.target.result;
+    };
+    if (this.image) {
+      fr.readAsDataURL(this.image);
+    }
+    this.onUpload();
+  }
+
+  createNotification(message: string, type: string): void {
+    this.notification.create(type, '', message).onClick.subscribe(() => {
+      console.log('notification clicked!');
+    });
   }
 }

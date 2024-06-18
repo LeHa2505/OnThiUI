@@ -1,287 +1,444 @@
 <h3 nz-typography style="text-align: center; font-size: 24px">
-    <strong>QUẢN LÝ NGƯỜI DÙNG</strong>
-  </h3>
-  
-  <div>
+  <strong>QUẢN LÝ NGƯỜI DÙNG</strong>
+</h3>
+
+<!--Filter box-->
+<h6 style="margin-top: 5.5rem;">Lọc thông tin</h6>
+<div nz-row class="filter-block">
+  <div nz-col [nzSpan]="8">
+    <nz-input-group style="border-radius: 1rem;" [nzSuffix]="suffixIconSearch">
+      <input type="text" nz-input placeholder="Tìm kiếm" [(ngModel)]="searchValue" (ngModelChange)="search()" />
+    </nz-input-group>
+    <ng-template #suffixIconSearch>
+      <span nz-icon nzType="search"></span>
+    </ng-template>
+    <br />
   </div>
-  
-  <!--Filter box-->
-  
-  <div nz-row class="filter-block">
-    <div nz-col [nzSpan]="8">
-      <nz-input-group [nzSuffix]="suffixIconSearch">
-        <input
-          type="text"
-          nz-input
-          placeholder="Tìm kiếm"
-          [(ngModel)]="searchValue"
-          (ngModelChange)="search()"
-        />
-      </nz-input-group>
-      <ng-template #suffixIconSearch>
-        <span nz-icon nzType="search"></span>
-      </ng-template>
-      <br />
-    </div>
-    <div
-      class="filter-item"
-      nz-col
-      [nzSpan]="4"
-      style="display: flex; justify-content: center; align-items: center"
-    >
-      <nz-select
-        style="width: 100px;"
-        nzPlaceHolder=""
-        [(ngModel)]="inOutcomeSelect"
-        (ngModelChange)="search()"
-      >
-        <nz-option [nzLabel]="'Tất cả'" [nzValue]="0"></nz-option>
-        <nz-option [nzLabel]="'Thu'" [nzValue]="1"></nz-option>
-        <nz-option [nzLabel]="'Chi'" [nzValue]="-1"></nz-option>
-      </nz-select>
-    </div>
-    <div
-      nz-col
-      [nzSpan]="12"
-      style="display: flex; justify-content: space-evenly; align-items: center"
-    >
-      <span style="margin-right: 1rem; font-weight: bold">Thời gian:</span>
-      <nz-range-picker
-        style="min-width: 27rem; margin: 0"
-        [(ngModel)]="date"
-        (ngModelChange)="search()"
-      ></nz-range-picker>
-      <br />
-    </div>
+  <div class="filter-item" nz-col [nzSpan]="4" style="display: flex; justify-content: center; align-items: center;">
+    <nz-select style="width: 150px;" nzPlaceHolder="Giới tính" [(ngModel)]="gender" (ngModelChange)="search()">
+      <nz-option nzDisabled [nzLabel]="'Giới tính'" [nzValue]="null"></nz-option>
+      <nz-option [nzLabel]="'Nam'" [nzValue]="0"></nz-option>
+      <nz-option [nzLabel]="'Nữ'" [nzValue]="1"></nz-option>
+      <nz-option [nzLabel]="'Khác'" [nzValue]="2"></nz-option>
+      <nz-option [nzLabel]="'Tất cả'" [nzValue]="'Tất cả'"></nz-option>
+    </nz-select>
   </div>
-  
-  <!--Alert-->
-  <div *ngIf="warning">
-    <nz-alert
-      nzType="warning"
-      nzMessage="Thông báo"
-      nzCloseable
-      nzDescription="Số tiền chi tiêu của bạn đã vượt quá hạn mức!"
-      nzShowIcon
-    ></nz-alert>
+
+  <div class="filter-item" nz-col [nzSpan]="4" style="display: flex; justify-content: center; align-items: center;">
+    <nz-select style="width: 200px;" nzPlaceHolder="Trạng thái hoạt động" [(ngModel)]="active"
+      (ngModelChange)="search()">
+      <nz-option nzDisabled [nzLabel]="'Trạng thái hoạt động'" [nzValue]="null"></nz-option>
+      <nz-option [nzLabel]="'Còn hiệu lực'" [nzValue]="true"></nz-option>
+      <nz-option [nzLabel]="'Hết hiệu lực'" [nzValue]="false"></nz-option>
+      <nz-option [nzLabel]="'Tất cả'" [nzValue]="'Tất cả'"></nz-option>
+    </nz-select>
   </div>
-  
-  <!--Table-->
-  <div>
-    <nz-table #basicTable [nzData]="listOfDisplayData">
-      <thead>
-        <tr class="head-style">
-          <th>Danh mục</th>
-          <th>Loại</th>
-          <th>Số tiền</th>
-          <th>Thời gian giao dịch</th>
-          <th>Ghi chú</th>
-          <th>Sửa</th>
-          <th>Xóa</th>
-        </tr>
-      </thead>
-      <tbody style="text-align: center">
-        <tr
-          *ngFor="
+
+  <div class="filter-item" nz-col [nzSpan]="4" style="display: flex; justify-content: center; align-items: center;">
+    <nz-select style="width: 120px;" nzPlaceHolder="Vai trò" [(ngModel)]="userRole" (ngModelChange)="search()">
+      <nz-option nzDisabled [nzLabel]="'Vai trò'" [nzValue]="null"></nz-option>
+      <nz-option [nzLabel]="'Học sinh'" [nzValue]="1"></nz-option>
+      <nz-option [nzLabel]="'Giáo viên'" [nzValue]="2"></nz-option>
+      <nz-option [nzLabel]="'Tất cả'" [nzValue]="'Tất cả'"></nz-option>
+    </nz-select>
+  </div>
+  <button (click)="resetValueSelected()" nz-button nzType="dashed" nzShape="circle"
+    style="padding: 0.3rem 0.8rem 0.3rem 0.8rem; margin-right: 1rem;">
+    <span nz-icon>
+      <i class="fas fa-trash"></i>
+    </span>
+    Đặt lại
+  </button>
+</div>
+
+<!--Alert-->
+<div *ngIf="warning">
+  <nz-alert nzType="warning" nzMessage="Thông báo" nzCloseable
+    nzDescription="Số tiền chi tiêu của bạn đã vượt quá hạn mức!" nzShowIcon></nz-alert>
+</div>
+
+<!--Table-->
+<div>
+  <nz-table #basicTable [nzData]="listOfDisplayData">
+    <thead>
+      <tr class="head-style">
+        <th>ID</th>
+        <th>Tên</th>
+        <th>Vai trò</th>
+        <th>Email</th>
+        <th>Số điện thoại</th>
+        <th>Giới tính</th>
+        <th>Trạng thái hoạt động</th>
+        <th>Chi tiết</th>
+        <th>Sửa</th>
+      </tr>
+    </thead>
+    <tbody style="text-align: center">
+      <tr *ngFor="
             let data of basicTable.data;
             let i = index
-          "
-        >
-          <td
-            class="catalogue-name"
-            style="border-radius: 1.5rem 0rem 0rem 1.5rem; padding: 0.5rem 2rem"
-          >
-            <app-icon-image
-              [iconImg]="data.icon"
-              style="margin-right: 2rem; margin-left: 3rem"
-            ></app-icon-image>
-            <span>{{ data.category }}</span>
-          </td>
-          <td *ngIf="data.type==1">Thu</td>
-          <td *ngIf="data.type==-1">Chi</td>
-          <td style="color: #fd3c4a; font-weight: bold">
-            {{ data.amount.toString() }} đ
-          </td>
-          <td>{{ data.time | date : "yyyy-MM-dd" }}</td>
-          <td>{{ data.note }}</td>
-          <td style="text-align: center; font-size: 1.2rem">
-            <span
-              (click)="showModalEdit(data)"
-              style="cursor: pointer"
-              nz-icon
-              nzType="edit"
-              nzTheme="fill"
-            ></span>
-          </td>
-          <td
-            style="
-              border-radius: 0rem 1.5rem 1.5rem 0rem;
-              text-align: center;
-              font-size: 1.2rem;
-            "
-          >
-            <span
-              (click)="showDeleteConfirm(data)"
-              style="cursor: pointer"
-              nz-icon
-              nzType="delete"
-              nzTheme="fill"
-            ></span>
-          </td>
-        </tr>
-      </tbody>
-    </nz-table>
+          ">
+        <td style="border-radius: 1.5rem 0rem 0rem 1.5rem;">
+          {{ data.ID_USER }}
+        </td>
+        <td class="catalogue-name">
+          <span style="display: flex; align-items: center;">
+            <div *ngIf="!data.AVATAR" class="avartar-img">
+              <strong>{{data.USERNAME[0].toUpperCase()}}</strong>
+            </div>
+            <nz-avatar *ngIf="data.AVATAR" [nzSrc]="data.AVATAR"></nz-avatar>
+            <span style="margin-left: 0.3rem;">{{ data.USERNAME }}</span>
+          </span>
+        </td>
+        <td>
+          <span *ngIf="data.TYPE_USER == 1" style="font-size: 12px">
+            Học sinh
+          </span>
+          <span *ngIf="data.TYPE_USER == 2" style="font-size: 12px">
+            Giáo viên
+          </span>
+          <span *ngIf="data.TYPE_USER == 0" style="font-size: 12px">
+            Quản trị viên
+          </span>
+        </td>
+        <td>
+          {{ data.EMAIL }}
+        </td>
+        <td>
+          <span *ngIf="data.PHONE">{{ data.PHONE }}</span>
+          <span *ngIf="!data.PHONE">Chưa cập nhật</span>
+        </td>
+        <td>
+          <span *ngIf="data.GENDER==0">
+            Nam
+          </span>
+          <span *ngIf="data.GENDER==1">
+            Nữ
+          </span>
+          <span *ngIf="data.GENDER==2">
+            Khác
+          </span>
+          <span *ngIf="!data.GENDER && data.GENDER != 0">
+            Chưa cập nhật
+          </span>
+        </td>
+        <td>
+          <span *ngIf="data.ACTIVE">Còn hiệu lực</span>
+          <span *ngIf="!data.ACTIVE">Hết hiệu lực</span>
+        </td>
+        <td style="text-align: center; font-size: 1.2rem">
+          <span (click)="showModalDetail(data)" style="cursor: pointer" nz-icon nzType="eye" nzTheme="fill"></span>
+        </td>
+        <td style=" border-radius: 0rem 1.5rem 1.5rem 0rem;
+        text-align: center;
+        font-size: 1.2rem;">
+          <span (click)="showModalEdit(data)" style="cursor: pointer" nz-icon nzType="edit" nzTheme="fill"></span>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>
+
+<!--Modal detail item-->
+<nz-modal [(nzVisible)]="isDetailVisible" [nzTitle]="detailTitle" (nzOnCancel)="handleDetailCancel()" nzWidth="800px"
+  nzOkText="Đóng" [nzFooter]="null">
+  <ng-template #detailTitle style="text-align: center">Chi tiết thông tin người dùng</ng-template>
+  <div *nzModalContent>
+    <div style="text-align: center; margin-bottom: 1rem;">
+      <img
+        [src]="userInfo.AVATAR || 'https://cdn3d.iconscout.com/3d/premium/thumb/graduate-student-avatar-10107492-8179543.png'"
+        alt="User Avatar" style="width: 100px; height: 100px; border-radius: 50%;" />
+    </div>
+    <div nz-row>
+      <div nz-col [nzSpan]="8">
+        <label for="user-id" style="font-weight: bold;">ID:</label> <br />
+        <span id="user-id">{{ userInfo.ID_USER || 'Chưa cập nhật' }}</span>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <label for="user-name" style="font-weight: bold;">Tên:</label> <br />
+        <span id="user-name">{{ userInfo.USERNAME || 'Chưa cập nhật' }}</span>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <label for="user-email" style="font-weight: bold;">Email:</label> <br />
+        <span id="user-email">{{ userInfo.EMAIL || 'Chưa cập nhật' }}</span>
+      </div>
+    </div>
+    <br />
+    <div nz-row>
+      <div nz-col [nzSpan]="8">
+        <label for="user-phone" style="font-weight: bold;">Số điện thoại:</label> <br />
+        <span id="user-phone">{{ userInfo.PHONE || 'Chưa cập nhật' }}</span>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <label for="user-gender" style="font-weight: bold;">Giới tính:</label> <br />
+        <span id="user-gender">{{ userInfo.GENDER === 0 ? 'Nam' : userInfo.GENDER === 1 ? 'Nữ' : 'Chưa cập nhật'
+          }}</span>
+      </div>
+    </div>
+    <br />
+    <div nz-row>
+      <div nz-col [nzSpan]="8">
+        <label for="user-bod" style="font-weight: bold;">Ngày sinh:</label> <br />
+        <span id="user-bod">{{ userInfo.BOD || 'Chưa cập nhật' }}</span>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <label for="user-address" style="font-weight: bold;">Địa chỉ:</label> <br />
+        <span id="user-address">{{ userInfo.ADDRESS || 'Chưa cập nhật' }}</span>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <label for="user-description" style="font-weight: bold;">Mô tả:</label> <br />
+        <span id="user-description">{{ userInfo.DESCRIPTION || 'Chưa cập nhật' }}</span>
+      </div>
+    </div>
+    <br />
+    <div nz-row>
+      <div nz-col [nzSpan]="8">
+        <label for="user-facebook" style="font-weight: bold;">Facebook:</label> <br />
+        <span id="user-facebook">{{ userInfo.FACEBOOK || 'Chưa cập nhật' }}</span>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <label for="user-instagram" style="font-weight: bold;">Instagram:</label> <br />
+        <span id="user-instagram">{{ userInfo.INSTAGRAM || 'Chưa cập nhật' }}</span>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <label for="user-active" style="font-weight: bold;">Trạng thái hoạt động:</label> <br />
+        <span id="user-active">{{ userInfo.ACTIVE ? 'Còn hiệu lực' : ' Hết hiệu lực' }}</span>
+      </div>
+    </div>
+    <br />
+    <div nz-row>
+      <div nz-col [nzSpan]="12">
+        <h3 style="font-weight: bold;">Thông tin trường học</h3>
+      </div>
+    </div>
+    <div nz-row>
+      <div nz-col [nzSpan]="8">
+        <label for="school-name" style="font-weight: bold;">Tên trường:</label> <br />
+        <span id="school-name">{{ userInfo.SCHOOL_INFO?.SCHOOL_NAME || 'Chưa cập nhật' }}</span>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <label for="school-type" style="font-weight: bold;">Hình thức:</label> <br />
+        <span id="school-type">{{ userInfo.SCHOOL_INFO?.TYPE_SCHOOL === 1 ? 'Trường công' :
+          userInfo.SCHOOL_INFO?.TYPE_SCHOOL === 2 ? 'Trường tư' : 'Chưa cập nhật' }}</span>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <label for="province-name" style="font-weight: bold;">Tỉnh:</label> <br />
+        <span id="province-name">{{ userInfo.SCHOOL_INFO?.PROVINCE_INFO?.PROVINCE_NAME || 'Chưa cập nhật' }}</span>
+      </div>
+    </div>
   </div>
-  
-  <!--Modal add item-->
-  <nz-modal
-    [(nzVisible)]="isVisible"
-    [nzTitle]="addTitle"
-    (nzOnCancel)="handleCancel()"
-    (nzOnOk)="handleOk()"
-    nzOkText="{{ comfirmText }}"
-  >
-    <ng-template #addTitle style="text-align: center"
-      >Tạo giao dịch mới</ng-template
-    >
-    <div *nzModalContent>
-  
-      <div>
-        <label for="transaction-name" style="margin-top: 1rem">Số tiền</label>
-        <br />
-        <div nz-row class="select-box">
-          <div nz-col [nzSpan]="18">
-            <input
-            type="number"
-              nz-input
-              placeholder=""
-              [(ngModel)]="transactionAmount"
-              id="transaction-name"
-            />
-            <br />
-          </div>
-          <div nz-col [nzSpan]="6">
-            <div
-              style="
+</nz-modal>
+
+
+<!--Modal add item-->
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="addTitle" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
+  nzOkText="{{ comfirmText }}">
+  <ng-template #addTitle style="text-align: center">Tạo giao dịch mới</ng-template>
+  <div *nzModalContent>
+    <div>
+      <label for="transaction-name" style="margin-top: 1rem">Số tiền</label>
+      <br />
+      <div nz-row class="select-box">
+        <div nz-col [nzSpan]="18">
+          <input type="number" nz-input placeholder="" [(ngModel)]="transactionAmount" id="transaction-name" />
+          <br />
+        </div>
+        <div nz-col [nzSpan]="6">
+          <div style="
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 margin-left: 1rem;
-              "
-            >
-              <nz-select
-                [(ngModel)]="transactionType"
-                (ngModelChange)="getListCatalogue()"
-                style="width: 100%"
-              >
-                <nz-option [nzLabel]="'Thu'" [nzValue]="1"></nz-option>
-                <nz-option [nzLabel]="'Chi'" [nzValue]="-1"></nz-option>
-              </nz-select>
-            </div>
+              ">
+            <nz-select [(ngModel)]="transactionType" (ngModelChange)="getListCatalogue()" style="width: 100%">
+              <nz-option [nzLabel]="'Thu'" [nzValue]="1"></nz-option>
+              <nz-option [nzLabel]="'Chi'" [nzValue]="-1"></nz-option>
+            </nz-select>
           </div>
         </div>
       </div>
-  
-      <label for="transaction-name">Danh mục</label> <br />
-      <div nz-row class="select-box">
-        <div nz-col [nzSpan]="16">
-          <nz-select
-            [(ngModel)]="transactionCategory"
-            style="width: 100%"
-          >
-            <nz-option
-              *ngFor="let item of listCatalogue"
-              [nzLabel]="item.name"
-              [nzValue]="item.id"
-            ></nz-option>
-          </nz-select>
-          <br />
-        </div>
-        <div nz-col [nzSpan]="8" style="padding-left: 1rem;">
-          <nz-date-picker
-            [(ngModel)]="dateTransaction"
-            (ngModelChange)="onChangeTime($event)"
-          ></nz-date-picker>
-          <br />
-        </div>
+    </div>
+
+    <label for="transaction-name">Danh mục</label> <br />
+    <div nz-row class="select-box">
+      <div nz-col [nzSpan]="16">
+        <nz-select [(ngModel)]="transactionCategory" style="width: 100%">
+          <nz-option *ngFor="let item of listCatalogue" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+        </nz-select>
+        <br />
       </div>
-  
-      <div>
-        <label for="transaction-note">Ghi chú</label> <br />
-        <input
-          nz-input
-          style="margin-bottom: 1rem"
-          [(ngModel)]="transactionNote"
-          id="transaction-note"
-        />
+      <div nz-col [nzSpan]="8" style="padding-left: 1rem;">
+        <nz-date-picker [(ngModel)]="dateTransaction" (ngModelChange)="onChangeTime($event)"></nz-date-picker>
         <br />
       </div>
     </div>
-  </nz-modal>
-  
-  <!--Modal update item-->
-  <nz-modal
-    [(nzVisible)]="isVisibleUpdate"
-    [nzTitle]="editTitle"
-    (nzOnCancel)="handleEditCancel()"
-    (nzOnOk)="handleEditOk()"
-    nzOkText="{{ comfirmText }}"
-  >
-    <ng-template #editTitle style="text-align: center"
-      >Cập nhật giao dịch</ng-template
-    >
-    <div *nzModalContent>
-  
-      <div>
-        <label for="transaction-name" style="margin-top: 1rem">Số tiền</label>
-        <br />
-        <div nz-row class="select-box">
-          <div nz-col [nzSpan]="24">
-            <input
-            type="number"
-              nz-input
-              placeholder=""
-              [(ngModel)]="transactionAmount"
-              id="transaction-name"
-            />
-            <br />
-          </div>
-        </div>
+
+    <div>
+      <label for="transaction-note">Ghi chú</label> <br />
+      <input nz-input style="margin-bottom: 1rem" [(ngModel)]="transactionNote" id="transaction-note" />
+      <br />
+    </div>
+  </div>
+</nz-modal>
+
+<!--Modal update item-->
+<nz-modal [(nzVisible)]="isVisibleUpdate" [nzTitle]="editTitle" (nzOnCancel)="handleEditCancel()"
+  (nzOnOk)="handleEditOk()" nzWidth="800px" nzOkText="{{ comfirmText }}">
+  <ng-template #editTitle style="text-align: center">Cập nhật thông tin người dùng</ng-template>
+  <div *nzModalContent>
+    <div style="text-align: center; margin-bottom: 1rem;">
+      <input style="display: none;" type="file" class="file-input" (change)="onFileChange($event)" #file>
+      <img [(src)]="userInfo.AVATAR" alt="User Avatar" style="width: 100px; height: 100px; border-radius: 50%;" />
+      <button nz-button class="file-input" (click)="file.click()" style="margin-left: 1rem; border: none;">
+        <span nz-icon nzType="upload"></span>
+        Upload avatar
+      </button>
+    </div>
+    <div nz-row style="display: flex; align-items: center;">
+      <div nz-col [nzSpan]="6">
+        <label for="user-id" style="font-weight: bold;">ID:</label>
       </div>
-      <label for="transaction-name">Danh mục</label> <br />
-      <div nz-row class="select-box">
-        <div nz-col [nzSpan]="16">
-          <nz-select
-            [(ngModel)]="transactionCategory"
-            style="width: 100%"
-          >
-            <nz-option
-              *ngFor="let item of listCatalogue"
-              [nzLabel]="item.name"
-              [nzValue]="item.id"
-            ></nz-option>
-          </nz-select>
-          <br />
-        </div>
-        <div nz-col [nzSpan]="8" style="padding-left: 1rem;">
-          <nz-date-picker
-            [(ngModel)]="dateTransaction"
-            (ngModelChange)="onChangeTime($event)"
-          ></nz-date-picker>
-          <br />
-        </div>
-      </div>
-  
-      <div>
-        <label for="transaction-note">Ghi chú</label> <br />
-        <input
-          nz-input
-          style="margin-bottom: 1rem"
-          [(ngModel)]="transactionNote"
-          id="transaction-note"
-        />
-        <br />
+      <div nz-col [nzSpan]="18">
+        <input nz-input placeholder="ID" [(ngModel)]="userInfo.ID_USER" id="user-id" disabled />
       </div>
     </div>
-  </nz-modal>
-  
+    <br />
+    <div nz-row>
+      <div nz-col [nzSpan]="6">
+        <label for="user-name" style="font-weight: bold;">Tên:</label>
+      </div>
+      <div nz-col [nzSpan]="18">
+        <input nz-input placeholder="Username" [(ngModel)]="userInfo.USERNAME" id="user-name" />
+      </div>
+    </div>
+    <br />
+    <div nz-row>
+      <div nz-col [nzSpan]="6">
+        <label for="user-email" disabled style="font-weight: bold;">Email:</label>
+      </div>
+      <div nz-col [nzSpan]="18">
+        <input nz-input placeholder="Email" [(ngModel)]="userInfo.EMAIL" id="user-email" />
+      </div>
+    </div>
+    <br />
+    <div nz-row>
+      <div nz-col [nzSpan]="6">
+        <label for="user-phone" style="font-weight: bold;">Số điện thoại:</label>
+      </div>
+      <div nz-col [nzSpan]="18">
+        <input nz-input placeholder="Phone" [(ngModel)]="userInfo.PHONE" id="user-phone" />
+      </div>
+    </div>
+    <br />
+    <div nz-row>
+      <div nz-col [nzSpan]="6">
+        <label for="user-gender" style="font-weight: bold;">Giới tính:</label>
+      </div>
+      <div nz-col [nzSpan]="18">
+        <nz-select [(ngModel)]="userInfo.GENDER" id="user-gender" style="width: 100%">
+          <nz-option [nzLabel]="'Nam'" [nzValue]="0"></nz-option>
+          <nz-option [nzLabel]="'Nữ'" [nzValue]="1"></nz-option>
+          <nz-option [nzLabel]="'Khác'" [nzValue]="2"></nz-option>
+        </nz-select>
+      </div>
+    </div>
+    <br />
+    <div nz-row>
+      <div nz-col [nzSpan]="6">
+        <label for="user-bod" style="font-weight: bold;">Ngày sinh:</label>
+      </div>
+      <div nz-col [nzSpan]="18">
+        <nz-date-picker [(ngModel)]="userInfo.BOD" id="user-bod" style="width: 100%"></nz-date-picker>
+      </div>
+    </div>
+    <br />
+    <div nz-row>
+      <div nz-col [nzSpan]="6">
+        <label for="user-address" style="font-weight: bold;">Địa chỉ:</label>
+      </div>
+      <div nz-col [nzSpan]="18">
+        <input nz-input placeholder="Address" [(ngModel)]="userInfo.ADDRESS" id="user-address" />
+      </div>
+    </div>
+    <br />
+    <div nz-row>
+      <div nz-col [nzSpan]="6">
+        <label for="user-description" style="font-weight: bold;">Mô tả:</label>
+      </div>
+      <div nz-col [nzSpan]="18">
+        <textarea nz-input placeholder="Description" [(ngModel)]="userInfo.DESCRIPTION" id="user-description"
+          rows="3"></textarea>
+      </div>
+    </div>
+    <br />
+    <div nz-row>
+      <div nz-col [nzSpan]="6">
+        <label for="user-facebook" style="font-weight: bold;">Facebook:</label>
+      </div>
+      <div nz-col [nzSpan]="18">
+        <input nz-input placeholder="Facebook" [(ngModel)]="userInfo.FACEBOOK" id="user-facebook" />
+      </div>
+    </div>
+    <br />
+    <div nz-row>
+      <div nz-col [nzSpan]="6">
+        <label for="user-instagram" style="font-weight: bold;">Instagram:</label>
+      </div>
+      <div nz-col [nzSpan]="18">
+        <input nz-input placeholder="Instagram" [(ngModel)]="userInfo.INSTAGRAM" id="user-instagram" />
+      </div>
+    </div>
+    <br />
+    <div nz-row>
+      <div nz-col [nzSpan]="6">
+        <label for="user-active" style="font-weight: bold;">Trạng thái hoạt động:</label>
+        <div nz-col [nzSpan]="18">
+          <nz-select [(ngModel)]="userInfo.ACTIVE" id="user-active" style="width: 100%">
+            <nz-option [nzLabel]="'Còn hiệu lực'" [nzValue]="true"></nz-option>
+            <nz-option [nzLabel]="'Hết hiệu lực'" [nzValue]="false"></nz-option>
+          </nz-select>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div nz-row>
+      <div nz-col [nzSpan]="24">
+        <h3 style="font-weight: bold;">Thông tin trường học</h3>
+      </div>
+    </div>
+    <div nz-row>
+      <div nz-col [nzSpan]="6">
+        <label for="school-name" style="font-weight: bold;">Tên trường:</label>
+      </div>
+      <div nz-col [nzSpan]="18">
+        <input nz-input placeholder="School Name" [(ngModel)]="userInfo.SCHOOL_INFO.SCHOOL_NAME" id="school-name" />
+      </div>
+    </div>
+    <br />
+    <div nz-row>
+      <div nz-col [nzSpan]="6">
+        <label for="school-type" style="font-weight: bold;">Hình thức:</label>
+      </div>
+      <div nz-col [nzSpan]="18">
+        <nz-select [(ngModel)]="userInfo.SCHOOL_INFO.TYPE_SCHOOL" id="school-type" style="width: 100%">
+          <nz-option [nzLabel]="'Trường công'" [nzValue]="1"></nz-option>
+          <nz-option [nzLabel]="'Trường tư'" [nzValue]="2"></nz-option>
+        </nz-select>
+      </div>
+    </div>
+    <br />
+    <div nz-row>
+      <div nz-col [nzSpan]="6">
+        <label for="province-name" style="font-weight: bold;">Tỉnh:</label>
+      </div>
+      <div nz-col [nzSpan]="18">
+        <nz-select nzAllowClear nzShowSearch nzServerSearch (nzOnSearch)="onSearch($event)" style="min-width: 150px;"
+          nzPlaceHolder="Chọn tỉnh thành" [(ngModel)]="userInfo.SCHOOL_INFO.PROVINCE_INFO.PROVINCE_NAME"
+          id="province-name">
+          <nz-option *ngFor="let option of filteredProvinces" [nzLabel]="option.name"
+            [nzValue]="option.name"></nz-option>
+        </nz-select>
+      </div>
+    </div>
+  </div>
+</nz-modal>

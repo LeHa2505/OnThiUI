@@ -18,6 +18,8 @@ import { CourseManagerComponent } from './teacher/course-manager/course-manager.
 import { EditCourseComponent } from './teacher/edit-course/edit-course.component';
 import { UserManageComponent } from './admin/user-manage/user-manage.component';
 import { CourseManageComponent } from './admin/course-manage/course-manage.component';
+import { CheckCourseComponent } from './admin/check-course/check-course.component';
+import { CheckLessonComponent } from './admin/check-lesson/check-lesson.component';
 
 const routes: Routes = [
   {
@@ -118,6 +120,14 @@ const routes: Routes = [
       {
         path: 'course-manage',
         component: CourseManageComponent
+      },
+      {
+        path: 'course-detail',
+        component: CheckCourseComponent
+      },
+      {
+        path: 'lesson-detail/:id',
+        component: CheckLessonComponent
       }
     ]
   }

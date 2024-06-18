@@ -49,4 +49,19 @@ export class UserService {
   getAllProvinces(): Observable<any> {
     return this.http.get<any>(this.jsonURL);
   }
+
+  getAllUser(): Observable<any> {
+    return this.http.get(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + "/user/getAll",
+      this.httpOptions
+    );
+  }
+
+  updateUserInfo(body: any): Observable<any> {
+    return this.http.post(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + "/user/updateUserInfo",
+      body,
+      this.httpOptions
+    );
+  }
 }

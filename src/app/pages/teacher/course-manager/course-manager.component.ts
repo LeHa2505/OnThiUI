@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./course-manager.component.less']
 })
 export class CourseManagerComponent {
-
+  courses = [
+    { title: 'Cooking class for your summer holiday' },
+    { title: 'Cooking class for your summer holiday' },
+    { title: 'Cooking class for your summer holiday' },
+    { title: 'Cooking class for your summer holiday' },
+  ];
 }

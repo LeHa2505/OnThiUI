@@ -88,6 +88,7 @@ export class ListCourseComponent implements OnInit {
     this.courseFilter.COURSE_NAME = '';
     this.courseFilter.TYPE_COURSE = null;
     this.courseFilter.USERNAME = '';
+    this.courseFilter.ACTIVE = true;
 
     this.searchApi();
   }
@@ -240,7 +241,8 @@ export class ListCourseComponent implements OnInit {
       this.selectedMenuItem
     );
     this.courseFilter.USERNAME = this.teacherName;
-
+    this.courseFilter.ACTIVE = true;
+    
     this.searchApi();
   }
 

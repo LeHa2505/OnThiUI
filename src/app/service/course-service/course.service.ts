@@ -147,4 +147,11 @@ export class CourseService {
       this.httpOptions
     );  
   }
+
+  getAllCourse(): Observable<any> {
+    return this.http.get(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/getAllCourse`,
+      this.httpOptions
+    );  
+  }
 }

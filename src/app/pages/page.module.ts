@@ -81,6 +81,8 @@ import { CourseManagerComponent } from './teacher/course-manager/course-manager.
 import { EditCourseComponent } from './teacher/edit-course/edit-course.component';
 import { UserManageComponent } from './admin/user-manage/user-manage.component';
 import { CourseManageComponent } from './admin/course-manage/course-manage.component';
+import { CheckCourseComponent } from './admin/check-course/check-course.component';
+import { CheckLessonComponent } from './admin/check-lesson/check-lesson.component';
 
 @NgModule({
   declarations: [
@@ -105,6 +107,8 @@ import { CourseManageComponent } from './admin/course-manage/course-manage.compo
     EditCourseComponent,
     UserManageComponent,
     CourseManageComponent,
+    CheckCourseComponent,
+    CheckLessonComponent,
   ],
 
   imports: [

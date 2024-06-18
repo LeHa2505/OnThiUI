@@ -1,1 +1,145 @@
-<p>course-manage works!</p>
+<h3 nz-typography style="text-align: center; font-size: 24px">
+    <strong>QUẢN LÝ KHÓA HỌC</strong>
+</h3>
+
+<!--Filter box-->
+<h6 style="margin-top: 5.5rem;">Lọc thông tin</h6>
+<div nz-row class="filter-block">
+    <div nz-col [nzSpan]="10">
+        <nz-input-group style="border-radius: 1rem;" [nzSuffix]="suffixIconSearch">
+            <input type="text" nz-input placeholder="Tìm kiếm theo tên khóa học, môn học,giáo viên"
+                [(ngModel)]="searchValue" (ngModelChange)="search()" />
+
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+            <span nz-icon nzType="search"></span>
+        </ng-template>
+        <br />
+    </div>
+    <div class="filter-item" nz-col [nzSpan]="4" style="display: flex; justify-content: center; align-items: center;">
+        <input nz-input type="number" nzAddOnAfter="VND" placeholder="Giá trị khóa học từ" [(ngModel)]="priceStart"
+            (ngModelChange)="search()" />
+    </div>
+    <div class="filter-item" nz-col [nzSpan]="4" style="display: flex; justify-content: center; align-items: center;">
+        <input type="number" nzAddOnAfter="VND" nz-input [(ngModel)]="priceEnd" (ngModelChange)="search()"
+            placeholder="Giá trị khóa học đến" />
+    </div>
+
+    <div class="filter-item" nz-col [nzSpan]="4" style="display: flex; justify-content: center; align-items: center;">
+        <nz-select style="width: 200px;" nzPlaceHolder="Dạng khóa học" [(ngModel)]="courseType"
+            (ngModelChange)="search()">
+            <nz-option nzDisabled [nzLabel]="'Dạng'" [nzValue]="null"></nz-option>
+            <nz-option [nzLabel]="'Nâng cao'" [nzValue]="1"></nz-option>
+            <nz-option [nzLabel]="'Cơ bản'" [nzValue]="0"></nz-option>
+            <nz-option [nzLabel]="'Luyện đề'" [nzValue]="2"></nz-option>
+            <nz-option [nzLabel]="'Tất cả'" [nzValue]="'Tất cả'"></nz-option>
+        </nz-select>
+    </div>
+</div>
+
+<div nz-row
+    style="display: flex; justify-content: flex-start; width: 100%; margin: 1rem 0rem 1.5rem 0rem; align-items: center;">
+    <div class="filter-item" nz-col [nzSpan]="4" style="display: flex; justify-content: center; align-items: center; margin-right: 1rem;">
+        <nz-select style="width: 200px;" nzPlaceHolder="Trạng thái" [(ngModel)]="checkStatus"
+            (ngModelChange)="search()">
+            <nz-option nzDisabled [nzLabel]="'Trạng thái'" [nzValue]="null"></nz-option>
+            <nz-option [nzLabel]="'Đang khóa'" [nzValue]="false"></nz-option>
+            <nz-option [nzLabel]="'Đang mở'" [nzValue]="true"></nz-option>
+            <nz-option [nzLabel]="'Tất cả'" [nzValue]="'Tất cả'"></nz-option>
+        </nz-select>
+    </div>
+
+    <div class="filter-item" nz-col [nzSpan]="4" style="display: flex; justify-content: center; align-items: center; margin-right: 1rem;">
+        <nz-select style="width: 200px;" nzPlaceHolder="Trạng thái duyệt" [(ngModel)]="checkStatus"
+            (ngModelChange)="search()">
+            <nz-option nzDisabled [nzLabel]="'Trạng thái duyệt'" [nzValue]="null"></nz-option>
+            <nz-option [nzLabel]="'Chưa duyệt'" [nzValue]="false"></nz-option>
+            <nz-option [nzLabel]="'Đã duyệt'" [nzValue]="true"></nz-option>
+            <nz-option [nzLabel]="'Tất cả'" [nzValue]="'Tất cả'"></nz-option>
+        </nz-select>
+    </div>
+
+    <button (click)="resetValueSelected()" nz-button nzType="dashed" nzShape="circle"
+        style="padding: 0.3rem 0.8rem 0.3rem 0.8rem; margin-right: 1rem;">
+        <span nz-icon>
+            <i class="fas fa-trash"></i>
+        </span>
+        Đặt lại
+    </button>
+</div>
+
+
+<!--Table-->
+<div>
+    <nz-table #basicTable [nzScroll]="{ x: '1150px'}" [nzData]="listOfDisplayData">
+        <thead>
+            <tr class="head-style">
+                <th [nzWidth]="'18rem'">Tên</th>
+                <th>Môn</th>
+                <th>Dạng</th>
+                <th>Giá gốc</th>
+                <th>Giá giảm</th>
+                <th>Giáo viên</th>
+                <th>Trạng thái</th>
+                <th>Duyệt</th>
+                <th [nzWidth]="'6rem'">Chi tiết</th>
+                <th [nzWidth]="'4rem'">Sửa</th>
+            </tr>
+        </thead>
+        <tbody style="text-align: center">
+            <tr *ngFor="
+              let data of basicTable.data;
+              let i = index
+            " style="height: fit-content;">
+                <td [nzWidth]="'18rem'" class="catalogue-name"
+                    style="border-radius: 1.5rem 0rem 0rem 1.5rem; height: 5rem;">
+                    <span style="display: flex; align-items: center;">
+                        <div *ngIf="!data.AVATAR_COURSE" class="avartar-img">
+                            <strong>{{data.COURSE_NAME[0].toUpperCase()}}</strong>
+                        </div>
+                        <div *ngIf="data.AVATAR_COURSE">
+                            <img style="width: 4rem; border-radius: 0.5rem;" [(src)]="data.AVATAR_COURSE" alt="">
+                        </div>
+                        <span class="course-name">{{ data.COURSE_NAME }}</span>
+                    </span>
+                </td>
+                <td>
+                    {{ data.CATEGORY_NAME }}
+                </td>
+                <td>
+                    {{ getCourseType(data.TYPE_COURSE) }}
+                </td>
+                <td>
+                    <span>{{ data.PRICE | currency:'VND' }}</span>
+                </td>
+                <td>
+                    {{ data.DISCOUNT | currency:'VND' }}
+                </td>
+                <td>
+                    <span style="display: flex; align-items: center;">
+                        <div *ngIf="!data.TEACHER_INFO.AVATAR" class="avartar-img">
+                            <strong>{{data.TEACHER_INFO.USERNAME[0].toUpperCase()}}</strong>
+                        </div>
+                        <nz-avatar *ngIf="data.TEACHER_INFO.AVATAR" [nzSrc]="data.TEACHER_INFO.AVATAR"></nz-avatar>
+                        <span style="margin-left: 0.3rem;"> {{ data.TEACHER_INFO.USERNAME }}</span>
+                    </span>
+                </td>
+                <td>
+                    {{ data.ACTIVE? 'Đang mở': 'Đang khóa' }}
+                </td>
+                <td>
+                    {{ data.IS_CHECK? 'Đã duyệt': 'Chưa duyệt' }}
+                </td>
+                <td style="text-align: center; font-size: 1.2rem" [nzWidth]="'6rem'">
+                    <span (click)="getCourseDetail(data.ID_COURSE)" style="cursor: pointer" nz-icon nzType="eye"
+                        nzTheme="fill"></span>
+                </td>
+                <td [nzWidth]="'4rem'"
+                    style=" border-radius: 0rem 1.5rem 1.5rem 0rem; text-align: center; font-size: 1.2rem;">
+                    <span (click)="showModalEdit(data)" style="cursor: pointer" nz-icon nzType="edit"
+                        nzTheme="fill"></span>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</div>
