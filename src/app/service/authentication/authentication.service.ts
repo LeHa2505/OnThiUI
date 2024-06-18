@@ -54,6 +54,8 @@ export class AuthenticationService {
     localStorage.setItem('refresh_token', authResult.data.refreshToken);
     localStorage.setItem('username', authResult.data.userInfoDTO.USERNAME);
     localStorage.setItem('avatar', authResult.data.userInfoDTO.AVATAR);
+    localStorage.setItem('phone', authResult.data.userInfoDTO.PHONE);
+    localStorage.setItem('address', authResult.data.userInfoDTO.ADDRESS);
     // localStorage.setItem('created_at', authResultDecode.iat);
     // localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
 

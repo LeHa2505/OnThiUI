@@ -1,0 +1,209 @@
+<section class="content" style="    display: flex;
+flex-wrap: wrap;
+flex-direction: row;
+justify-content: center;
+align-items: center;">
+    <div class="container">
+    </div>
+
+    <div class="details shadow">
+        <div class="details__item">
+            <div class="item__image">
+                <img class="iphone" [src]="courseDetail.AVATAR_COURSE" alt="iPhone X">
+            </div>
+            <div class="item__details">
+                <p style="font-size: 1.2rem;">THÔNG TIN KHÓA HỌC</p>
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span>
+                        <h6 style="font-size: 1rem; margin-bottom: 1rem;">Tên khóa: {{ courseDetail.COURSE_NAME }}</h6>
+                    </span>
+                </div>
+                <div style="margin: 0.5rem 0 1.5rem 0;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            flex-direction: column;
+            align-content: flex-start;">
+                    <div>
+                        Môn:
+                        <nz-tag style="border-radius: 16px;"
+                            [nzColor]="getCategoryNameColor(courseDetail.CATEGORY_NAME)">
+                            {{ courseDetail.CATEGORY_NAME }}
+                        </nz-tag>
+                    </div>
+                    <div style="margin-top: 0.5rem">
+                        Hình thức:
+                        <nz-tag style="border-radius: 16px;" [nzColor]="getCourseTypeColor(courseDetail.TYPE_COURSE)">
+                            {{ getCourseType(courseDetail.TYPE_COURSE) }}
+                        </nz-tag>
+                    </div>
+                </div>
+                <div>
+                    Giáo viên:
+                    <div style="display: flex; margin-top: 0.3rem;">
+                        <div style="margin-right: 1rem;">
+                            <nz-avatar [nzSize]="50" [nzSrc]="courseDetail.TEACHER_INFO.AVATAR"></nz-avatar>
+                        </div>
+                        <div style="width: 100%;">
+                            <div style="display: flex; justify-content: space-between; 
+                    align-items: center; margin-bottom: 0.2rem;
+                    width: 100%; float: right;">
+                                <h6 style="color: #252641; font-size: 15px; margin-bottom: 0rem;">{{
+                                    courseDetail.TEACHER_INFO.USERNAME }}</h6>
+                                <div>
+                                </div>
+                            </div>
+                            <div>
+                                <p style="font-size: 14px; font-weight: 200; color: #7A7E86; 
+                            font-family: ReadexPro-light; margin-bottom: 0.5rem">
+                                    {{courseDetail.TEACHER_INFO.SCHOOL_INFO.SCHOOL_NAME}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="Thông tin người mua" (nzOnCancel)="handleCancel()"
+        (nzOnOk)="handleOk()">
+        <ng-container *nzModalContent>
+            <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+                <nz-form-item>
+                    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">Tên người mua</nz-form-label>
+                    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Không được bỏ trống thông tin này!">
+                        <span>{{ username }}</span>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="phoneNumber" nzRequired>Số điện thoại</nz-form-label>
+                    <nz-form-control [nzSm]="14" [nzXs]="24" [nzValidateStatus]="validateForm.controls['phoneNumber']"
+                        nzErrorTip="Không được bỏ trống thông tin này!">
+                        <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate">
+                            <ng-template #addOnBeforeTemplate>
+                                <nz-select formControlName="phoneNumberPrefix" class="phone-select">
+                                    <nz-option nzLabel="+84" nzValue="+84"></nz-option>
+                                </nz-select>
+                            </ng-template>
+                            <input formControlName="phoneNumber" id="'phoneNumber'" [(ngModel)]="phoneNumber" nz-input />
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item disabled>
+                    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">Email</nz-form-label>
+                    <nz-form-control disabled [nzSm]="14" [nzXs]="24" nzErrorTip="Không được bỏ trống thông tin này!">
+                        <span>{{ email }}</span>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="address">Địa chỉ</nz-form-label>
+                    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Không được bỏ trống thông tin này!">
+                        <input [(ngModel)]="address" nz-input formControlName="address" id="address" />
+                    </nz-form-control>
+                </nz-form-item>
+            </form>
+        </ng-container>
+    </nz-modal>
+
+    <div class="payment__shipping">
+        <nz-card style="margin: 0 2rem; border-radius: 1rem;">
+            <h6 style="color: #252641;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            text-align: center;">THÔNG TIN THANH TOÁN</h6>
+
+            <div class="col-md-12">
+                <div class="row">
+                    <div
+                        class="receipt-main col-xs-12 col-sm-12 col-md-12 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
+                        <div class="row">
+                            <div class="receipt-header" style="margin-bottom: 1rem;">
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 text-left">
+                                    <div class="receipt-right" style="display: flex;">
+                                        <div class="receipt-right">
+                                            <h5>Thông tin học sinh </h5>
+                                            <p><b>Tên người mua :</b> {{ username }}</p>
+                                            <p><b>Số điện thoại :</b> {{ phoneNumber || 'Chưa có thông tin' }}</p>
+                                            <p><b>Email :</b> {{ email }}</p>
+                                            <p><b>Địa chỉ :</b> {{address || 'Chưa có thông tin'}}</p>
+                                        </div>
+                                        <div (click)="showModal()" style="cursor: pointer; color: #246eea;" nz-tooltip
+                                            nzTooltipTitle="Chỉnh sửa thông tin">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Mô tả</th>
+                                        <th>Tổng tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="col-md-7">Khóa học: {{ courseDetail.COURSE_NAME }}</td>
+                                        <td class="col-md-5">{{ courseDetail.PRICE.toLocaleString() }} VND</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right">
+                                            <p>
+                                                <strong>Tổng: </strong>
+                                            </p>
+                                            <p>
+                                                <strong>Mã giảm: </strong>
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <p>
+                                                <strong>{{ courseDetail.PRICE.toLocaleString() }} VND</strong>
+                                            </p>
+                                            <p>
+                                                <strong>0</strong>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+
+                                        <td class="text-right">
+                                            <h2><strong>Tổng thanh toán: </strong></h2>
+                                        </td>
+                                        <td class="text-left text-danger">
+                                            <h2><strong>{{ courseDetail.PRICE.toLocaleString() }} VND</strong></h2>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="row">
+                            <div class="receipt-header receipt-header-mid receipt-footer">
+                                <div class="col-xs-12 col-sm-12 col-md-12 text-left">
+                                    <div class="receipt-right">
+                                        <p><b>Date :</b> {{ today.toLocaleDateString('vi-VN') }}</p>
+                                        <h5 style="color: rgb(140, 140, 140);">Cảm ơn bạn vì đã chọn khóa học này!</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="actions" (click)="checkout()">
+                            <span class="btn action__submit">Xác nhận thanh toán <i
+                                    class="icon icon-arrow-right-circle"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nz-card>
+    </div>
+    <!-- <div class="container">
+        <div class="actions">
+            <a href="#" class="btn action__submit">Place your Order <i class="icon icon-arrow-right-circle"></i></a>
+        </div>
+    </div> -->
+</section>

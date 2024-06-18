@@ -1,8 +1,6 @@
-<div class="wrap">
-    <a style="width: 100%;" [href]="link" target="_blank" download>
-        <app-doc-file *ngIf="fileType == 'docs'"></app-doc-file>
-        <app-pdf-file *ngIf="fileType == 'pdf'"></app-pdf-file>
-        <app-exel-file *ngIf="fileType == 'exel'"></app-exel-file>
+<div>
+    <a class="wrap" style="width: 100%;" [href]="link" target="_blank" download>
+        <app-pdf-file ></app-pdf-file>
         <div class="info">
             <div nz-row style="width: 100%;">
                 <div nz-col nzSpan="19">

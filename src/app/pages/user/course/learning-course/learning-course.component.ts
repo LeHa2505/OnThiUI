@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { formatDistance } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { CourseService } from 'src/app/service/course-service/course.service';
 import { UploadService } from 'src/app/service/upload-service/upload.service';
+import { UserService } from 'src/app/service/user-service/user.service';
 
 @Component({
   selector: 'app-learning-course',
@@ -15,16 +16,27 @@ export class LearningCourseComponent implements OnInit {
   role = localStorage.getItem('role');
   idUser = localStorage.getItem('user_id');
   userAvatar = localStorage.getItem('avatar');
+  username = localStorage.getItem('username');
   idLeson: number;
   idCourse: number;
   detailLesson: any;
   isLoadingReview = false;
-  takeNote: any;
+  takeNote: any = '';
+  pauseMinutes: number;
+  pauseSecond: number;
+  pauseTime: number;
+  idNote: number;
+  isNoted = false;
   editorConfig = {
     base_url: '/tinymce',
     suffix: '.min',
     plugins: 'lists link image table wordcount',
     menubar: false,
+    setup: (editor) => {
+      editor.on('focus', () => {
+        this.startEdit();
+      });
+    },
   };
   isVisible = false;
   deleteItem: any;
@@ -32,51 +44,107 @@ export class LearningCourseComponent implements OnInit {
   panels = [];
   ratings = [];
   files = [];
-  quizs = [
-    {
-      name: 'Bài tập về Căn thức',
-      isFinish: true,
-    },
-    {
-      name: 'Bài tập về Căn thức',
-      isFinish: false,
-    },
-    {
-      name: 'Bài tập về Căn thức',
-      isFinish: false,
-    },
-  ];
+  learnedLessons = [];
+  quizs = [];
 
   data: any[] = [];
   submitting = false;
   user = {
-    author: 'Hà Trang',
-    avatar: 'https://cdn-icons-png.flaticon.com/512/1993/1993167.png',
+    author: this.username,
+    avatar: this.userAvatar,
   };
+  isLoadingQuiz = false;
 
   inputValue = '';
   courseDetail: any;
+  isLearned = false;
+  listClass: any[] = [];
+  isLearning = false;
+  isStarted = false;
+  userCourseDTO: any;
+  @ViewChild('videoPlayer') videoPlayer: ElementRef<HTMLVideoElement>;
 
   constructor(
     private courseService: CourseService,
     private notification: NzNotificationService,
     public router: Router,
-    private fileService: UploadService
+    private fileService: UploadService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
-    this.idLeson = this.courseService.idLesson;
-    this.idCourse = this.courseService.idCourse;
+    this.idLeson = Number(this.courseService.idLesson);
+    this.idCourse = Number(this.courseService.idCourse);
     if (!this.idLeson || !this.idCourse) {
       this.idCourse = Number(localStorage.getItem('idCourse'));
       this.idLeson = Number(localStorage.getItem('idLesson'));
     }
-    this.initCourseDetails();
-    this.userGetLessonDetail();
+    // this.initCourseDetails();
+    this.checkAcessToCourse();
   }
 
-  async initCourseDetails() {
+  userGetLessonDetail() {
+    this.courseService.userGetLessonDetail(this.idLeson).subscribe((res) => {
+      if (res.success) {
+        this.detailLesson = res.data;
+        this.files = res.data.DOCUMENTS_INFO;
+      } else {
+      }
+    });
+  }
+
+  async checkAcessToCourse() {
+    try {
+      await this.initListClass();
+      const foundItem = this.listClass.find(
+        (item) => item.ID_COURSE == this.idCourse
+      );
+      if (foundItem) {
+        this.userCourseDTO = foundItem;
+        this.isLearning = true;
+        if (foundItem.LEARNED_LESSON) {
+          this.getLearnedLessonArray(foundItem.LEARNED_LESSON);
+          this.isLearned = this.checkIsLearned(
+            this.learnedLessons,
+            this.idLeson
+          );
+          this.isStarted = true;
+        } else this.isStarted = false;
+        this.userInitCourseDetails();
+        this.userGetLessonDetail();
+        this.userGetNoteAPI();
+      } else {
+        this.isLearning = false;
+        this.guestInitCourseDetails();
+      }
+      console.log(this.isLearning);
+    } catch (error) {
+      console.error('Error initializing list class:', error);
+    }
+  }
+
+  async initListClass(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.userService.getListCourses(this.idUser).subscribe(
+        (res) => {
+          if (res.success) {
+            this.listClass = res.data;
+            resolve();
+          } else {
+            reject('Failed to load courses');
+          }
+        },
+        (error) => reject(error)
+      );
+    });
+  }
+
+  async guestInitCourseDetails() {
     await this.guestGetDetailCourseApi();
+  }
+
+  async userInitCourseDetails() {
+    await this.userGetDetailCourseApi();
   }
 
   async guestGetDetailCourseApi() {
@@ -86,7 +154,33 @@ export class LearningCourseComponent implements OnInit {
           if (res.success) {
             this.courseDetail = res.data;
             this.ratings = res.data.REVIEW;
-            this.mapLessonsToPanels(res.data.LESSON_INFO);
+            this.guestMapLessonsToPanels(res.data.LESSON_INFO);
+
+            res.data.LESSON_INFO.forEach((item) => {
+              this.files.push(...item.DOCUMENTS_INFO);
+            });
+            resolve();
+          } else {
+            this.router.navigateByUrl('/exception/404');
+            reject(); // Reject the promise if there is an error
+          }
+        },
+        (error) => {
+          this.router.navigateByUrl('/exception/404');
+          reject(); // Reject the promise if there is an error
+        }
+      );
+    });
+  }
+
+  async userGetDetailCourseApi() {
+    return new Promise<void>((resolve, reject) => {
+      this.courseService.userGetDetailCourse(this.idCourse).subscribe(
+        (res) => {
+          if (res.success) {
+            this.courseDetail = res.data;
+            this.ratings = res.data.REVIEW;
+            this.userMapLessonsToPanels(res.data.LESSON_INFO);
             console.log(this.panels);
 
             res.data.LESSON_INFO.forEach((item) => {
@@ -106,18 +200,9 @@ export class LearningCourseComponent implements OnInit {
     });
   }
 
-  userGetLessonDetail() {
-    this.courseService.userGetLessonDetail(this.idLeson).subscribe((res) => {
-      if (res.success) {
-        this.detailLesson = res.data;
-        this.files = res.data.DOCUMENTS_INFO;
-      }
-      else {        
-      }
-    })
-  }
+  userMapLessonsToPanels = (lessons) => {
+    lessons.sort((a, b) => a.ORDER - b.ORDER);
 
-  mapLessonsToPanels = (lessons) => {
     lessons.forEach((lesson) => {
       if (!lesson.LESSON_PARENT) {
         const listChild = [];
@@ -132,17 +217,26 @@ export class LearningCourseComponent implements OnInit {
               descrip: item.DESCRIPTION,
               active: false,
               name: item.LESSON_NAME,
+              order: Number(item.ORDER),
               time: item.DURATION,
               lesson: listChild,
+              isLearned: this.checkIsLearned(
+                this.learnedLessons,
+                item.ID_LESSON
+              ),
               disabled: false,
             };
             listChild.push(child);
           }
         });
+
+        listChild.sort((a, b) => a.order - b.order);
+
         let time = 0;
         listChild.forEach((child) => {
           time = time + Number(child.time);
         });
+
         const newPanel = {
           id: lesson.ID_LESSON,
           video: lesson.LINK_VIDEO,
@@ -152,6 +246,7 @@ export class LearningCourseComponent implements OnInit {
           descrip: lesson.DESCRIPTION,
           active: false,
           name: lesson.LESSON_NAME,
+          order: Number(lesson.ORDER),
           time: time,
           lesson: listChild,
           disabled: false,
@@ -159,6 +254,70 @@ export class LearningCourseComponent implements OnInit {
         this.panels.push(newPanel);
       }
     });
+  };
+
+  guestMapLessonsToPanels = (lessons) => {
+    // Initialize an empty array to hold the panels
+    this.panels = [];
+
+    // Sort the lessons array by the 'order' property in ascending order
+    lessons.sort((a, b) => a.ORDER - b.ORDER);
+
+    let panelCount = 0; // Initialize a counter for panels
+
+    for (const lesson of lessons) {
+      if (!lesson.LESSON_PARENT) {
+        const listChild = [];
+        lessons.forEach((item) => {
+          if (item.LESSON_PARENT && item.LESSON_PARENT == lesson.ID_LESSON) {
+            const child = {
+              id: item.ID_LESSON,
+              video: item.LINK_VIDEO,
+              subject: item.SUBJECT,
+              continueTime: item.CONTINUE_TIME,
+              view: item.VIEW,
+              descrip: item.DESCRIPTION,
+              active: false,
+              name: item.LESSON_NAME,
+              order: Number(item.ORDER),
+              time: item.DURATION,
+              lesson: listChild,
+              disabled: false,
+            };
+            listChild.push(child);
+          }
+        });
+
+        // Sort the listChild array by the 'order' property in ascending order
+        listChild.sort((a, b) => a.order - b.order);
+
+        let time = 0;
+        listChild.forEach((child) => {
+          time = time + Number(child.time);
+        });
+
+        const newPanel = {
+          id: lesson.ID_LESSON,
+          video: lesson.LINK_VIDEO,
+          subject: lesson.SUBJECT,
+          continueTime: lesson.CONTINUE_TIME,
+          view: lesson.VIEW,
+          descrip: lesson.DESCRIPTION,
+          active: false,
+          name: lesson.LESSON_NAME,
+          order: Number(lesson.ORDER),
+          time: time,
+          lesson: listChild,
+          disabled: false,
+        };
+        this.panels.push(newPanel);
+        panelCount++; // Increment the counter
+
+        if (panelCount === 5) {
+          break; // Stop processing once 5 panels have been added
+        }
+      }
+    }
   };
 
   getCategoryNameColor(type: string): string {
@@ -244,11 +403,11 @@ export class LearningCourseComponent implements OnInit {
           ...this.user,
           content,
           datetime: new Date(),
-          displayTime: formatDistance(new Date(), new Date(), {locale: vi}),
+          displayTime: formatDistance(new Date(), new Date(), { locale: vi }),
         },
       ].map((e) => ({
         ...e,
-        displayTime: formatDistance(new Date(), e.datetime, {locale: vi}),
+        displayTime: formatDistance(new Date(), e.datetime, { locale: vi }),
       }));
     }, 800);
   }
@@ -259,8 +418,7 @@ export class LearningCourseComponent implements OnInit {
       if (res.success && res.data) {
         this.ratings = res.data;
         this.isLoadingReview = false;
-      }
-      else this.ratings = [];
+      } else this.ratings = [];
       this.isLoadingReview = false;
     });
   }
@@ -428,9 +586,12 @@ export class LearningCourseComponent implements OnInit {
   }
 
   onPause(video: HTMLVideoElement): void {
-    const currentTime = video.currentTime; // Lấy thời gian hiện tại tính bằng giây
-    localStorage.setItem('pauseTime', currentTime.toString());
-    console.log(currentTime);
+    this.pauseTime = 0;
+    this.pauseTime = video.currentTime;
+    this.pauseMinutes = Math.floor(Number(this.pauseTime) / 60); // Chuyển đổi sang phút
+    this.pauseSecond = Math.floor(Number(this.pauseTime) % 60); // Lấy thời gian hiện tại tính bằng giây
+    localStorage.setItem('pauseTime', this.pauseTime.toString());
+    console.log(this.pauseTime);
   }
 
   onLoadedMetadata(video: HTMLVideoElement): void {
@@ -438,5 +599,169 @@ export class LearningCourseComponent implements OnInit {
     if (pausedTime) {
       video.currentTime = parseFloat(pausedTime); // Thiết lập thời gian bắt đầu của video
     }
+  }
+
+  startEdit() {
+    this.videoPlayer.nativeElement.pause();
+    if (!this.pauseMinutes || !this.pauseSecond) {
+      this.pauseMinutes = 0;
+      this.pauseSecond = 0;
+    }
+    this.takeNote =
+      this.takeNote +
+      `<p>Thời gian ${this.pauseMinutes}m${this.pauseSecond}s: </p>`;
+  }
+
+  saveLearn() {
+    this.courseService
+      .updateLearningProcess({
+        ID_USER_COURSE: this.userCourseDTO.ID_USER_COURSE,
+        ID_USER: this.idUser,
+        ID_COURSE: this.idCourse,
+        LEARNING_LESSON: this.idLeson,
+        LEARNED_LESSON: this.userCourseDTO.LEARNED_LESSON
+          ? this.userCourseDTO.LEARNED_LESSON + `,${this.idLeson}`
+          : `${this.idLeson}`,
+      })
+      .subscribe((res) => {
+        if (res.success) {
+          this.createNotification('Đánh dấu đã học thành công!', 'success');
+          this.isLearned = !this.isLearned;
+        } else {
+          this.createNotification(res.message, 'error');
+        }
+      });
+  }
+
+  deleteLearn() {
+    this.courseService
+      .updateLearningProcess({
+        ID_USER_COURSE: this.userCourseDTO.ID_USER_COURSE,
+        ID_USER: this.idUser,
+        ID_COURSE: this.idCourse,
+        LEARNING_LESSON: this.idLeson,
+        LEARNED_LESSON: this.removeNumberFromString(
+          this.userCourseDTO.LEARNED_LESSON,
+          this.idLeson
+        ),
+      })
+      .subscribe((res) => {
+        if (res.success) {
+          this.createNotification('Đánh dấu thành chưa học!', 'success');
+          this.isLearned = !this.isLearned;
+        } else {
+          this.createNotification(res.message, 'error');
+        }
+      });
+  }
+
+  removeNumberFromString(numberString: string, deleteNumber: number): string {
+    return numberString
+      .split(',')
+      .filter((num) => Number(num) !== deleteNumber)
+      .join(',');
+  }
+
+  learning(item: any) {
+    this.courseService.idLesson = Number(item.id);
+    this.courseDetail.idCourse = this.idCourse;
+    localStorage.setItem('idCourse', this.idCourse.toString());
+    localStorage.setItem('idLesson', item.id.toString());
+    this.router.navigateByUrl(`/courses/learning/${item.name}`);
+    window.location.reload();
+  }
+
+  getLearnedLessonArray(learnedLesson: string) {
+    this.learnedLessons = learnedLesson.split(',').map((id) => Number(id));
+  }
+
+  checkIsLearned(learnedLessons: any, idLesson: any): boolean {
+    if (learnedLessons.find((item) => Number(item) == Number(idLesson))) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  saveNote() {
+    this.courseService
+      .saveNote({
+        ID_USER: Number(this.idUser),
+        ID_LESSON: this.idLeson,
+        CONTENT: this.takeNote,
+        NOTE_TIME: 1.1,
+      })
+      .subscribe((res) => {
+        if (res.success) {
+          this.createNotification(res.message, 'success');
+        } else {
+          this.createNotification(res.message, 'error');
+        }
+      });
+  }
+
+  updateNote() {
+    this.courseService
+      .updateNote({
+        ID_NOTE: this.idNote,
+        ID_USER: Number(this.idUser),
+        ID_LESSON: this.idLeson,
+        CONTENT: this.takeNote,
+        NOTE_TIME: 1.1,
+      })
+      .subscribe((res) => {
+        if (res.success) {
+          this.createNotification(res.message, 'success');
+        } else {
+          this.createNotification(res.message, 'error');
+        }
+      });
+  }
+
+  userGetNoteAPI() {
+    this.courseService
+      .userGetNote({
+        ID_USER: Number(this.idUser),
+        ID_LESSON: this.idLeson,
+      })
+      .subscribe((res) => {
+        if (res.success) {
+          if (!res.data.CONTENT) {
+            this.isNoted = false;
+          } else {
+            this.isNoted = true;
+            this.idNote = res.data.ID_NOTE;
+            this.takeNote = res.data.CONTENT;
+          }
+        }
+      });
+  }
+
+  getListExerciseAPI() {
+    this.isLoadingQuiz = true;
+    this.courseService.getListExercise({
+      ID_LESSON: Number(this.idLeson),
+      ID_USER: Number(this.idUser)
+    }).subscribe((res) => {
+      if (res.success) {
+        this.quizs = res.data;
+        this.isLoadingQuiz = false;
+      }
+    })
+  }
+
+  checkIsFinish(input: any): boolean {
+    const userAnswer = input.QUIZ_INFO.find((item) => item.QUIZ_USER_INFO.length > 0);
+    if (userAnswer) {
+      return true;
+    }
+    else return false;
+  }
+
+  doExercise() {
+    this.courseService.idCourse = Number(this.idCourse);
+    this.courseService.idLesson = Number(this.idLeson)
+    localStorage.setItem('idCourse', this.idCourse.toString());
+    localStorage.setItem('idLesson', this.idLeson.toString());
   }
 }

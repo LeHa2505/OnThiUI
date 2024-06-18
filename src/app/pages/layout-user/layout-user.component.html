@@ -1,6 +1,6 @@
 <nz-layout class="layout">
 
-  <nz-sider class="menu-sidebar" nzTheme="dark" nzCollapsible nzWidth="180px" nzBreakpoint="md"
+  <nz-sider class="menu-sidebar" nzTheme="dark" nzCollapsible nzWidth="200px" nzBreakpoint="md"
     [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
     <div class="sidebar-logo" [routerLink]="'/'">
       <div style="width: 2.3rem; height: 2.3rem; border-radius: 8px; background-color: #fff; transform: rotate(45deg);">
@@ -45,7 +45,8 @@
 
             <nz-dropdown-menu #noti="nzDropdownMenu">
               <ul nz-menu nzSelectable style="height: 350px !important; overflow-y: scroll;">
-                <li *ngFor="let item of notifications" style="width: 350px;" class="ant-dropdown-menu-item" nz-menu-item>
+                <li *ngFor="let item of notifications" style="width: 350px;" class="ant-dropdown-menu-item"
+                  nz-menu-item>
                   <div style="padding: 5px 16px !important; display: flex;">
                     <div>
                       <span nz-icon nzTheme="outline" style="margin-right: 1rem;">
@@ -71,8 +72,10 @@
           </div>
 
           <span class="avartar-img">
-            <!-- <strong>{{username[0].toUpperCase()}}</strong> -->
-            <img style="width: 100%;" src="https://cdn-icons-png.flaticon.com/512/1993/1993167.png" alt="">
+            <div *ngIf="avatar=='null'">
+              <strong>{{username[0].toUpperCase()}}</strong>
+            </div>
+            <img *ngIf="avatar!='null'" style="width: 100%;" [src]="avatar" alt="">
           </span>
           <div>
             <div style="display: flex; align-items: center;">
@@ -80,8 +83,14 @@
                 <span style="font-size: 14px">
                   <strong>{{username}}</strong>
                 </span>
-                <span style="font-size: 12px">
-                  {{role==='teacher'?'Giáo viên':'Học sinh'}}
+                <span *ngIf="role == '1'" style="font-size: 12px">
+                  Học sinh
+                </span>
+                <span *ngIf="role == '2'" style="font-size: 12px">
+                  Giáo viên
+                </span>
+                <span *ngIf="role == '0'" style="font-size: 12px">
+                  Quản trị viên
                 </span>
               </div>
               <div style="margin-left: 0.5rem;">
@@ -92,16 +101,18 @@
             <nz-dropdown-menu #menu="nzDropdownMenu">
               <ul nz-menu nzSelectable>
                 <li style="width: 160px;" class="ant-dropdown-menu-item" nz-menu-item [routerLink]="'profile'">
-                  <div style="padding: 5px 16px !important;"><span nz-icon nzTheme="outline">
-                      <i class="fas fa-user"></i>
+                  <div style=" display: flex; padding: 5px 16px !important; align-items: center; ">
+                    <span nz-icon nzTheme="outline">
+                      <i class="fas fa-user" style="margin-right: 0.3rem;"></i>
                     </span>
-                    Profile</div>
+                    Cá nhân
+                  </div>
                 </li>
                 <li style="width: 160px;" class="ant-dropdown-menu-item" nz-menu-item (click)="showConfirm()">
-                  <div style="padding: 5px 16px !important;">
+                  <div style="display: flex; padding: 5px 16px !important; align-items: center; ">
                     <span nz-icon nzTheme="outline">
-                      <i class="fas fa-right-from-bracket"></i>
-                    </span> Log out
+                      <i class="fas fa-right-from-bracket" style="margin-right: 0.3rem;"></i>
+                    </span> Đăng xuất
                   </div>
                 </li>
               </ul>
@@ -122,12 +133,13 @@
       </nz-breadcrumb-item>
     </nz-breadcrumb> -->
     <nz-content>
-      <div class="inner-content">
+      <div [class]="role == '0'? 'inner-content-admin':'inner-content'">
         <router-outlet></router-outlet>
       </div>
     </nz-content>
 
-    <nz-footer *ngIf="url != '/chat'" style="text-align: center; padding: 5rem 0 0 0; margin-top: -8px; line-height: 20px;">
+    <nz-footer *ngIf="url != '/chat'"
+      style="text-align: center; padding: 5rem 0 0 0; margin-top: -8px; line-height: 20px;">
       <nz-divider></nz-divider>
       <app-footer></app-footer>
     </nz-footer>

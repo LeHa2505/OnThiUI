@@ -15,7 +15,23 @@
 
     <!-- Giới thiệu khóa học -->
     <nz-card style="width:65%; margin-top: 1rem; border-radius: 1rem;">
-        <h6 style="font-size: 1.1rem; margin-bottom: 1rem;">{{courseDetail.COURSE_NAME}}</h6>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h6 style="font-size: 1.1rem; margin-bottom: 1rem;">{{courseDetail.COURSE_NAME}}</h6>
+            <div style="cursor: pointer;" *ngIf="isLearning">
+                <nz-tag *ngIf="!isLearned" (click)="saveLearn()" [nzColor]="'blue'" style="border: none; font-size: 14px; border-radius: 1rem; padding: 0rem 1rem">
+                    <i style="margin-right: 0.5rem;" class="fa-regular fa-bookmark"></i>
+                    <span >
+                        Đánh dấu đã học xong
+                    </span>
+                </nz-tag>
+                <nz-tag *ngIf="isLearned" (click)="deleteLearn()" [nzColor]="'blue'" style="border: none; font-size: 14px; border-radius: 1rem; padding: 0rem 1rem">
+                    <i style="margin-right: 0.5rem;" class="fa-solid fa-bookmark"></i>
+                    <span >
+                        Đã học
+                    </span>
+                </nz-tag>
+            </div>
+        </div>
         <div style="margin: 0.5rem 0 1.5rem 0; display: flex; align-items: center; justify-content: space-between">
             <div>
                 <nz-tag style="border-radius: 16px;" [nzColor]="getCategoryNameColor(courseDetail.CATEGORY_NAME)">
@@ -29,12 +45,12 @@
 
         <!-- Đây là chỗ viết video này -->
         <div style="margin-top: 1rem;">
-            <h6 style="margin-bottom: 1rem; padding-right: 0.5rem;">{{detailLesson.LESSON_NAME}}</h6>
-            <video #videoPlayer width="100%" controls style="border-radius: 15px;" (pause)="onPause(videoPlayer)" (loadedmetadata)="onLoadedMetadata(videoPlayer)">
+            <video #videoPlayer width="100%" controls style="border-radius: 15px;" (pause)="onPause(videoPlayer)"
+                (loadedmetadata)="onLoadedMetadata(videoPlayer)">
                 <source [src]="detailLesson.LINK_VIDEO" type="video/mp4">
                 Your browser does not support HTML5 video.
             </video>
-            
+            <h6 style="margin-top: 1rem; padding-right: 0.5rem;"><b>Bài học:</b> {{detailLesson.LESSON_NAME}}</h6>
         </div>
 
         <!-- Đây là chỗ có nhiều tab này -->
@@ -50,11 +66,24 @@
                     <div>
                         <editor [init]="editorConfig" [(ngModel)]="takeNote"></editor>
                     </div>
+
+                    <button nz-button *ngIf="isLearning && !isNoted"
+                        style="background-color: rgb(0, 39, 102); border: none; margin-top: 1rem; float: right;"
+                        (click)="saveNote()" nzType="primary">
+                        <span nz-icon nzType="save" nzTheme="outline"></span>
+                        Lưu lại ghi chú
+                    </button>
+                    <button nz-button *ngIf="isLearning && isNoted"
+                        style="background-color: rgb(0, 39, 102); border: none; margin-top: 1rem; float: right;"
+                        (click)="updateNote()" nzType="primary">
+                        <span nz-icon nzType="save" nzTheme="outline"></span>
+                        Cập nhật ghi chú
+                    </button>
                 </nz-tab>
 
                 <nz-tab [nzTitle]="customizeTab2">
                     <ng-template #customizeTab2>
-                        <span [ngClass]="{'tabs-custome': activeTab === 2, 'tabs-custome-active': activeTab !== 2}">
+                        <span [ngClass]="{'tabs-custome': activeTab === 2, 'tabs-custome-active ': activeTab !== 2}">
                             Tài liệu
                         </span>
                     </ng-template>
@@ -99,7 +128,7 @@
                             </nz-comment-action>
                             <nz-comment-action *ngIf="item.ID_USER == idUser">
                                 <i (click)="openModal(item)" class="fas fa-trash-can"></i>
-                            </nz-comment-action> 
+                            </nz-comment-action>
                         </nz-comment>
 
                         <nz-list *ngIf="data.length" [nzDataSource]="data" [nzRenderItem]="item"
@@ -125,7 +154,7 @@
                             </ng-template>
                         </nz-list>
 
-                        <nz-comment>
+                        <nz-comment *ngIf="isLearning">
                             <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="user.avatar"></nz-avatar>
                             <nz-comment-content class="comment">
                                 <nz-form-item style="width: 85%;">
@@ -143,30 +172,36 @@
                     </div>
                 </nz-tab>
 
-                <nz-tab [nzTitle]="customizeTab4">
+                <nz-tab [nzTitle]="customizeTab4" *ngIf="isLearning">
                     <ng-template #customizeTab4>
-                        <span [ngClass]="{'tabs-custome': activeTab === 4, 'tabs-custome-active': activeTab !== 4}">
+                        <span (click)="getListExerciseAPI()"
+                        [ngClass]="{'tabs-custome': activeTab === 4, 'tabs-custome-active': activeTab !== 4}">
                             Ôn tập
                         </span>
                     </ng-template>
 
-                    <div style="width: 100%;" *ngFor="let item of quizs">
-                        <div class="wrap">
-                            <app-none-file></app-none-file>
-                            <div class="info">
-                                <div class="info-detail">
-                                    <p style="font-family: ReadexPro-regular; font-size: 14px; margin: 0;">{{ item.name
-                                        }}</p>
-                                    <p *ngIf="!item.isFinish" [routerLink]="['/courses/quizs', item.name]" style="font-family: ReadexPro-regular; cursor: pointer;
-                                        font-size: 14px; margin: 0; color: #EE7777;">
-                                        Làm bài
-                                        <i style="margin-left: 0.5rem;" class="fa-solid fa-pencil"></i>
-                                    </p>
-                                    <p *ngIf="item.isFinish"
-                                        style="font-family: ReadexPro-regular; font-size: 14px; margin: 0; color: #27AE60;">
-                                        Đã hoàn thành
-                                        <i style="margin-left: 0.5rem;" class="fa-solid fa-check"></i>
-                                    </p>
+                    <div *ngIf="isLoadingQuiz">
+                        <nz-skeleton></nz-skeleton>
+                    </div>
+                    <div *ngIf="!isLoadingQuiz && quizs">
+                        <div style="width: 100%;" *ngFor="let item of quizs">
+                            <div class="wrap">
+                                <app-none-file></app-none-file>
+                                <div class="info">
+                                    <div class="info-detail">
+                                        <p style="font-family: ReadexPro-regular; font-size: 14px; margin: 0;">{{ item.EXERCISE_NAME
+                                            }}</p>
+                                        <p *ngIf="!checkIsFinish(item)" (click)="doExercise()" [routerLink]="['/courses/quizs', item.ID_EXERCISE]" style="font-family: ReadexPro-regular; cursor: pointer;
+                                            font-size: 14px; margin: 0; color: #EE7777;">
+                                            Làm bài
+                                            <i style="margin-left: 0.5rem;" class="fa-solid fa-pencil"></i>
+                                        </p>
+                                        <p  *ngIf="checkIsFinish(item)" (click)="doExercise()" [routerLink]="['/courses/quizs', item.ID_EXERCISE]" 
+                                            style="font-family: ReadexPro-regular; font-size: 14px; margin: 0; color: #27AE60; cursor: pointer;">
+                                            Đã hoàn thành
+                                            <i style="margin-left: 0.5rem;" class="fa-solid fa-check"></i>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -183,9 +218,6 @@
         <!-- Nội dung khóa học -->
         <nz-card style="margin-top: 1rem; border-radius: 1rem;">
             <h6 style="color: #252641; font-size: 16px; margin-bottom: 0.5rem;">Nội dung khóa học</h6>
-            <h6 style="color: #002766; font-size: 14px; text-transform: uppercase;">2/5 HOÀN THÀNH</h6>
-
-            <nz-progress [nzStrokeColor]="'#002766'" [nzPercent]="40"></nz-progress>
 
             <nz-collapse [nzExpandIconPosition]="'right'" nzGhost style="margin-top: 1rem; border-radius: 1rem;">
                 <nz-collapse-panel *ngFor="let panel of panels" style="border-radius: 1rem; 
@@ -207,7 +239,10 @@
 
                     <!-- Content -->
                     <div class="content-lesson" *ngFor="let item of panel.lesson; let i=index" (click)="learning(item)">
-                        <p style="margin-bottom:0; font-size: 15px; padding-right: 0.3rem">{{i+1}}. {{ item.name }}</p>
+                        <p style="margin-bottom:0; font-size: 15px; padding-right: 0.3rem">
+                            <i *ngIf="item.isLearned" class="fa-solid fa-circle-check" style="color: rgb(56, 158, 13);"></i>
+                            {{i+1}}. {{ item.name }}
+                        </p>
                         <p style="margin-bottom:0; font-size: 14px; white-space: nowrap;">{{ item.time + ' phút'}}</p>
                     </div>
 

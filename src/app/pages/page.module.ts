@@ -75,6 +75,14 @@ import { FileManageComponent } from './user/file-manage/file-manage.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { ChatComponent } from './user/chat/chat.component';
 import { MessageComponent } from './user/message/message.component';
+import { BuyCourseComponent } from './user/buy-course/buy-course.component';
+import { StudentManagerComponent } from './teacher/student-manager/student-manager.component';
+import { CourseManagerComponent } from './teacher/course-manager/course-manager.component';
+import { EditCourseComponent } from './teacher/edit-course/edit-course.component';
+import { UserManageComponent } from './admin/user-manage/user-manage.component';
+import { CourseManageComponent } from './admin/course-manage/course-manage.component';
+import { CheckCourseComponent } from './admin/check-course/check-course.component';
+import { CheckLessonComponent } from './admin/check-lesson/check-lesson.component';
 
 @NgModule({
   declarations: [
@@ -93,6 +101,14 @@ import { MessageComponent } from './user/message/message.component';
     FileManageComponent,
     ChatComponent,
     MessageComponent,
+    BuyCourseComponent,
+    StudentManagerComponent,
+    CourseManagerComponent,
+    EditCourseComponent,
+    UserManageComponent,
+    CourseManageComponent,
+    CheckCourseComponent,
+    CheckLessonComponent,
   ],
 
   imports: [

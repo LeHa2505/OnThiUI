@@ -5,6 +5,7 @@ import { el, vi } from 'date-fns/locale';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { CourseService } from 'src/app/service/course-service/course.service';
 import { UploadService } from 'src/app/service/upload-service/upload.service';
+import { UserService } from 'src/app/service/user-service/user.service';
 
 @Component({
   selector: 'app-detail-course',
@@ -28,6 +29,10 @@ export class DetailCourseComponent implements OnInit {
   filenames: string[] = [];
   formData = new FormData();
   fileStatus = { status: '', requestType: '', percent: 0 };
+  isLearning = false;
+  isStarted = false;
+  learnedLessons= [];
+  learningLeson: any;
 
   panels = [];
 
@@ -42,12 +47,13 @@ export class DetailCourseComponent implements OnInit {
   formatProgress = (percent: number): string => `${percent}%`;
 
   comments = [];
-
+  listClass: any[] = [];
   files = [];
 
   constructor(
     private courseService: CourseService,
     private notification: NzNotificationService,
+    private userService: UserService,
     public router: Router,
     private fileService: UploadService
   ) {}
@@ -57,11 +63,55 @@ export class DetailCourseComponent implements OnInit {
     if (!this.idCourse) {
       this.idCourse = Number(localStorage.getItem('idCourse'));
     }
-    this.initCourseDetails();
+    this.checkAcessToCourse();
   }
 
-  async initCourseDetails() {
+  async initListClass(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.userService.getListCourses(this.idUser).subscribe(
+        (res) => {
+          if (res.success) {
+            this.listClass = res.data;
+            resolve();
+          } else {
+            reject('Failed to load courses');
+          }
+        },
+        (error) => reject(error)
+      );
+    });
+  }
+
+  async checkAcessToCourse() {
+    try {
+      await this.initListClass();
+      const foundItem = this.listClass.find(
+        (item) => item.ID_COURSE == this.idCourse
+      );
+      if (foundItem) {
+        this.isLearning = true;
+        this.learningLeson = foundItem.LEARNING_LESSON;
+        if (foundItem.LEARNED_LESSON) {
+          this.getLearnedLessonArray(foundItem.LEARNED_LESSON);
+          this.isStarted = true;
+        } else this.isStarted = false;
+        this.userInitCourseDetails();
+      } else {
+        this.isLearning = false;
+        this.guestInitCourseDetails();
+      }
+      console.log(this.isLearning);
+    } catch (error) {
+      console.error('Error initializing list class:', error);
+    }
+  }
+
+  async guestInitCourseDetails() {
     await this.guestGetDetailCourseApi();
+  }
+
+  async userInitCourseDetails() {
+    await this.userGetDetailCourseApi();
   }
 
   async guestGetDetailCourseApi() {
@@ -71,12 +121,39 @@ export class DetailCourseComponent implements OnInit {
           if (res.success) {
             this.courseDetail = res.data;
             this.ratings = res.data.REVIEW;
-            this.mapLessonsToPanels(res.data.LESSON_INFO);
+            this.guestMapLessonsToPanels(res.data.LESSON_INFO);
             console.log(this.panels);
-            
+
             res.data.LESSON_INFO.forEach((item) => {
-              this.files.push(...item.DOCUMENTS_INFO);              
-            })
+              this.files.push(...item.DOCUMENTS_INFO);
+            });
+            resolve();
+          } else {
+            this.router.navigateByUrl('/exception/404');
+            reject(); // Reject the promise if there is an error
+          }
+        },
+        (error) => {
+          this.router.navigateByUrl('/exception/404');
+          reject(); // Reject the promise if there is an error
+        }
+      );
+    });
+  }
+
+  async userGetDetailCourseApi() {
+    return new Promise<void>((resolve, reject) => {
+      this.courseService.userGetDetailCourse(this.idCourse).subscribe(
+        (res) => {
+          if (res.success) {
+            this.courseDetail = res.data;
+            this.ratings = res.data.REVIEW;
+            this.userMapLessonsToPanels(res.data.LESSON_INFO);
+            console.log(this.panels);
+
+            res.data.LESSON_INFO.forEach((item) => {
+              this.files.push(...item.DOCUMENTS_INFO);
+            });
             resolve();
           } else {
             this.router.navigateByUrl('/exception/404');
@@ -265,8 +342,7 @@ export class DetailCourseComponent implements OnInit {
         this.ratings = res.data;
         this.calculateRatings();
         this.isLoadingReview = false;
-      }
-      else this.ratings = [];
+      } else this.ratings = [];
       this.isLoadingReview = false;
     });
   }
@@ -474,11 +550,10 @@ export class DetailCourseComponent implements OnInit {
   onUpload(): void {
     if (this.image) {
       this.fileService.upload(this.image).subscribe(
-        data => {
+        (data) => {
           console.log(data);
         },
-        err => {
-        }
+        (err) => {}
       );
     }
   }
@@ -487,7 +562,6 @@ export class DetailCourseComponent implements OnInit {
     console.log(event);
     const file: File = event.target.files[0];
     this.formData.append('file', file);
-    
   }
 
   onFileChange(event: any) {
@@ -503,12 +577,14 @@ export class DetailCourseComponent implements OnInit {
     this.onUpload();
   }
 
-  mapLessonsToPanels = (lessons) => {
-    lessons.forEach(lesson => {
+  userMapLessonsToPanels = (lessons) => {
+    lessons.sort((a, b) => a.ORDER - b.ORDER);
+
+    lessons.forEach((lesson) => {
       if (!lesson.LESSON_PARENT) {
         const listChild = [];
         lessons.forEach((item) => {
-          if (item.LESSON_PARENT && item.LESSON_PARENT==lesson.ID_LESSON) {
+          if (item.LESSON_PARENT && item.LESSON_PARENT == lesson.ID_LESSON) {
             const child = {
               id: item.ID_LESSON,
               video: item.LINK_VIDEO,
@@ -518,17 +594,22 @@ export class DetailCourseComponent implements OnInit {
               descrip: item.DESCRIPTION,
               active: false,
               name: item.LESSON_NAME,
-              time: item.DURATION, 
+              order: Number(item.ORDER),
+              time: item.DURATION,
               lesson: listChild,
               disabled: false,
             };
-            listChild.push(child)
+            listChild.push(child);
           }
-        })
+        });
+
+        listChild.sort((a, b) => a.order - b.order);
+
         let time = 0;
         listChild.forEach((child) => {
           time = time + Number(child.time);
-        })
+        });
+
         const newPanel = {
           id: lesson.ID_LESSON,
           video: lesson.LINK_VIDEO,
@@ -538,15 +619,80 @@ export class DetailCourseComponent implements OnInit {
           descrip: lesson.DESCRIPTION,
           active: false,
           name: lesson.LESSON_NAME,
-          time: time, 
+          order: Number(lesson.ORDER),
+          time: time,
           lesson: listChild,
           disabled: false,
         };
         this.panels.push(newPanel);
-
       }
     });
+  };
+
+  guestMapLessonsToPanels = (lessons) => {
+    // Initialize an empty array to hold the panels
+  this.panels = [];
+
+  // Sort the lessons array by the 'order' property in ascending order
+  lessons.sort((a, b) => a.ORDER - b.ORDER);
+
+  let panelCount = 0; // Initialize a counter for panels
+
+  for (const lesson of lessons) {
+    if (!lesson.LESSON_PARENT) {
+      const listChild = [];
+      lessons.forEach((item) => {
+        if (item.LESSON_PARENT && item.LESSON_PARENT == lesson.ID_LESSON) {
+          const child = {
+            id: item.ID_LESSON,
+            video: item.LINK_VIDEO,
+            subject: item.SUBJECT,
+            continueTime: item.CONTINUE_TIME,
+            view: item.VIEW,
+            descrip: item.DESCRIPTION,
+            active: false,
+            name: item.LESSON_NAME,
+            order: Number(item.ORDER),
+            time: item.DURATION,
+            lesson: listChild,
+            disabled: false,
+          };
+          listChild.push(child);
+        }
+      });
+
+      // Sort the listChild array by the 'order' property in ascending order
+      listChild.sort((a, b) => a.order - b.order);
+
+      let time = 0;
+      listChild.forEach((child) => {
+        time = time + Number(child.time);
+      });
+
+      const newPanel = {
+        id: lesson.ID_LESSON,
+        video: lesson.LINK_VIDEO,
+        subject: lesson.SUBJECT,
+        continueTime: lesson.CONTINUE_TIME,
+        view: lesson.VIEW,
+        descrip: lesson.DESCRIPTION,
+        active: false,
+        name: lesson.LESSON_NAME,
+        order: Number(lesson.ORDER),
+        time: time,
+        lesson: listChild,
+        disabled: false,
+      };
+      this.panels.push(newPanel);
+      panelCount++; // Increment the counter
+
+      if (panelCount === 5) {
+        break; // Stop processing once 5 panels have been added
+      }
+    }
   }
+
+  };
 
   learning(item: any) {
     this.courseService.idLesson = Number(item.id);
@@ -554,5 +700,38 @@ export class DetailCourseComponent implements OnInit {
     localStorage.setItem('idCourse', this.idCourse.toString());
     localStorage.setItem('idLesson', item.id);
     this.router.navigateByUrl(`/courses/learning/${item.name}`);
+  }
+
+  learnTry(item: any) {
+    this.courseService.idLesson = Number(item.ID_LESSON);
+    this.courseDetail.idCourse = this.idCourse;
+    localStorage.setItem('idCourse', this.idCourse.toString());
+    localStorage.setItem('idLesson', item.ID_LESSON);
+    this.router.navigateByUrl(`/courses/learning/${item.LESSON_NAME}`);
+  }
+
+  buyCourse() {
+    this.courseDetail.idCourse = this.idCourse;
+    localStorage.setItem('idCourse', this.idCourse.toString());
+    this.router.navigateByUrl(`/courses/buy`);
+  }
+
+  getLearnedLessonArray(learnedLesson: string) {
+    this.learnedLessons = learnedLesson.split(',').map((id) => Number(id));
+  }
+
+  continueLearn() {
+    this.courseService.idLesson = Number(this.learningLeson);
+    this.courseDetail.idCourse = this.idCourse;
+    localStorage.setItem('idCourse', this.idCourse.toString());
+    localStorage.setItem('idLesson', this.learningLeson);
+    this.courseService.userGetLessonDetail(this.learningLeson).subscribe((res) => {
+      if (res.success) {
+        this.router.navigateByUrl(`/courses/learning/${res.data.LESSON_NAME}`);
+      }
+      else {
+        this.createNotification('Có lỗi xảy ra', 'error');
+      }
+    })
   }
 }

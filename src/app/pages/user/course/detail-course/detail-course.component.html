@@ -15,30 +15,55 @@
 
     <!-- Giới thiệu khóa học -->
     <nz-card style="width:65%; margin-top: 1rem; border-radius: 1rem;">
-        <h6 style="font-size: 1.1rem; margin-bottom: 1rem;">{{ courseDetail.COURSE_NAME }}</h6>
-        <div style="margin: 0.5rem 0 1.5rem 0; display: flex; align-items: center; justify-content: space-between">
-            <div>
-                <nz-tag style="border-radius: 16px;" [nzColor]="getCategoryNameColor(courseDetail.CATEGORY_NAME)">
-                    {{ courseDetail.CATEGORY_NAME }}
-                </nz-tag>
-                <nz-tag style="border-radius: 16px;" [nzColor]="getCourseTypeColor(courseDetail.TYPE_COURSE)">
-                    {{ getCourseType(courseDetail.TYPE_COURSE) }}
-                </nz-tag>
-                <i style="color: #D9D9D9;" class="fas fa-clock"></i>
-                <span style="margin-left: 0.3rem; color: #696984;">Khoảng {{
-                    calculateMonthsDifference(courseDetail.START_DATE, courseDetail.END_DATE) }} tháng</span>
-            </div>
-        </div>
-        <div style="margin-top: 1rem;">
-            <img style="width: 100%; border-radius: 8px; margin-bottom: 1rem;" [src]="courseDetail.AVATAR_COURSE"
+        <div style="margin-top: 0rem;">
+            <img *ngIf="courseDetail.AVATAR_COURSE" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;" [src]="courseDetail.AVATAR_COURSE"
                 alt="">
-            <button
+
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <h6 style="font-size: 1.1rem; margin-bottom: 1rem;">{{ courseDetail.COURSE_NAME || ''  }}</h6>
+                <div style="display: flex; align-items: center; justify-content: space-between">
+                    <p style="color: #808080; margin: 0; padding: 0; font-size: 1rem;"><em><s>{{ courseDetail.PRICE.toLocaleString() || ''
+                                }} VND</s></em></p>
+                    <p style="color: #f56a00; margin: 0; padding: 0; font-size: 1.5rem; margin-left: 0.5rem;"><strong>
+                            {{ courseDetail.DISCOUNT.toLocaleString() || ''}} VND</strong></p>
+                </div>
+            </div>
+            <div style="margin: 0.5rem 0 1.5rem 0; display: flex; align-items: center; justify-content: space-between">
+                <div>
+                    <nz-tag *ngIf="courseDetail.CATEGORY_NAME" style="border-radius: 16px;" [nzColor]="getCategoryNameColor(courseDetail.CATEGORY_NAME)">
+                        {{ courseDetail.CATEGORY_NAME || '' }}
+                    </nz-tag>
+                    <nz-tag style="border-radius: 16px;" [nzColor]="getCourseTypeColor(courseDetail.TYPE_COURSE)">
+                        {{ getCourseType(courseDetail.TYPE_COURSE) || ''}}
+                    </nz-tag>
+                    <i style="color: #D9D9D9;" class="fas fa-clock"></i>
+                    <span style="margin-left: 0.3rem; color: #696984;">Khoảng {{
+                        calculateMonthsDifference(courseDetail.START_DATE, courseDetail.END_DATE) }} tháng</span>
+                </div>
+            </div>
+
+            <button *ngIf="isLearning"
                 style="width: 100%; display: flex; justify-content: center; align-items: center; background-color: #F18524 !important; border: none;"
                 nz-button nzType="primary" nzShape="round">
-                <span *ngIf="role == '1'" style="font-size: 14px; color: #fff;">Học tiếp thôi</span>
-                <span *ngif="role != '1'" style="font-size: 14px; color: #fff;">Học thử</span>
+                <span (click)="continueLearn()" style="font-size: 16px; color: #fff;" *ngIf="isStarted">Học tiếp thôi</span>
+                <span (click)="learnTry(courseDetail.LESSON_INFO[0])" style="font-size: 16px; color: #fff;" *ngIf="!isStarted">Bắt đầu học</span>
                 <span nz-icon nzType="play-circle" nzTheme="fill" style="font-size: 18px; color: #fff;"></span>
             </button>
+
+            <div *ngIf="!isLearning" style="display: flex; justify-content: space-between; align-items: center;">
+                <button (click)="learnTry(courseDetail.LESSON_INFO[0])"
+                    style="width: 48%; display: flex; justify-content: center; align-items: center; border: 2px solid #002766;"
+                    nz-button nzType="default" nzShape="round">
+                    <span style="font-size: 16px; color: #002766;">Học thử</span>
+                    <i class="fa-solid fa-pencil" style="color: #002766; margin-left: 1rem"></i>
+                </button>
+                <button (click)="buyCourse()"
+                    style="width: 48%; display: flex; justify-content: center; align-items: center; background-color: #002766 !important; border: none;"
+                    nz-button nzType="primary" nzShape="round">
+                    <span style="font-size: 16px; color: #fff;">Mua khóa học</span>
+                    <i class="fa-solid fa-cart-shopping" style="color: #fff; margin-left: 1rem"></i>
+                </button>
+            </div>
         </div>
         <div style="margin-top: 1rem;">
             <nz-tabset (nzSelectedIndexChange)="onTabChange($event)">
@@ -177,28 +202,28 @@
                                 </nz-avatar>
                                 <nz-comment-content>
                                     <p>
-                                        {{ item.CONTENT }}
+                                        {{ item.CONTENT || ''}}
                                     </p>
                                 </nz-comment-content>
                                 <nz-comment-action>
                                     <span nz-tooltip nzTitle="Like" nz-icon nzType="like"
                                         [nzTheme]="checkLike(item) ? 'twotone' : 'outline'" (click)="like(item)">
                                     </span>
-                                    <span class="count like">{{ item.LIKE }}</span>
+                                    <span class="count like">{{ item.LIKE || 0}}</span>
                                 </nz-comment-action>
                                 <nz-comment-action>
                                     <span nz-tooltip nzTitle="Dislike" nz-icon nzType="dislike"
                                         [nzTheme]="checkDislike(item) ? 'twotone' : 'outline'" (click)="dislike(item)">
                                     </span>
-                                    <span class="count dislike">{{ item.DISLIKE }}</span>
+                                    <span class="count dislike">{{ item.DISLIKE || 0}}</span>
                                 </nz-comment-action>
-                                <nz-comment-action *ngIf="item.ID_USER == idUser">
+                                <nz-comment-action *ngIf="item.ID_USER == idUser && isLearning">
                                     <i (click)="openModal(item)" class="fas fa-trash-can"></i>
                                 </nz-comment-action>
                             </nz-comment>
                         </div>
 
-                        <nz-comment style="background-color: rgba(1, 1, 1, 0);">
+                        <nz-comment style="background-color: rgba(1, 1, 1, 0);" *ngIf="isLearning">
                             <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="userAvatar"></nz-avatar>
                             <nz-comment-content>
                                 <nz-form-item style="border-radius: 15px;">
@@ -235,6 +260,7 @@
         </div>
     </nz-card>
 
+
     <div style="width:33%;">
         <!-- Giới thiệu giáo viên -->
         <nz-card style="margin-top: 1rem; border-radius: 1rem;">
@@ -258,7 +284,7 @@
                     <div>
                         <p style="font-size: 14px; font-weight: 200; color: #7A7E86; 
                         font-family: ReadexPro-light; margin-bottom: 0.5rem">
-                            {{courseDetail.TEACHER_INFO.SCHOOL_INFO.SCHOOL_NAME}}</p>
+                            {{courseDetail.TEACHER_INFO.SCHOOL_INFO.SCHOOL_NAME || ''}}</p>
                     </div>
                 </div>
             </div>
@@ -283,18 +309,59 @@
                     <li>
                         <p style="font-size: 14px; font-weight: 200; color: #7A7E86; 
                         font-family: ReadexPro-light; margin-bottom: 0.2rem">
-                            {{courseDetail.TEACHER_INFO.DESCRIPTION}}</p>
+                            {{courseDetail.TEACHER_INFO.DESCRIPTION || ''}}</p>
                     </li>
                 </ul>
             </div>
         </nz-card>
 
         <!-- Nội dung khóa học -->
-        <nz-card style="margin-top: 1rem; border-radius: 1rem;">
-            <h6 style="color: #252641; font-size: 16px; margin-bottom: 0.5rem;">Nội dung khóa học</h6>
-            <h6 style="color: #002766; font-size: 14px; text-transform: uppercase;">2/5 HOÀN THÀNH</h6>
+        <nz-ribbon *ngIf="!isLearning" nzText="Click vào bài học để học thử!" nzStatus="processing" nzColor="#002766">
+            <nz-card style="margin-top: 1rem; border-radius: 1rem;">
+                <h6 style="color: #252641; font-size: 16px; margin-bottom: 0.5rem;">Nội dung khóa học</h6>
+                <nz-progress [nzStrokeColor]="'#002766'" [nzPercent]="40" *ngIf="isLearning"></nz-progress>
 
-            <nz-progress [nzStrokeColor]="'#002766'" [nzPercent]="40"></nz-progress>
+                <nz-collapse [nzExpandIconPosition]="'right'" nzGhost style="margin-top: 1rem; border-radius: 1rem; cursor: pointer;">
+                    <nz-collapse-panel *ngFor="let panel of panels" style="border-radius: 1rem; cursor: pointer;
+                        border: 2px solid #002766; padding: 0 0; margin-bottom: 0.5rem;" #p [nzHeader]="panelHeader"
+                        [nzActive]="false" [ngStyle]="panel.customStyle"
+                        [nzExpandedIcon]="!$first ? panel.icon || expandedIcon : undefined">
+
+                        <ng-template #panelHeader>
+                            <div style="display: flex; flex-direction: column; width: 90%; cursor: pointer;">
+                                <p style="font-size: 17px; margin-bottom: 0.2rem;">{{ panel.name }}</p>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <p style="font-size: 14px; margin-bottom: 0; padding-left: 1.5rem;"><i
+                                            class="fa-regular fa-clock"></i> {{ panel.time + ' phút' }}</p>
+                                    <p style="font-size: 14px; margin-bottom: 0;"><i class="fa-solid fa-book"></i>
+                                        {{panel.lesson.length}} bài học</p>
+                                </div>
+                            </div>
+                        </ng-template>
+
+                        <!-- Content -->
+                        <div class="content-lesson" *ngFor="let item of panel.lesson; let i=index" style="cursor: pointer;"
+                            (click)="learning(item)">
+                            <p style="margin-bottom:0; font-size: 15px; padding-right: 0.3rem">{{i+1}}. {{ item.name }}
+                            </p>
+                            <p style="margin-bottom:0; font-size: 14px; white-space: nowrap;">{{ item.time + ' phút'}}
+                            </p>
+                        </div>
+
+                        <ng-template #expandedIcon let-active>
+                            {{ active }}
+                            <span nz-icon nzType="caret-right" class="ant-collapse-arrow"
+                                [nzRotate]="p.nzActive ? 90 : -90"></span>
+                        </ng-template>
+                    </nz-collapse-panel>
+                </nz-collapse>
+            </nz-card>
+        </nz-ribbon>
+        <nz-card *ngIf="isLearning" style="margin-top: 1rem; border-radius: 1rem;">
+            <h6 style="color: #252641; font-size: 16px; margin-bottom: 0.5rem;">Nội dung khóa học</h6>
+            <!-- <h6 style="color: #002766; font-size: 14px; text-transform: uppercase;">2/5 HOÀN THÀNH</h6> -->
+
+            <nz-progress [nzStrokeColor]="'#002766'" [nzPercent]="40" *ngIf="isLearning"></nz-progress>
 
             <nz-collapse [nzExpandIconPosition]="'right'" nzGhost style="margin-top: 1rem; border-radius: 1rem;">
                 <nz-collapse-panel *ngFor="let panel of panels" style="border-radius: 1rem; 
@@ -315,9 +382,12 @@
                     </ng-template>
 
                     <!-- Content -->
-                    <div class="content-lesson" *ngFor="let item of panel.lesson; let i=index" (click)="learning(item)">
-                        <p style="margin-bottom:0; font-size: 15px; padding-right: 0.3rem">{{i+1}}. {{ item.name }}</p>
-                        <p style="margin-bottom:0; font-size: 14px; white-space: nowrap;">{{ item.time + ' phút'}}</p>
+                    <div class="content-lesson" *ngFor="let item of panel.lesson; let i=index"
+                        (click)="learning(item)">
+                        <p style="margin-bottom:0; font-size: 15px; padding-right: 0.3rem">{{i+1}}. {{ item.name }}
+                        </p>
+                        <p style="margin-bottom:0; font-size: 14px; white-space: nowrap;">{{ item.time + ' phút'}}
+                        </p>
                     </div>
 
                     <ng-template #expandedIcon let-active>

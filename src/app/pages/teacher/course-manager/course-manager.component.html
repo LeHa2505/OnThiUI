@@ -1,0 +1,39 @@
+<div style="max-width: 800px; margin: 0 auto">
+    <div
+      style="display: flex; align-items: center; justify-content: space-between"
+    >
+      <h2>My Courses</h2>
+      <button
+        style="
+          float: right;
+          background-color: #f18524;
+          border: none;
+          border-radius: 1rem;
+          margin-bottom: 16px;
+          width: 180px;
+        "
+        nz-button
+        nzType="primary"
+        style="float: right; margin-bottom: 16px"
+      >
+        + Create New
+      </button>
+    </div>
+  
+    <nz-list nzBordered nzHeader="Courses">
+      <nz-list-item *ngFor="let course of courses">
+        <nz-list-item-meta
+          nzAvatar="https://via.placeholder.com/80"
+          nzTitle="{{ course.title }}"
+          nzDescription="Personal"
+        ></nz-list-item-meta>
+        <div nz-row>
+          <div nz-col nzSpan="8">1143 Students</div>
+          <div nz-col nzSpan="8">$24</div>
+          <div nz-col nzSpan="8">
+            <button nz-button nzType="default">Edit Course</button>
+          </div>
+        </div>
+      </nz-list-item>
+    </nz-list>
+  </div>

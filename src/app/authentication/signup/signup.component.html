@@ -4,12 +4,12 @@
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <div class="items">
         <nz-form-item>
-          <nz-form-label style="float: left; display: flex;" [nzSm]="10" [nzXs]="24" nzFor="nickname" nzRequired
+          <nz-form-label style="float: left; display: flex;" [nzSm]="10" [nzXs]="24" nzFor="username" nzRequired
             nzTooltipTitle="Tên bạn muốn được gọi khi dùng web là gì?">
             <span>Tên đăng nhập</span>
           </nz-form-label>
           <nz-form-control class="form-holder" [nzSm]="14" [nzXs]="24" nzErrorTip="Hãy điền tên đăng nhập!">
-            <input class="form-control" nz-input id="nickname" formControlName="nickname" />
+            <input class="form-control" nz-input id="username" formControlName="username" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
@@ -54,20 +54,9 @@
             với tư cách là </nz-form-label>
           <nz-form-control [nzSm]="12" [nzXs]="24" nzErrorTip="Hãy chọn một trong hai lựa chọn trên!">
             <nz-radio-group formControlName="role">
-              <label nz-radio nzValue="student">Học sinh</label>
-              <label nz-radio nzValue="teacher">Giáo viên</label>
+              <label nz-radio nzValue="1">Học sinh</label>
+              <label nz-radio nzValue="2">Giáo viên</label>
             </nz-radio-group>
-          </nz-form-control>
-        </nz-form-item>
-        <nz-form-item nz-row class="register-area">
-          <nz-form-control>
-            <label nz-checkbox formControlName="agree">
-              <span>
-                Tôi đã đọc kỹ
-                <a>các điều khoản</a>
-                trước khi đăng ký
-              </span>
-            </label>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item nz-row class="register-area">

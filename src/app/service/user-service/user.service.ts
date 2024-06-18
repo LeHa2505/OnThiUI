@@ -14,6 +14,15 @@ export class UserService {
     }),
   };
 
+  private httpOptionsProvince = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      Token: `d6e3dccb-6289-11ea-8b85-c60e4edfe802`,
+    }),
+  };
+
+  private jsonURL = 'assets/provinces.json';
+
   public userId: number;
   public userName: string;
   public userAvatar: string;
@@ -21,30 +30,36 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  listBank(): Observable<any> {
+  getListCourses(id: any): Observable<any> {
     return this.http.get(
-      environment.BASE_API_URI.BASE_SERVICE_API + `/user/banks`,
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API +
+        `/user/getListCoursesByUserId/${id}`,
       this.httpOptions
     );
   }
 
-  listCustomer(): Observable<any> {
+  getUserInfo(email: string): Observable<any> {
     return this.http.get(
-      environment.BASE_API_URI.BASE_SERVICE_API + `/user/customers`,
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API +
+        `/getUserInfo?email=${email}`,
       this.httpOptions
     );
   }
 
-  getInfo(): Observable<any> {
+  getAllProvinces(): Observable<any> {
+    return this.http.get<any>(this.jsonURL);
+  }
+
+  getAllUser(): Observable<any> {
     return this.http.get(
-      environment.BASE_API_URI.BASE_SERVICE_API + `/user`,
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + "/user/getAll",
       this.httpOptions
     );
   }
 
-  updateInfo(body: any): Observable<any> {
-    return this.http.put(
-      environment.BASE_API_URI.BASE_SERVICE_API + `/user/change/profile`,
+  updateUserInfo(body: any): Observable<any> {
+    return this.http.post(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + "/user/updateUserInfo",
       body,
       this.httpOptions
     );
