@@ -120,9 +120,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.stompClient = Stomp.over(socket);
     const _this = this;
     this.stompClient.connect({}, function (frame) {
-      console.log('Connected: ' + frame);
       _this.stompClient.subscribe('/start/initial', function (hello) {
-        console.log(JSON.parse(hello.body));
         _this.showMessage(JSON.parse(hello.body));
       });
     });
@@ -143,7 +141,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.showMessage(this.newmessage);
     this.newmessage = '';
     // this.sentMessage = null;
-    console.log(this.receivedMessages);
   }
 
   showMessage(message) {
@@ -163,7 +160,6 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.getMessageByIdGroups(this.groups[0].ID_GROUP, this.groups[0].GROUP_NAME, this.groups[0].AVATAR_GROUP)
       
       if (res.success) {
-        console.log(res);
       }
     });
   }

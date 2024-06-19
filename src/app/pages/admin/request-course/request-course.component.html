@@ -1,0 +1,72 @@
+<h3 nz-typography style="text-align: center; font-size: 24px">
+    <strong>Danh sách yêu cầu mở khóa học</strong>
+</h3>
+
+<!--Table-->
+<div>
+    <nz-table #basicTable [nzScroll]="{ x: '1150px'}" [nzData]="listOfDisplayData">
+        <thead>
+            <tr class="head-style">
+                <th [nzWidth]="'18rem'">Tên</th>
+                <th>Môn</th>
+                <th>Dạng</th>
+                <th>Giá gốc</th>
+                <th>Giá giảm</th>
+                <th>Giáo viên</th>
+                <th>Trạng thái</th>
+                <th>Duyệt</th>
+                <th [nzWidth]="'6rem'">Chi tiết</th>
+            </tr>
+        </thead>
+        <tbody style="text-align: center">
+            <tr *ngFor="
+              let data of basicTable.data;
+              let i = index
+            " style="height: fit-content;">
+                <td [nzWidth]="'18rem'" class="catalogue-name"
+                    style="border-radius: 1.5rem 0rem 0rem 1.5rem; height: 5rem;">
+                    <span style="display: flex; align-items: center;">
+                        <div *ngIf="!data.AVATAR_COURSE" class="avartar-img">
+                            <strong>{{data.COURSE_NAME[0].toUpperCase()}}</strong>
+                        </div>
+                        <div *ngIf="data.AVATAR_COURSE">
+                            <img style="width: 4rem; border-radius: 0.5rem; margin-right: 0.5rem;" [(src)]="data.AVATAR_COURSE" alt="">
+                        </div>
+                        <span class="course-name">{{ data.COURSE_NAME }}</span>
+                    </span>
+                </td>
+                <td>
+                    {{ data.CATEGORY_NAME }}
+                </td>
+                <td>
+                    {{ getCourseType(data.TYPE_COURSE) }}
+                </td>
+                <td>
+                    <span>{{ data.PRICE | currency:'VND' }}</span>
+                </td>
+                <td>
+                    {{ data.DISCOUNT | currency:'VND' }}
+                </td>
+                <td>
+                    <span style="display: flex; align-items: center;">
+                        <div *ngIf="!data.TEACHER_INFO.AVATAR" class="avartar-img">
+                            <strong>{{data.TEACHER_INFO.USERNAME[0].toUpperCase()}}</strong>
+                        </div>
+                        <nz-avatar *ngIf="data.TEACHER_INFO.AVATAR" [nzSrc]="data.TEACHER_INFO.AVATAR"></nz-avatar>
+                        <span style="margin-left: 0.3rem;"> {{ data.TEACHER_INFO.USERNAME }}</span>
+                    </span>
+                </td>
+                <td>
+                    {{ data.ACTIVE? 'Đang mở': 'Đang khóa' }}
+                </td>
+                <td>
+                    {{ data.IS_CHECK? 'Đã duyệt': 'Chưa duyệt' }}
+                </td>
+                <td style=" border-radius: 0rem 1.5rem 1.5rem 0rem; text-align: center; font-size: 1.2rem;" [nzWidth]="'6rem'">
+                    <span (click)="getCourseDetail(data.ID_COURSE)" style="cursor: pointer" nz-icon nzType="eye"
+                        nzTheme="fill"></span>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</div>

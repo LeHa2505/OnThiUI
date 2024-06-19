@@ -117,7 +117,6 @@ export class LearningCourseComponent implements OnInit {
         this.isLearning = false;
         this.guestInitCourseDetails();
       }
-      console.log(this.isLearning);
     } catch (error) {
       console.error('Error initializing list class:', error);
     }
@@ -181,7 +180,6 @@ export class LearningCourseComponent implements OnInit {
             this.courseDetail = res.data;
             this.ratings = res.data.REVIEW;
             this.userMapLessonsToPanels(res.data.LESSON_INFO);
-            console.log(this.panels);
 
             res.data.LESSON_INFO.forEach((item) => {
               this.files.push(...item.DOCUMENTS_INFO);
@@ -552,7 +550,6 @@ export class LearningCourseComponent implements OnInit {
 
   createNotification(message: string, type: string): void {
     this.notification.create(type, '', message).onClick.subscribe(() => {
-      console.log('notification clicked!');
     });
   }
 
@@ -591,7 +588,6 @@ export class LearningCourseComponent implements OnInit {
     this.pauseMinutes = Math.floor(Number(this.pauseTime) / 60); // Chuyển đổi sang phút
     this.pauseSecond = Math.floor(Number(this.pauseTime) % 60); // Lấy thời gian hiện tại tính bằng giây
     localStorage.setItem('pauseTime', this.pauseTime.toString());
-    console.log(this.pauseTime);
   }
 
   onLoadedMetadata(video: HTMLVideoElement): void {

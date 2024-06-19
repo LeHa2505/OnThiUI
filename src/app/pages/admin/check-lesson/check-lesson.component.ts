@@ -119,7 +119,6 @@ export class CheckLessonComponent {
         this.isLearning = false;
         this.guestInitCourseDetails();
       }
-      console.log(this.isLearning);
     } catch (error) {
       console.error('Error initializing list class:', error);
     }
@@ -177,13 +176,12 @@ export class CheckLessonComponent {
 
   async userGetDetailCourseApi() {
     return new Promise<void>((resolve, reject) => {
-      this.courseService.userGetDetailCourse(this.idCourse).subscribe(
+      this.courseService.adminGetDetailCourse(this.idCourse).subscribe(
         (res) => {
           if (res.success) {
             this.courseDetail = res.data;
             this.ratings = res.data.REVIEW;
             this.userMapLessonsToPanels(res.data.LESSON_INFO);
-            console.log(this.panels);
 
             res.data.LESSON_INFO.forEach((item) => {
               this.files.push(...item.DOCUMENTS_INFO);
@@ -554,7 +552,6 @@ export class CheckLessonComponent {
 
   createNotification(message: string, type: string): void {
     this.notification.create(type, '', message).onClick.subscribe(() => {
-      console.log('notification clicked!');
     });
   }
 
@@ -593,7 +590,6 @@ export class CheckLessonComponent {
     this.pauseMinutes = Math.floor(Number(this.pauseTime) / 60); // Chuyển đổi sang phút
     this.pauseSecond = Math.floor(Number(this.pauseTime) % 60); // Lấy thời gian hiện tại tính bằng giây
     localStorage.setItem('pauseTime', this.pauseTime.toString());
-    console.log(this.pauseTime);
   }
 
   onLoadedMetadata(video: HTMLVideoElement): void {

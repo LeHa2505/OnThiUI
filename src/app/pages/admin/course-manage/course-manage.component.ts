@@ -297,7 +297,6 @@ export class CourseManageComponent {
 
   createNotification(message: string, type: string): void {
     this.notification.create(type, '', message).onClick.subscribe(() => {
-      console.log('notification clicked!');
     });
   }
 }

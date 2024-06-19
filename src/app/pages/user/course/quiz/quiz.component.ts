@@ -69,7 +69,6 @@ export class QuizComponent implements OnInit {
     if (res.success) {
       this.detailExercise = res.data;
       this.formatQuiz();
-      console.log(this.detailExercise);
     }
   }
 
@@ -114,7 +113,6 @@ export class QuizComponent implements OnInit {
   }
 
   loadMathConfig() {
-    console.log('load config');
     this.mathJaxObject = this.gs.nativeGlobal()['MathJax'];
     this.mathJaxObject.Hub.Config({
       showMathMenu: false,

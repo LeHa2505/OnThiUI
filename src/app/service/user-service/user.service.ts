@@ -64,4 +64,31 @@ export class UserService {
       this.httpOptions
     );
   }
+
+  // getListNotification(idUser: any): Observable<any> {
+  //   return this.http.get(
+  //     environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/notification/${idUser}`,
+  //     this.httpOptions
+  //   );
+  // }
+
+  createNotification(body: any): Observable<any> {
+    return this.http.post(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + "/admin/create/notification",
+      body,
+      this.httpOptions
+    );
+  }
+
+  updateNotification(body: any): Observable<any> {
+    return this.http.post(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + "/admin/update/notification",
+      body,
+      this.httpOptions
+    );
+  }
+  
+  getListNotification(idUser: string): Observable<any> {
+    return this.http.get<any>(`${environment.BASE_API_URI.BASE_SERVICE_ONTHI_API}/notifications/${idUser}`);
+  }
 }

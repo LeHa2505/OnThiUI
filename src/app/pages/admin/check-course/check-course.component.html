@@ -5,11 +5,11 @@
     </div>
     <div>
         <button *ngIf="courseDetail.ACTIVE" (click)="closeCourse()" nz-button nzDanger nzType="primary" nzShape="round">
-            <i class="fa-solid fa-lock" style="margin-right: 0.5rem;"></i>
+            <i class="fa-solid fa-lock-open" style="margin-right: 0.5rem;"></i>
             Khóa khóa học này
         </button>
         <button *ngIf="!courseDetail.ACTIVE" (click)="openCourse()" nz-button nzType="primary" nzDanger nzShape="round">
-            <i class="fa-solid fa-lock-open" style="margin-right: 0.5rem;"></i>
+            <i class="fa-solid fa-lock" style="margin-right: 0.5rem;"></i>
             Mở khóa khóa học này
         </button>
     </div>

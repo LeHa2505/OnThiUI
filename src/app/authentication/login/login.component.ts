@@ -72,7 +72,6 @@ export class LoginComponent implements OnInit {
 
   createSuccessNotification(message: string): void {
     this.notification.create('success', '', message).onClick.subscribe(() => {
-      console.log('notification clicked!');
     });
   }
 
@@ -87,7 +86,6 @@ export class LoginComponent implements OnInit {
         nzClass: 'test-class',
       })
       .onClick.subscribe(() => {
-        console.log('notification clicked!');
       });
   }
 

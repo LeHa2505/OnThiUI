@@ -61,7 +61,6 @@ export class ListCourseComponent implements OnInit {
   initProvinces() {
     this.userService.getAllProvinces().subscribe((res) => {
       this.listProvinces = res.data.data;
-      console.log(this.listProvinces);
     });
   }
 
@@ -78,7 +77,6 @@ export class ListCourseComponent implements OnInit {
         this.isLoadingClass = false;
       }
     });
-    console.log(this.listClass);
     
   }
 
@@ -207,7 +205,6 @@ export class ListCourseComponent implements OnInit {
 
   selectMenuItem(item: string): void {
     this.selectedMenuItem = item;
-    console.log(this.selectMenuItem);
     
   }
 
@@ -231,7 +228,6 @@ export class ListCourseComponent implements OnInit {
 
   onChangeSelectedSubject(value: object[]): void {
     this.selectedSubject = value;
-    console.log(value);
   }
 
   searchCourse() {
@@ -267,7 +263,6 @@ export class ListCourseComponent implements OnInit {
 
   createSuccessNotification(message: string): void {
     this.notification.create('success', '', message).onClick.subscribe(() => {
-      console.log('notification clicked!');
     });
   }
 

@@ -1,18 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { tr } from 'date-fns/locale';
+import {
+  Component,
+  ElementRef,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
+import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { BehaviorSubject } from 'rxjs';
+import { CourseService } from 'src/app/service/course-service/course.service';
 import { UploadService } from 'src/app/service/upload-service/upload.service';
 import { UserService } from 'src/app/service/user-service/user.service';
 
 @Component({
-  selector: 'app-user-manage',
-  templateUrl: './user-manage.component.html',
-  styleUrls: ['./user-manage.component.less'],
+  selector: 'app-request-course',
+  templateUrl: './request-course.component.html',
+  styleUrls: ['./request-course.component.less']
 })
-export class UserManageComponent implements OnInit {
+export class RequestCourseComponent {
   listCatalogue: any[] = [];
   listOfData = [];
   listOfDisplayData = [];
@@ -29,30 +35,37 @@ export class UserManageComponent implements OnInit {
   isDetailVisible = false;
   detailTitle = 'Thông tin chi tiết về người dùng';
   searchValue = '';
+  searchValueSubject = '';
   aa: boolean = false;
-  gender = null;
-  active = null;
+
   userRole = null;
   date = [];
   isVisible = false;
   isVisibleUpdate = false;
   comfirmText = 'Xác nhận chỉnh sửa';
-  userInfo: any;
-  userInfoOld: any;
+  courseInfo: any;
+  courseInfoOld: any;
   listProvinces: any;
-  searchChange$ = new BehaviorSubject('');
   filteredProvinces: any[] = [];
+  files = [];
+  priceEnd: number = null;
+  priceStart: number = null;
+  courseType: any;
+  courseStatus: any;
+  checkStatus: any;
 
   constructor(
     private mess: NzMessageService,
     private userService: UserService,
+    private courseService: CourseService,
     private modal: NzModalService,
     private fileService: UploadService,
-    private notification: NzNotificationService
+    private notification: NzNotificationService,
+    public router: Router,
   ) {}
 
   ngOnInit(): void {
-    this.getAllUserAPI();
+    this.getAllCourseAPI();
     this.initProvinces();
   }
   setIndex(ii) {
@@ -82,20 +95,18 @@ export class UserManageComponent implements OnInit {
 
   showModalEdit(data) {
     this.isVisibleUpdate = true;
-    this.userInfo = data;
-    this.userInfoOld = data;
+    this.courseService.userGetDetailCourse(data.ID_COURSE).subscribe((res) => {
+      if (res.success) {
+        this.courseInfo = res.data;
+        this.courseInfoOld = res.data;
+        this.files = res.data.DOCUMENTS_INFO;
+      } else {
+      }
+    });
   }
 
   handleEditOk() {
     this.isVisibleUpdate = false;
-    this.userService.updateUserInfo(this.userInfo).subscribe((res) => {
-      if (res.success) {
-        this.createNotification(res.message, 'success');
-      } else {
-        this.createNotification(res.message, 'error');
-        this.userInfo = this.userInfoOld;
-      }
-    });
   }
 
   handleEditCancel(): void {
@@ -106,33 +117,49 @@ export class UserManageComponent implements OnInit {
     this.isVisible = false;
   }
 
-  getAllUserAPI() {
+  getCourseType(type: number): string {
+    switch (type) {
+      case 0:
+        return 'Cơ bản';
+      case 1:
+        return 'Nâng cao';
+      case 2:
+        return 'Luyện đề';
+      default:
+        return 'Unknown';
+    }
+  }
+
+  getAllCourseAPI() {
     this.listOfData = [];
-    this.userService.getAllUser().subscribe((res: any) => {
+    this.courseService.getAllCourse().subscribe((res: any) => {
       if (res.success) {
         res.data.forEach((element) => {
           let item = {
-            ID_USER: element.ID_USER,
-            ID_SCHOOL: element.ID_SCHOOL,
-            TYPE_USER: element.TYPE_USER,
+            ID_COURSE: element.ID_COURSE,
+            AVATAR_COURSE: element.AVATAR_COURSE,
+            CATEGORY_NAME: element.CATEGORY_NAME,
+            COURSE_NAME: element.COURSE_NAME,
             USERNAME: element.USERNAME,
-            EMAIL: element.EMAIL,
-            PHONE: element.PHONE,
-            GENDER: element.GENDER,
-            BOD: element.BOD,
-            ADDRESS: element.ADDRESS,
-            AVATAR: element.AVATAR,
-            DESCRIPTION: element.DESCRIPTION,
-            FACEBOOK: element.FACEBOOK,
-            INSTAGRAM: element.INSTAGRAM,
+            DISCOUNT: element.DISCOUNT,
+            PRICE: element.PRICE,
+            END_DATE: element.END_DATE,
+            ID_TEACHER: element.ID_TEACHER,
+            LESSON_INFO: element.LESSON_INFO,
+            LESSON_QUANTITY: element.LESSON_QUANTITY,
+            QUIZ_QUANTITY: element.QUIZ_QUANTITY,
+            REVIEW: element.REVIEW,
+            SCHEDULE: element.SCHEDULE,
+            START_DATE: element.START_DATE,
+            TEACHER_INFO: element.TEACHER_INFO,
+            TYPE_COURSE: element.TYPE_COURSE,
             ACTIVE: element.ACTIVE,
-            SCHOOL_INFO: element.SCHOOL_INFO,
+            IS_CHECK: element.IS_CHECK,
           };
-          if (element.TYPE_USER != 0) {
-            this.listOfData.push(item);
-          }
+          this.listOfData.push(item);
         });
         this.listOfDisplayData = [...this.listOfData];
+        this.search();
       }
     });
   }
@@ -155,9 +182,10 @@ export class UserManageComponent implements OnInit {
     }
   }
 
-  showModalDetail(data: any) {
-    this.userInfo = data;
-    this.isDetailVisible = true;
+  getCourseDetail(item: any) {
+    this.courseService.idCourse = Number(item);
+    localStorage.setItem('idCourse', item);
+    this.router.navigateByUrl('/admin/course-detail');
   }
 
   handleDetailCancel(): void {
@@ -169,55 +197,69 @@ export class UserManageComponent implements OnInit {
   }
 
   search() {
+    this.checkStatus = false;
     if (this.searchValue != null) {
       this.listOfDisplayData = this.listOfData.filter((item: any) => {
         const searchValueLower = this.searchValue.trim().toLowerCase();
         return (
-          (item.PHONE &&
-            item.PHONE.toLowerCase().indexOf(searchValueLower) > -1) ||
-          (item.EMAIL &&
-            item.EMAIL.toLowerCase().indexOf(searchValueLower) > -1) ||
-          (item.USERNAME &&
-            item.USERNAME.toLowerCase().indexOf(searchValueLower) > -1) ||
-          (item.ADDRESS &&
-            item.ADDRESS.toLowerCase().indexOf(searchValueLower) > -1) ||
-          (item.FACEBOOK &&
-            item.FACEBOOK.toLowerCase().indexOf(searchValueLower) > -1) ||
-          (item.INSTAGRAM &&
-            item.INSTAGRAM.toLowerCase().indexOf(searchValueLower) > -1)
+          (item.COURSE_NAME &&
+            item.COURSE_NAME.toLowerCase().indexOf(searchValueLower) > -1) ||
+          (item.TEACHER_INFO.USERNAME &&
+            item.TEACHER_INFO.USERNAME.toLowerCase().indexOf(searchValueLower) >
+              -1) ||
+          (item.CATEGORY_NAME &&
+            item.CATEGORY_NAME.toLowerCase().indexOf(searchValueLower) > -1)
         );
       });
     }
 
-    if (this.gender != null && this.gender != 'Tất cả') {
+    if (this.courseType != null && this.courseType != 'Tất cả') {
       this.listOfDisplayData = this.listOfDisplayData.filter(
-        (item: any) => item.GENDER == this.gender
-      );
-      if (this.gender == 3) {
-        this.listOfDisplayData = this.listOfDisplayData.filter(
-          (item: any) => item.GENDER == null || item.GENDER == ''
-        );
-      }
-    }
-
-    if (this.active != null && this.active != 'Tất cả') {
-      this.listOfDisplayData = this.listOfDisplayData.filter(
-        (item: any) => item.ACTIVE == this.active
+        (item: any) => item.TYPE_COURSE == this.courseType
       );
     }
 
-    if (this.userRole != null && this.userRole != 'Tất cả') {
+    if (this.priceStart && this.priceEnd) {
       this.listOfDisplayData = this.listOfDisplayData.filter(
-        (item: any) => item.TYPE_USER == this.userRole
+        (item: any) =>
+          Number(item.DISCOUNT) <= Number(this.priceEnd) && Number(item.DISCOUNT) >= this.priceStart
       );
     }
+
+    if (this.priceStart && !this.priceEnd) {
+      this.listOfDisplayData = this.listOfDisplayData.filter(
+        (item: any) => Number(item.DISCOUNT) >= Number(this.priceStart)
+      );
+    }
+
+    if (!this.priceStart && this.priceEnd) {
+      this.listOfDisplayData = this.listOfDisplayData.filter(
+        (item: any) => Number(item.DISCOUNT) <= Number(this.priceEnd)
+      );
+    }
+
+    if (this.courseStatus != null && this.courseStatus != 'Tất cả') {
+      this.listOfDisplayData = this.listOfDisplayData.filter(
+        (item: any) => item.ACTIVE == this.courseStatus
+      );
+    } 
+
+    if (this.checkStatus != null && this.checkStatus != 'Tất cả') {
+      this.listOfDisplayData = this.listOfDisplayData.filter(
+        (item: any) => item.IS_CHECK == this.checkStatus
+      );
+    } 
   }
 
   resetValueSelected() {
-    this.active = null;
-    this.gender = null;
+    this.courseType = null;
+    this.checkStatus = null;
+    this.courseStatus = null;
+    this.priceEnd = null;
+    this.priceStart = null;
     this.userRole = null;
     this.searchValue = '';
+    this.searchValueSubject = '';
     this.search();
   }
 
@@ -230,7 +272,7 @@ export class UserManageComponent implements OnInit {
     if (this.image) {
       this.fileService.upload(this.image).subscribe(
         (data) => {
-          this.userInfo.AVATAR = data.url;
+          this.courseInfo.AVATAR = data.url;
         },
         (err) => {}
       );

@@ -40,7 +40,7 @@
 <div nz-row
     style="display: flex; justify-content: flex-start; width: 100%; margin: 1rem 0rem 1.5rem 0rem; align-items: center;">
     <div class="filter-item" nz-col [nzSpan]="4" style="display: flex; justify-content: center; align-items: center; margin-right: 1rem;">
-        <nz-select style="width: 200px;" nzPlaceHolder="Trạng thái" [(ngModel)]="checkStatus"
+        <nz-select style="width: 200px;" nzPlaceHolder="Trạng thái" [(ngModel)]="courseStatus"
             (ngModelChange)="search()">
             <nz-option nzDisabled [nzLabel]="'Trạng thái'" [nzValue]="null"></nz-option>
             <nz-option [nzLabel]="'Đang khóa'" [nzValue]="false"></nz-option>
@@ -83,7 +83,6 @@
                 <th>Trạng thái</th>
                 <th>Duyệt</th>
                 <th [nzWidth]="'6rem'">Chi tiết</th>
-                <th [nzWidth]="'4rem'">Sửa</th>
             </tr>
         </thead>
         <tbody style="text-align: center">
@@ -98,7 +97,7 @@
                             <strong>{{data.COURSE_NAME[0].toUpperCase()}}</strong>
                         </div>
                         <div *ngIf="data.AVATAR_COURSE">
-                            <img style="width: 4rem; border-radius: 0.5rem;" [(src)]="data.AVATAR_COURSE" alt="">
+                            <img style="width: 4rem; border-radius: 0.5rem; margin-right: 0.5rem;" [(src)]="data.AVATAR_COURSE" alt="">
                         </div>
                         <span class="course-name">{{ data.COURSE_NAME }}</span>
                     </span>
@@ -130,13 +129,8 @@
                 <td>
                     {{ data.IS_CHECK? 'Đã duyệt': 'Chưa duyệt' }}
                 </td>
-                <td style="text-align: center; font-size: 1.2rem" [nzWidth]="'6rem'">
+                <td style=" border-radius: 0rem 1.5rem 1.5rem 0rem; text-align: center; font-size: 1.2rem;" [nzWidth]="'6rem'">
                     <span (click)="getCourseDetail(data.ID_COURSE)" style="cursor: pointer" nz-icon nzType="eye"
-                        nzTheme="fill"></span>
-                </td>
-                <td [nzWidth]="'4rem'"
-                    style=" border-radius: 0rem 1.5rem 1.5rem 0rem; text-align: center; font-size: 1.2rem;">
-                    <span (click)="showModalEdit(data)" style="cursor: pointer" nz-icon nzType="edit"
                         nzTheme="fill"></span>
                 </td>
             </tr>

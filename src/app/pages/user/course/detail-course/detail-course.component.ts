@@ -100,7 +100,6 @@ export class DetailCourseComponent implements OnInit {
         this.isLearning = false;
         this.guestInitCourseDetails();
       }
-      console.log(this.isLearning);
     } catch (error) {
       console.error('Error initializing list class:', error);
     }
@@ -122,7 +121,6 @@ export class DetailCourseComponent implements OnInit {
             this.courseDetail = res.data;
             this.ratings = res.data.REVIEW;
             this.guestMapLessonsToPanels(res.data.LESSON_INFO);
-            console.log(this.panels);
 
             res.data.LESSON_INFO.forEach((item) => {
               this.files.push(...item.DOCUMENTS_INFO);
@@ -149,7 +147,6 @@ export class DetailCourseComponent implements OnInit {
             this.courseDetail = res.data;
             this.ratings = res.data.REVIEW;
             this.userMapLessonsToPanels(res.data.LESSON_INFO);
-            console.log(this.panels);
 
             res.data.LESSON_INFO.forEach((item) => {
               this.files.push(...item.DOCUMENTS_INFO);
@@ -514,7 +511,6 @@ export class DetailCourseComponent implements OnInit {
 
   createNotification(message: string, type: string): void {
     this.notification.create(type, '', message).onClick.subscribe(() => {
-      console.log('notification clicked!');
     });
   }
 
@@ -551,7 +547,6 @@ export class DetailCourseComponent implements OnInit {
     if (this.image) {
       this.fileService.upload(this.image).subscribe(
         (data) => {
-          console.log(data);
         },
         (err) => {}
       );
@@ -559,7 +554,6 @@ export class DetailCourseComponent implements OnInit {
   }
 
   onFileSelected(event) {
-    console.log(event);
     const file: File = event.target.files[0];
     this.formData.append('file', file);
   }
