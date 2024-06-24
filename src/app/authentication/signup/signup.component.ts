@@ -56,7 +56,6 @@ export class SignupComponent implements OnInit {
             this.isButtonLoading = false;
             this.router.navigate(['/auth/login']);
           } else {
-            console.log(this.requestRegisterForm);
             this.createNotification(res.message, 'error');
           }
         }),
@@ -98,7 +97,6 @@ export class SignupComponent implements OnInit {
 
   createNotification(message: string, type: string): void {
     this.notification.create(type, '', message).onClick.subscribe(() => {
-      console.log('notification clicked!');
     });
   }
 

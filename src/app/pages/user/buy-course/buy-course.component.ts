@@ -70,7 +70,6 @@ export class BuyCourseComponent implements OnInit {
             this.courseDetail = res.data;
             this.ratings = res.data.REVIEW;
             this.mapLessonsToPanels(res.data.LESSON_INFO);
-            console.log(this.panels);
 
             res.data.LESSON_INFO.forEach((item) => {
               this.files.push(...item.DOCUMENTS_INFO);
@@ -142,7 +141,6 @@ export class BuyCourseComponent implements OnInit {
   }
 
   handleCancel(): void {
-    console.log('Button cancel clicked!');
     this.isVisible = false;
   }
 
@@ -156,7 +154,6 @@ export class BuyCourseComponent implements OnInit {
 
   submitForm(): void {
     if (this.validateForm.valid) {
-      console.log('submit', this.validateForm.value);
       this.isVisible = false;
     } else {
       Object.values(this.validateForm.controls).forEach((control) => {
@@ -294,7 +291,6 @@ export class BuyCourseComponent implements OnInit {
     } else {
       Object.values(this.validateForm.controls).forEach((control) => {
         if (control.invalid) {
-          console.log(control);
         }
       });
     }
@@ -308,7 +304,6 @@ export class BuyCourseComponent implements OnInit {
 
   createNotification(message: string, type: string): void {
     this.notification.create(type, '', message).onClick.subscribe(() => {
-      console.log('notification clicked!');
     });
   }
 }

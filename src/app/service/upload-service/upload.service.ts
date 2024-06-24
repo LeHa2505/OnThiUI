@@ -32,4 +32,11 @@ export class UploadService {
     return this.http.post<any>(environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + '/upload/image', 
     formData);
   }
+
+  public uploadVideo(video: any): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', video);
+    return this.http.post<any>(environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + '/upload/video', 
+    formData);
+  }
 }

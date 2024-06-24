@@ -34,6 +34,13 @@ export class CourseService {
     );
   }   
 
+  adminGetDetailCourse(id: number): Observable<any> {
+    return this.http.get(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/admin/getDetailCourse/${id}`,
+      this.httpOptions
+    );
+  }   
+
   userGetDetailCourse(id: number): Observable<any> {
     return this.http.get(
       environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/getDetailCourse/${id}`,
@@ -151,6 +158,61 @@ export class CourseService {
   getAllCourse(): Observable<any> {
     return this.http.get(
       environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/getAllCourse`,
+      this.httpOptions
+    );  
+  }
+
+  inactiveCourse(body: any): Observable<any> {
+    return this.http.post(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/admin/inactiveCourse`,
+      body,
+      this.httpOptions
+    );  
+  }
+
+  activeCourse(body: any): Observable<any> {
+    return this.http.post(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/admin/activeCourse`,
+      body,
+      this.httpOptions
+    );  
+  }
+  
+  getStudentsByTeacherId(idTeacher: any): Observable<any> {
+    return this.http.get(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/teacher/getListUser/${idTeacher}`,
+      this.httpOptions
+    );  
+  }
+
+  teacherAddCourse(body: any): Observable<any> {
+    return this.http.post(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/teacher/addCourse`,
+      body,
+      this.httpOptions
+    );  
+  }
+
+  teacherAddLessonParents(body: any): Observable<any> {
+    return this.http.post(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/teacher/addLessonParents`,
+      body,
+      this.httpOptions
+    );  
+  }
+
+  unSubmitCourse(id: any): Observable<any> {
+    return this.http.post(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/teacher/unSubmitCourse`,
+      id,
+      this.httpOptions
+    );  
+  }
+
+  submitCourse(id: any): Observable<any> {
+    return this.http.post(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/teacher/submitCourse`,
+      id,
       this.httpOptions
     );  
   }

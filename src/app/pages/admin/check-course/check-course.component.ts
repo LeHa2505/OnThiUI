@@ -7,6 +7,9 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { CourseService } from 'src/app/service/course-service/course.service';
 import { UploadService } from 'src/app/service/upload-service/upload.service';
 import { UserService } from 'src/app/service/user-service/user.service';
+import * as Stomp from 'stompjs';
+import * as SockJS from 'sockjs-client';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-check-course',
@@ -34,6 +37,8 @@ export class CheckCourseComponent {
   isStarted = false;
   learnedLessons = [];
   learningLeson: any;
+  notifications: any;
+  public sanitizedContent: SafeHtml;
 
   panels = [];
 
@@ -50,6 +55,9 @@ export class CheckCourseComponent {
   comments = [];
   listClass: any[] = [];
   files = [];
+  disabled = true;
+  private stompClient = null;
+  newmessage: string;
 
   constructor(
     private courseService: CourseService,
@@ -57,7 +65,8 @@ export class CheckCourseComponent {
     private userService: UserService,
     public router: Router,
     private fileService: UploadService,
-    private modal: NzModalService
+    private modal: NzModalService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -75,9 +84,36 @@ export class CheckCourseComponent {
       nzOkType: 'primary',
       nzOkDanger: true,
       nzCentered: true,
-      nzOnOk: () => console.log('OK'),
+      nzOnOk: () => {
+        this.courseService.inactiveCourse(this.idCourse).subscribe((res) => {
+          if (res.success) {
+            this.createNotification(res.message, 'success');
+            this.userService
+              .createNotification({
+                ID_USER: this.courseDetail.ID_TEACHER,
+                IS_SEEN: false,
+                CONTENT:
+                  'Quản trị viên đã KHOÁ khóa học của bạn!',
+                TYPE_NOTIFICATION: 0,
+              })
+              .subscribe((res) => {
+                if (res.success) {
+                  this.createNotification(res.message, 'success');
+                } else {
+                  this.createNotification(
+                    res.message + 'về việc gửi thông báo',
+                    'error'
+                  );
+                }
+              });
+            this.userInitCourseDetails();
+          } else {
+            this.createNotification(res.message, 'error');
+          }
+        });
+      },
       nzCancelText: 'Không',
-      nzOnCancel: () => console.log('Cancel')
+      nzOnCancel: () => console.log('Cancel'),
     });
   }
 
@@ -88,10 +124,77 @@ export class CheckCourseComponent {
       nzOkType: 'primary',
       nzCentered: true,
       nzOkDanger: true,
-      nzOnOk: () => console.log('OK'),
+      nzOnOk: () => {
+        this.courseService.activeCourse(this.idCourse).subscribe((res) => {
+          if (res.success) {
+            this.createNotification(res.message, 'success');
+            this.userService
+              .createNotification({
+                ID_USER: this.courseDetail.ID_TEACHER,
+                IS_SEEN: false,
+                CONTENT:
+                  'Quản trị viên đã MỞ khóa học của bạn. Từ bây giờ, học sinh có thể đăng ký khóa học của bạn!',
+                TYPE_NOTIFICATION: 1,
+              })
+              .subscribe((res) => {
+                if (res.success) {
+                  this.createNotification(res.message, 'success');
+                } else {
+                  this.createNotification(
+                    res.message + 'về việc gửi thông báo',
+                    'error'
+                  );
+                }
+              });
+            this.userInitCourseDetails();
+          } else {
+            this.createNotification(res.message, 'error');
+          }
+        });
+      },
       nzCancelText: 'Không',
-      nzOnCancel: () => console.log('Cancel')
+      nzOnCancel: () => console.log('Cancel'),
     });
+  }
+
+  setConnected(connected: boolean) {
+    this.disabled = !connected;
+    if (connected) {
+    }
+  }
+
+  connect() {
+    const socket = new SockJS('http://localhost:8899/chat');
+    this.stompClient = Stomp.over(socket);
+    const _this = this;
+    this.stompClient.connect({}, function (frame) {
+      _this.setConnected(true);
+      _this.stompClient.subscribe('/send/notifications', function (notification) {
+        _this.handleNewNotification(JSON.parse(notification.body));
+      });
+    });
+  }
+
+  handleNewNotification(notification) {
+    this.notifications.push(notification);
+    // Cập nhật giao diện người dùng nếu cần thiết
+  }
+
+  initNotification() {
+    this.userService.getListNotification(this.idUser).subscribe((res) => {
+      if (res.success) {
+          this.notifications = res.data;
+      }
+    })
+  }
+
+  sendMessage() {
+    this.stompClient.send(
+      '/app/sendNotification', // Cập nhật endpoint theo yêu cầu backend của bạn
+      {},
+      JSON.stringify(this.newmessage)
+    );
+    this.newmessage = "";
   }
 
   async initListClass(): Promise<void> {
@@ -144,7 +247,6 @@ export class CheckCourseComponent {
             this.courseDetail = res.data;
             this.ratings = res.data.REVIEW;
             this.guestMapLessonsToPanels(res.data.LESSON_INFO);
-            console.log(this.panels);
 
             res.data.LESSON_INFO.forEach((item) => {
               this.files.push(...item.DOCUMENTS_INFO);
@@ -165,13 +267,13 @@ export class CheckCourseComponent {
 
   async userGetDetailCourseApi() {
     return new Promise<void>((resolve, reject) => {
-      this.courseService.userGetDetailCourse(this.idCourse).subscribe(
+      this.courseService.adminGetDetailCourse(this.idCourse).subscribe(
         (res) => {
           if (res.success) {
             this.courseDetail = res.data;
             this.ratings = res.data.REVIEW;
             this.userMapLessonsToPanels(res.data.LESSON_INFO);
-            console.log(this.panels);
+            this.sanitizedContent = this.sanitizer.bypassSecurityTrustHtml(this.courseDetail.DESCRIPTION);
 
             res.data.LESSON_INFO.forEach((item) => {
               this.files.push(...item.DOCUMENTS_INFO);
@@ -536,7 +638,6 @@ export class CheckCourseComponent {
 
   createNotification(message: string, type: string): void {
     this.notification.create(type, '', message).onClick.subscribe(() => {
-      console.log('notification clicked!');
     });
   }
 
@@ -573,7 +674,6 @@ export class CheckCourseComponent {
     if (this.image) {
       this.fileService.upload(this.image).subscribe(
         (data) => {
-          console.log(data);
         },
         (err) => {}
       );
@@ -581,7 +681,6 @@ export class CheckCourseComponent {
   }
 
   onFileSelected(event) {
-    console.log(event);
     const file: File = event.target.files[0];
     this.formData.append('file', file);
   }
@@ -600,6 +699,7 @@ export class CheckCourseComponent {
   }
 
   userMapLessonsToPanels = (lessons) => {
+    this.panels = []
     lessons.sort((a, b) => a.ORDER - b.ORDER);
 
     lessons.forEach((lesson) => {

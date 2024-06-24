@@ -33,24 +33,21 @@
         <div class="text" style="cursor: pointer;">
           <nz-card [style]="'width: 350px; border-radius: 8px;'" [nzBordered]="false"
             [nzTitle]="item.COURSE_INFO.COURSE_NAME" [nzExtra]="extraTemplate">
-            <p style="color: rgba(0, 0, 0, 0.6);" nz-typography nzEllipsis [nzEllipsisRows]="2">
-              {{item.COURSE_INFO.DESCRIPTION}}</p>
+            <p style="color: rgba(0, 0, 0, 0.6);"
+              [innerHTML]="sanitizer.bypassSecurityTrustHtml(item.COURSE_INFO.DESCRIPTION)" nz-typography nzEllipsis
+              [nzEllipsisRows]="4">
+            </p>
 
             <div style="margin-top: 1rem;" class="courses">
               <div>
                 <div style="margin-bottom: 0.5rem;">
-                  <i class="fas fa-calendar-days" style="color: #828282; margin-right: 0.5rem;"></i>
-                  <span style="color: #828282;">{{ item.COURSE_INFO.SCHEDULE }}</span>
+                  <i class="fas fa-user" style="color: #828282; margin-right: 0.5rem;"></i>
+                  <span style="color: #828282;">{{ item.COURSE_INFO.TEACHER_INFO.USERNAME }}</span>
                 </div>
                 <div style="margin-bottom: 0.5rem;">
-                  <i class="fas fa-clock" style="color: #828282; margin-right: 0.5rem;"></i>
-                  <span style="color: #828282;" *ngIf="item.TIME_SCHEDULE">{{ item.TIME_SCHEDULE }}</span>
-                  <span style="color: #828282;" *ngIf="!item.TIME_SCHEDULE">Chưa có gì</span>
                 </div>
               </div>
               <div style="margin-bottom: 0.5rem;">
-                <i class="fas fa-user" style="color: #828282; margin-right: 0.5rem;"></i>
-                <span style="color: #828282;">{{ item.COURSE_INFO.TEACHER_INFO.USERNAME }}</span>
               </div>
             </div>
 
@@ -72,10 +69,10 @@
                     item.CLASSMATES.length - 4 }} người bạn
                     khác</span>
                 </div>
-                <nz-badge [nzCount]="5">
+                <!-- <nz-badge [nzCount]="5">
                   <i class="fas fa-comments"
                     style="color: #828282; margin-right: 0.5rem; font-size: 1rem; float: right;"></i>
-                </nz-badge>
+                </nz-badge> -->
               </div>
             </div>
             <ng-template #extraTemplate>

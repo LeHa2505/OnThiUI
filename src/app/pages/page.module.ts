@@ -83,6 +83,10 @@ import { UserManageComponent } from './admin/user-manage/user-manage.component';
 import { CourseManageComponent } from './admin/course-manage/course-manage.component';
 import { CheckCourseComponent } from './admin/check-course/check-course.component';
 import { CheckLessonComponent } from './admin/check-lesson/check-lesson.component';
+import { RequestCourseComponent } from './admin/request-course/request-course.component';
+import { NewCourseComponent } from './teacher/new-course/new-course.component';
+import {CloudinaryModule} from '@cloudinary/ng';
+import { ReelsComponent } from './teacher/reels/reels.component';
 
 @NgModule({
   declarations: [
@@ -109,10 +113,14 @@ import { CheckLessonComponent } from './admin/check-lesson/check-lesson.componen
     CourseManageComponent,
     CheckCourseComponent,
     CheckLessonComponent,
+    RequestCourseComponent,
+    NewCourseComponent,
+    ReelsComponent,
   ],
 
   imports: [
     NgxDocViewerModule,
+    CloudinaryModule,
     NzTreeModule,
     NzPaginationModule,
     NzSkeletonModule,

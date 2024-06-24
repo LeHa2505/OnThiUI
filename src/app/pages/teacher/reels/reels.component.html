@@ -1,0 +1,124 @@
+<div style="display: flex; align-items: center; text-align: center; margin-bottom: 2rem; justify-content: center;">
+    <h6 style="color: #7D7D7D; font-size: 18px; font-weight: 600; margin-bottom: 0;">QUẢN LÝ SHORTS</h6>
+</div>
+
+<div style="display: flex; flex-direction: column;">
+    <div>
+        <button (click)="showAddVideoModal()" style="
+              float: right;
+              background-color: #f18524;
+              border: none;
+              border-radius: 1rem;
+              margin-bottom: 16px;
+              width: 180px;
+            " nz-button nzType="primary" style="float: right; margin-bottom: 16px">
+            + Tạo mới video ngắn
+        </button>
+    </div>
+
+    <div class="wrap-videos">
+        <nz-card *ngFor="let item of shorts" nzHoverable class="short-video" [nzCover]="coverTemplate">
+            <nz-card-meta></nz-card-meta>
+            <div style="margin: -1rem;">
+                <p nz-typography nzEllipsis [nzEllipsisRows]="2" style="margin-top: 1rem; margin-bottom: 0.5rem; margin-right: 1rem;
+        margin-left: 1rem;">
+                    {{ item.THUMBNAIL }}
+                </p>
+                <div
+                    style="display: flex; align-items: center; text-align: center; margin-bottom: 1rem; justify-content: flex-end; margin-right: 1rem; margin-top: 1rem;">
+                    <i (click)="detailShort(item)" nz-tooltip [nzTooltipTitle]="'Xem chi tiết'"
+                        [nzTooltipColor]="'#000'" style="margin-right: 1rem;" nzTooltipPlacement="right"
+                        class="fa-solid fa-eye"></i>
+
+                    <i nz-tooltip [nzTooltipTitle]="'Xóa'" [nzTooltipColor]="'#000'" nzTooltipPlacement="right"
+                        (click)="showDeleteConfirm(item.ID_SHORT)" class="fa-solid fa-trash"></i>
+                </div>
+            </div>
+            <ng-template #coverTemplate>
+                <img style="border-radius: 12px; width: 180px; height: 240px" alt="example" [src]="item.THUMBNAIL" />
+            </ng-template>
+        </nz-card>
+    </div>
+</div>
+
+<div class="center-item">
+    <nz-pagination [nzPageIndex]="pageIndex" [nzPageSize]="pageSize" [nzTotal]="totalVideos"
+        (nzPageIndexChange)="onPageChange($event)">
+    </nz-pagination>
+</div>
+
+<nz-modal [(nzVisible)]="isAddVideoModalVisible" nzTitle="Add Video" (nzOnCancel)="handleCancel()"
+    (nzOnOk)="handleAddVideoOk()">
+    <div *nzModalContent>
+        <form [formGroup]="addVideoForm">
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" nzFor="TITLE" nzRequired>Tiêu đề</nz-form-label>
+                <nz-form-control [nzSm]="14">
+                    <input nz-input formControlName="TITLE" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <div *ngIf="!addVideoForm.get('VIDEO_LINK').value"
+                style="display: flex; width: 100%; align-items: center; justify-content: center;">
+                <div class="img-upload"
+                    style="max-width: 75%; display: flex; width: 100%; align-items: center; justify-content: center;">
+                    <div style="display: flex; width: 100%; align-items: center; justify-content: center;">
+                        <button
+                            style="background-color: #fff; color: #000; border: none; line-height: 1.5715; position: relative; font-weight: 400; white-space: nowrap; text-align: center; border: 1px solid #d9d9d9; box-shadow: 0 2px 0 rgba(0, 0, 0, .015); cursor: pointer; transition: all .3s cubic-bezier(.645,.045,.355,1); -webkit-user-select: none; user-select: none; height: 32px; padding: 4px 15px; border-radius: 1rem; background: #fff;"
+                            id="upload_widget" (click)="openWidget()" class="cloudinary-button">
+                            <span><i style="margin-right: 1rem;" class="fa-regular fa-image"></i></span>
+                            Upload video ngắn
+                        </button>
+                        <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+                        <script src="upload_widget.js" type="text/javascript"></script>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin: 0 1rem; display: flex; align-items:center; justify-content: center;">
+                <video *ngIf="addVideoForm.get('VIDEO_LINK').value" #videoPlayer width="50%" controls
+                    style="border-radius: 15px;width: 50%; margin-bottom: 2rem;">
+                    <source [src]="addVideoForm.get('VIDEO_LINK').value" type="video/mp4">
+                    Your browser does not support HTML5 video.
+                </video>
+            </div>
+
+            <div *ngIf="!courseAvatar"
+                style="display: flex; width: 100%; align-items: center; justify-content: center;">
+                <div class="img-upload" style="max-width: 75%;">
+                    <input style="display: none;" type="file" class="file-input" (change)="onFileChange($event)" #file>
+                    <button nz-button class="file-input" (click)="file.click()" style="margin-left: 1rem;">
+                        <span><i style="margin-right: 1rem;" class="fa-regular fa-image"></i></span>
+                        Upload thumbnail
+                    </button>
+                </div>
+            </div>
+
+            <div *ngIf="courseAvatar"
+                style="display: flex; width: 100%; align-items: center; justify-content: center; flex-direction: column;">
+                <img style="width: 60%; border-radius: 8px; margin-bottom: 1rem;"
+                    [src]="courseAvatar" alt="">
+                <div>
+                    <input style="display: none;" type="file" class="file-input" (change)="onFileChange($event)" #file>
+                    <button nz-button class="file-input" (click)="file.click()" style="display: flex;">
+                        <div><i style="margin-right: 1rem;" class="fa-regular fa-image"></i></div>
+                        Upload lại thumbnail
+                    </button>
+                </div>
+            </div>
+
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" nzFor="THUMBNAIL" nzRequired>Thumbnail</nz-form-label>
+                <nz-form-control [nzSm]="14">
+                    <input nz-input formControlName="THUMBNAIL" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" nzFor="DESCRIPTION">Mô tả/Caption</nz-form-label>
+                <nz-form-control [nzSm]="14">
+                    <textarea nz-input formControlName="DESCRIPTION"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </div>
+</nz-modal>

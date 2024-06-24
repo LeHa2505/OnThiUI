@@ -41,9 +41,7 @@ export class MessageComponent {
     this.stompClient = Stomp.over(socket);
     const _this = this;
     this.stompClient.connect({}, function (frame) {
-      console.log('Connected: ' + frame);
       _this.stompClient.subscribe('/start/initial', function(hello){
-        console.log(JSON.parse(hello.body));
         _this.showMessage(JSON.parse(hello.body));
       });
    });

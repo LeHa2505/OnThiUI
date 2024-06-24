@@ -39,31 +39,44 @@
       <div class="app-header">
         <div class="header-user">
           <div style="margin-right: 1.5rem;">
-            <nz-badge [nzCount]="5" nz-dropdown [nzDropdownMenu]="noti" [nzPlacement]="'bottomRight'">
+            <nz-badge [(nzCount)]="notiLength" nz-dropdown [nzDropdownMenu]="noti" [nzPlacement]="'bottomRight'">
               <span nz-icon><i style="font-size: 20px;" class="fa-regular fa-bell"></i></span>
             </nz-badge>
 
             <nz-dropdown-menu #noti="nzDropdownMenu">
-              <ul nz-menu nzSelectable style="height: 350px !important; overflow-y: scroll;">
+              <ul *ngIf="notifications" nz-menu nzSelectable style="max-height: 350px !important; overflow-y: scroll;">
                 <li *ngFor="let item of notifications" style="width: 350px;" class="ant-dropdown-menu-item"
                   nz-menu-item>
-                  <div style="padding: 5px 16px !important; display: flex;">
+                  <div (click)="updateNoti(item)" style="padding: 5px 16px !important; display: flex;">
                     <div>
                       <span nz-icon nzTheme="outline" style="margin-right: 1rem;">
-                        <div [ngSwitch]="item.status">
-                          <app-message-icon *ngSwitchCase="1"></app-message-icon>
-                          <app-checked-icon *ngSwitchCase="2"></app-checked-icon>
-                          <app-warning-icon *ngSwitchCase="3"></app-warning-icon>
-                          <app-plus-icon *ngSwitchCase="4"></app-plus-icon>
+                        <div [ngSwitch]="item.TYPE_NOTIFICATION">
+                          <!-- <app-message-icon *ngSwitchCase="1"></app-message-icon> -->
+                          <app-checked-icon *ngSwitchCase="1"></app-checked-icon>
+                          <app-warning-icon *ngSwitchCase="0"></app-warning-icon>
+                          <!-- <app-plus-icon *ngSwitchCase="4"></app-plus-icon> -->
                           <div *ngSwitchDefault>Unknown Icon</div>
                         </div>
                       </span>
                     </div>
                     <div style="display: flex; flex-direction: column;">
-                      <span><strong>{{ item.content }}</strong></span>
-                      <span style="color: #41475E; opacity: 0.5;   letter-spacing: 0.30000001192092896px;
-                      ">{{ item.time }}</span>
+                      <span><strong>{{ item.CONTENT }}</strong></span>
+                      <span style="color: #41475E; opacity: 0.5; letter-spacing: 0.30000001192092896px; display: flex;
+                      align-items: center;
+                      justify-content: space-between;
+                      ">
+                        <span>{{ convertTime(item.CREATED_DATE) }}</span>
+                        <span>{{ item.IS_SEEN?'Đã đọc':'Chưa đọc' }}</span>
+                      </span>
                     </div>
+                  </div>
+                </li>
+              </ul>
+              <ul *ngIf="notifications.length<=0" nz-menu nzSelectable
+                style="max-height: 350px !important; overflow-y: scroll;">
+                <li>
+                  <div style="width: 350px; padding: 1rem;">
+                    Chưa có thông báo nào!
                   </div>
                 </li>
               </ul>
@@ -75,7 +88,8 @@
             <div *ngIf="avatar=='null'">
               <strong>{{username[0].toUpperCase()}}</strong>
             </div>
-            <img *ngIf="avatar!='null'" style="width: 100%;" [src]="avatar" alt="">
+            <img *ngIf="avatar!='null'" [src]="avatar" alt="User Avatar"
+              style="width: 2.6rem; height: 2.6rem; border-radius: 50%;" />
           </span>
           <div>
             <div style="display: flex; align-items: center;">
@@ -133,7 +147,7 @@
       </nz-breadcrumb-item>
     </nz-breadcrumb> -->
     <nz-content>
-      <div [class]="role == '0'? 'inner-content-admin':'inner-content'">
+      <div [class]="role == '1'? 'inner-content':'inner-content-admin'">
         <router-outlet></router-outlet>
       </div>
     </nz-content>

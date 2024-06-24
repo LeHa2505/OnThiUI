@@ -178,7 +178,6 @@ export class FileManageComponent {
   pdfSrc = 'https://res.cloudinary.com/djiv03sxd/image/upload/v1717519493/file/ootd5qumpnfzjsmsvrt8.pdf';
 
   contentLoaded() {
-    console.log('File loaded');
   }
 
   openFolder(data: NzTreeNode | NzFormatEmitEvent): void {
