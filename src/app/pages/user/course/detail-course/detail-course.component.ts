@@ -6,6 +6,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { CourseService } from 'src/app/service/course-service/course.service';
 import { UploadService } from 'src/app/service/upload-service/upload.service';
 import { UserService } from 'src/app/service/user-service/user.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-detail-course',
@@ -43,6 +44,7 @@ export class DetailCourseComponent implements OnInit {
   percent3Star: any = 0;
   percent4Star: any = 0;
   percent5Star: any = 0;
+  public sanitizedContent: SafeHtml;
 
   formatProgress = (percent: number): string => `${percent}%`;
 
@@ -55,7 +57,8 @@ export class DetailCourseComponent implements OnInit {
     private notification: NzNotificationService,
     private userService: UserService,
     public router: Router,
-    private fileService: UploadService
+    private fileService: UploadService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -121,7 +124,7 @@ export class DetailCourseComponent implements OnInit {
             this.courseDetail = res.data;
             this.ratings = res.data.REVIEW;
             this.guestMapLessonsToPanels(res.data.LESSON_INFO);
-
+            this.sanitizedContent = this.sanitizer.bypassSecurityTrustHtml(this.courseDetail.DESCRIPTION);
             res.data.LESSON_INFO.forEach((item) => {
               this.files.push(...item.DOCUMENTS_INFO);
             });
@@ -145,6 +148,7 @@ export class DetailCourseComponent implements OnInit {
         (res) => {
           if (res.success) {
             this.courseDetail = res.data;
+            this.sanitizedContent = this.sanitizer.bypassSecurityTrustHtml(this.courseDetail.DESCRIPTION);
             this.ratings = res.data.REVIEW;
             this.userMapLessonsToPanels(res.data.LESSON_INFO);
 

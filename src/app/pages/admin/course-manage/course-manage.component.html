@@ -59,6 +59,16 @@
         </nz-select>
     </div>
 
+    <div class="filter-item" nz-col [nzSpan]="4" style="display: flex; justify-content: center; align-items: center; margin-right: 1rem;">
+        <nz-select style="width: 200px;" nzPlaceHolder="Trạng thái gủi yêu cầu" [(ngModel)]="submitStatus"
+            (ngModelChange)="search()">
+            <nz-option nzDisabled [nzLabel]="'Trạng thái gủi yêu cầu'" [nzValue]="null"></nz-option>
+            <nz-option [nzLabel]="'Chưa gửi'" [nzValue]="false"></nz-option>
+            <nz-option [nzLabel]="'Đã gửi'" [nzValue]="true"></nz-option>
+            <nz-option [nzLabel]="'Tất cả'" [nzValue]="'Tất cả'"></nz-option>
+        </nz-select>
+    </div>
+
     <button (click)="resetValueSelected()" nz-button nzType="dashed" nzShape="circle"
         style="padding: 0.3rem 0.8rem 0.3rem 0.8rem; margin-right: 1rem;">
         <span nz-icon>

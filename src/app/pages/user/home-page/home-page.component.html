@@ -33,27 +33,21 @@
         <div class="container-fluid2" style="padding-left: 0;">
             <div class="slider-wrap">
                 <div class="slider-main">
-                    <div *ngFor="let item of shorts; let i = index" class="item" [routerLink]="['/courses', item.name]">
+                    <div *ngFor="let item of shorts; let i = index" class="item" [routerLink]="['/courses', item.TITLE]">
                         <div class="text">
-                            <nz-card [style]="'width: 160px; border-radius: 8px;'" nz-tooltip
-                                [nzTooltipTitle]="item.name" [nzTooltipColor]="'#000'" nzTooltipPlacement="right"
-                                class="short-video" [routerLink]="['/shorts', item.name]" [nzCover]="coverTemplate">
+                            <nz-card (click)="detailShort(item)" [style]="'width: 160px; border-radius: 8px;'" nz-tooltip
+                                [nzTooltipTitle]="item.TITLE" [nzTooltipColor]="'#000'" nzTooltipPlacement="right"
+                                class="short-video"  [nzCover]="coverTemplate">
                                 <nz-card-meta></nz-card-meta>
                                 <div style="margin: -1rem;">
                                     <p nz-typography nzEllipsis [nzEllipsisRows]="2"
-                                        style="margin-top: 1rem; margin-bottom: 0.5rem;">
-                                        {{ item.name }}
+                                        style="margin-top: 1rem; margin-bottom: 0.5rem; margin-right: 0.5rem; margin-left: 0.5rem;">
+                                        {{ item.TITLE }}
                                     </p>
-                                    <div>
-                                        <i class="fas fa-eye" style="margin-right: 0.3rem; color: #7D7D7D;"></i>
-                                        <span style="color: #7D7D7D;">
-                                            {{ item.views }} lượt xem
-                                        </span>
-                                    </div>
                                 </div>
                                 <ng-template #coverTemplate>
                                     <img style="border-radius: 12px; width: 160px; height: 240px" alt="example"
-                                        [src]="item.img" />
+                                        [src]="item.THUMBNAIL" />
                                 </ng-template>
                             </nz-card>
                         </div>
@@ -61,35 +55,6 @@
                 </div>
             </div>
         </div>
-
-        <div>
-            <div class="living-video"
-                style="display: flex; align-items: center; margin-top: 2rem; margin-bottom: 0.5rem;">
-                <h6
-                    style="color: #7D7D7D; font-size: 18px; font-weight: 500; margin-bottom: 0.5rem;  margin-right: 1rem;">
-                    Đang live!
-                </h6>
-                <a style="color: #3649F9">
-                    Xem tất cả
-                </a>
-            </div>
-
-            <div style="display: flex; justify-content: space-between; flex-wrap: wrap; flex-direction: row;">
-                <div *ngFor="let item of livestreams" class="story-background"
-                    [ngStyle]="{'background-image': 'url(' + item.link + ')','margin-bottom': '1rem'}">
-                    <div class="inner-video"
-                        style="background-color: rgba(0, 0, 0, 0.4); width: 100%; height: 100%; border-radius: 15px;">
-                        <div class="border-avatar">
-                            <nz-avatar [nzSize]="'large'" nzIcon="user" [nzSrc]="item.user"></nz-avatar>
-                        </div>
-                        <div class="live-content">
-                            <span>LIVE</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <div style="width:30%; border-radius: 1rem;">
@@ -98,7 +63,7 @@
                 [locale]="locale" [hasHeader]="false"></igx-calendar>
 
             <h6 style="color: #252641; font-size: 1rem;"><strong>{{ selectedDate }}</strong></h6>
-            <a routerLink="/my-calendar" class="mb">Xem chi tiết lịch của tôi</a>
+            <!-- <a routerLink="/my-calendar" class="mb">Xem chi tiết lịch của tôi</a>
 
             <div style="overflow-y: auto; margin-top: 1rem;">
                 <app-schedule-card *ngFor="let item of schedules" [time]="item.time" [subject]="item.subject"
@@ -115,7 +80,7 @@
                     <p style="margin: 0; font-weight: bold; font-size: 15px">{{ item.name }}</p>
                     <p style="margin: 0; font-size: 13px; color: #41475E"> Deadline: {{ item.deadline }}</p>
                 </div>
-            </div>
+            </div> -->
         </nz-card>
     </div>
 </div>

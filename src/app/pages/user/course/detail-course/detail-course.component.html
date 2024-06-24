@@ -74,67 +74,7 @@
                         </span>
                     </ng-template>
                     <div>
-                        <h6 style="color: #7D7D7D; font-size: 14px; font-weight: 600; margin-bottom: 0.5rem;">Mô tả khóa
-                            học
-                        </h6>
-                        <p nz-typography nzEllipsis nzExpandable [nzEllipsisRows]="3" style="color: #696984;">
-                            4 năm học THCS trôi qua rất nhanh. Các em đang đứng trước giai đoạn quan trọng sau suốt 9
-                            năm
-                            liền cắp sách tới trường. Vì thế, việc lựa chọn 1 khóa học phù hợp để giúp các trang bị hành
-                            trang giúp các em này nọ kia là rất quan trọng. Hãy cân nhắc kỹ lưỡng và chọn lựa một khóa
-                            học
-                            mà các em thực sự quan tâm và tin tưởng vào khả năng của mình. Hành trang kiến thức và kỹ
-                            năng
-                            mà các em tích lũy được sẽ là nền tảng quan trọng cho sự phát triển và thành công trong
-                            tương
-                            lai.
-                        </p>
-                        <h6 style="color: #7D7D7D; font-size: 14px; font-weight: 600; margin-bottom: 0.5rem;">
-                            Cấu trúc khóa học thông qua lộ trình học tập 4 bước:
-                        </h6>
-                        <div style="color: #696984;">
-                            <ul>
-                                <li>
-                                    Trang bị các nội dung một cách chi tiết và sáng tạo, giúp học sinh xây dựng gốc kiến
-                                    thức, hiểu sâu và bài bản nội dung theo chương trình SGK.
-                                </li>
-                                <li>
-                                    Hệ thống câu hỏi luyện tập được xây dựng chi tiết theo từng bài học, học sinh được
-                                    luyện
-                                    tập ngay sau khi học video bài giảng
-                                </li>
-                            </ul>
-                        </div>
-                        <h6 style="color: #7D7D7D; font-size: 14px; font-weight: 600; margin-bottom: 0.5rem;">
-                            Các yêu cầu khóa học
-                        </h6>
-                        <div style="color: #696984;">
-                            <ul>
-                                <li>Học sinh cần học tập bám sát sách giáo khoa, đọc kĩ tác phẩm</li>
-                                <li>Ghi chép bài cẩn thận, học bài giảng một cách nghiêm túc, tự giác</li>
-                            </ul>
-                        </div>
-                        <h6 style="color: #7D7D7D; font-size: 14px; font-weight: 600; margin-bottom: 0.5rem;">
-                            Kết quả học tập
-                        </h6>
-                        <div style="color: #696984;">
-                            <ul>
-                                <li>Vững toàn bộ kiến thức về tác phẩm trong chương trình Ngữ văn lớp 9</li>
-                                <li>Bước đầu xây dựng các kĩ năng làm văn, đọc hiểu văn bản trong chương trình lớp 9.
-                                </li>
-                            </ul>
-                        </div>
-                        <h6 style="color: #7D7D7D; font-size: 14px; font-weight: 600; margin-bottom: 0.5rem;">
-                            Đối tượng
-                        </h6>
-                        <div style="color: #696984;">
-                            <ul>
-                                <li>Học sinh lớp 9 muốn chủ động tham khảo chương trình hoặc học lại kiến thức đã học
-                                    trên
-                                    lớp.</li>
-                                <li>Giáo viên tham khảo để chuẩn bị cho bài giảng trên lớp.</li>
-                            </ul>
-                        </div>
+                        <div [innerHTML]="sanitizedContent"></div>
                     </div>
                 </nz-tab>
 

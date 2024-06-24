@@ -9,6 +9,7 @@ import { UploadService } from 'src/app/service/upload-service/upload.service';
 import { UserService } from 'src/app/service/user-service/user.service';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-check-course',
@@ -37,6 +38,7 @@ export class CheckCourseComponent {
   learnedLessons = [];
   learningLeson: any;
   notifications: any;
+  public sanitizedContent: SafeHtml;
 
   panels = [];
 
@@ -63,7 +65,8 @@ export class CheckCourseComponent {
     private userService: UserService,
     public router: Router,
     private fileService: UploadService,
-    private modal: NzModalService
+    private modal: NzModalService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -270,6 +273,7 @@ export class CheckCourseComponent {
             this.courseDetail = res.data;
             this.ratings = res.data.REVIEW;
             this.userMapLessonsToPanels(res.data.LESSON_INFO);
+            this.sanitizedContent = this.sanitizer.bypassSecurityTrustHtml(this.courseDetail.DESCRIPTION);
 
             res.data.LESSON_INFO.forEach((item) => {
               this.files.push(...item.DOCUMENTS_INFO);

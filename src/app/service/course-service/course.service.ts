@@ -184,4 +184,36 @@ export class CourseService {
       this.httpOptions
     );  
   }
+
+  teacherAddCourse(body: any): Observable<any> {
+    return this.http.post(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/teacher/addCourse`,
+      body,
+      this.httpOptions
+    );  
+  }
+
+  teacherAddLessonParents(body: any): Observable<any> {
+    return this.http.post(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/teacher/addLessonParents`,
+      body,
+      this.httpOptions
+    );  
+  }
+
+  unSubmitCourse(id: any): Observable<any> {
+    return this.http.post(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/teacher/unSubmitCourse`,
+      id,
+      this.httpOptions
+    );  
+  }
+
+  submitCourse(id: any): Observable<any> {
+    return this.http.post(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/teacher/submitCourse`,
+      id,
+      this.httpOptions
+    );  
+  }
 }

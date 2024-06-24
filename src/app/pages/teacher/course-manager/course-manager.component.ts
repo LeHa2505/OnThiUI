@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
@@ -28,7 +29,8 @@ export class CourseManagerComponent {
     private modal: NzModalService,
     private fileService: UploadService,
     private notification: NzNotificationService,
-    private couserService: CourseService
+    private couserService: CourseService,
+    public router: Router
   ) {}
 
   ngOnInit(): void {
@@ -57,7 +59,6 @@ export class CourseManagerComponent {
     const endIndex = startIndex + this.pageSize;
     this.paginatedCourses = this.listCourses.slice(startIndex, endIndex);
   }
-
 
   getCategoryNameColor(type: string): string {
     const categoryName = type.toLowerCase();
@@ -128,5 +129,11 @@ export class CourseManagerComponent {
       default:
         return 'Unknown';
     }
+  }
+
+  detail(item: any) {
+    this.couserService.idCourse = Number(item);
+    localStorage.setItem('idCourse', item);
+    this.router.navigateByUrl('/course-manager/detail/item');
   }
 }

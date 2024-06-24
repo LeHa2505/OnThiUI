@@ -80,6 +80,12 @@ export class LayoutUserComponent implements OnInit {
       url: 'course-manager',
     },
     {
+      title: 'Shorts',
+      icon: 'fas fa-video',
+      role: '2',
+      url: 'shorts-manager',
+    },
+    {
       title: 'Quản lý người dùng',
       icon: 'fas fa-user',
       role: '0',
@@ -148,7 +154,6 @@ export class LayoutUserComponent implements OnInit {
 
   connect() {
     // const _this = this;
-
     // // Attempt to connect
     // const tryConnect = () => {
     //   const socket = new SockJS('http://localhost:8899/chat');
@@ -172,10 +177,8 @@ export class LayoutUserComponent implements OnInit {
     //     }
     //   );
     // };
-
     // // Start the initial connection attempt
     // tryConnect();
-
     // // Set up interval to reconnect every 0.5 seconds
     // this.connectInterval = setInterval(() => {
     //   tryConnect();
@@ -216,11 +219,11 @@ export class LayoutUserComponent implements OnInit {
         });
         this.notiLength = this.notifications.reduce((count, notification) => {
           if (notification.IS_SEEN === false) {
-              return count + 1;
+            return count + 1;
           } else {
-              return count;
+            return count;
           }
-      }, 0);
+        }, 0);
       }
     });
   }

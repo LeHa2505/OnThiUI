@@ -53,6 +53,7 @@ export class CourseManageComponent {
   courseType: any;
   courseStatus: any;
   checkStatus: any;
+  submitStatus: any;
 
   constructor(
     private mess: NzMessageService,
@@ -149,7 +150,7 @@ export class CourseManageComponent {
             LESSON_QUANTITY: element.LESSON_QUANTITY,
             QUIZ_QUANTITY: element.QUIZ_QUANTITY,
             REVIEW: element.REVIEW,
-            SCHEDULE: element.SCHEDULE,
+            IS_SUBMITTED: element.IS_SUBMITTED,
             START_DATE: element.START_DATE,
             TEACHER_INFO: element.TEACHER_INFO,
             TYPE_COURSE: element.TYPE_COURSE,
@@ -245,6 +246,12 @@ export class CourseManageComponent {
     if (this.checkStatus != null && this.checkStatus != 'Tất cả') {
       this.listOfDisplayData = this.listOfDisplayData.filter(
         (item: any) => item.IS_CHECK == this.checkStatus
+      );
+    } 
+
+    if (this.submitStatus != null && this.submitStatus != 'Tất cả') {
+      this.listOfDisplayData = this.listOfDisplayData.filter(
+        (item: any) => item.IS_SUBMITTED == this.submitStatus
       );
     } 
   }

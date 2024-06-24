@@ -22,6 +22,7 @@ import { CheckCourseComponent } from './admin/check-course/check-course.componen
 import { CheckLessonComponent } from './admin/check-lesson/check-lesson.component';
 import { RequestCourseComponent } from './admin/request-course/request-course.component';
 import { NewCourseComponent } from './teacher/new-course/new-course.component';
+import { ReelsComponent } from './teacher/reels/reels.component';
 
 const routes: Routes = [
   {
@@ -96,6 +97,10 @@ const routes: Routes = [
     component: StudentManagerComponent,
   },
   {
+    path: 'shorts-manager',
+    component: ReelsComponent,
+  },
+  {
     path: 'course-manager',
     children: [
       {
@@ -108,7 +113,7 @@ const routes: Routes = [
       },
       {
         path: 'detail/:id',
-        component: DetailCourseComponent,
+        component: CheckCourseComponent,
       },
       {
         path: 'new',

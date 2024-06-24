@@ -88,7 +88,8 @@
             <div *ngIf="avatar=='null'">
               <strong>{{username[0].toUpperCase()}}</strong>
             </div>
-            <img *ngIf="avatar!='null'" style="width: 100%;" [src]="avatar" alt="">
+            <img *ngIf="avatar!='null'" [src]="avatar" alt="User Avatar"
+              style="width: 2.6rem; height: 2.6rem; border-radius: 50%;" />
           </span>
           <div>
             <div style="display: flex; align-items: center;">

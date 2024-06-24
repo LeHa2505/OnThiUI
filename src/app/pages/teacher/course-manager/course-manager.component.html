@@ -31,8 +31,9 @@
         
         
       <div nz-row>
-        <div nz-col nzSpan="8">
-          <button nz-button nzType="default"><i style="margin-right: 0.5rem;" class="fa-solid fa-pen-to-square"></i>Chỉnh sửa khóa học</button>
+        <div nz-col nzSpan="8" style="display: flex; align-items: center;">
+          <button style="margin-right: 1rem;" nz-button nzType="default"><i style="margin-right: 0.5rem;" class="fa-solid fa-pen-to-square"></i>Chỉnh sửa khóa học</button>
+          <button (click)="detail(course.ID_COURSE)" nz-button nzType="default"><i style="margin-right: 0.5rem;" class="fa-solid fa-eye" ></i>Xem chi tiết</button>
         </div>
       </div>
     </nz-list-item>

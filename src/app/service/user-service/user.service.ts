@@ -27,6 +27,7 @@ export class UserService {
   public userName: string;
   public userAvatar: string;
   public userInfo: any;
+  public idShort: number;
 
   constructor(private http: HttpClient) {}
 
@@ -52,14 +53,14 @@ export class UserService {
 
   getAllUser(): Observable<any> {
     return this.http.get(
-      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + "/user/getAll",
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + '/user/getAll',
       this.httpOptions
     );
   }
 
   updateUserInfo(body: any): Observable<any> {
     return this.http.post(
-      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + "/user/updateUserInfo",
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + '/user/updateUserInfo',
       body,
       this.httpOptions
     );
@@ -74,7 +75,8 @@ export class UserService {
 
   createNotification(body: any): Observable<any> {
     return this.http.post(
-      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + "/admin/create/notification",
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API +
+        '/admin/create/notification',
       body,
       this.httpOptions
     );
@@ -82,13 +84,50 @@ export class UserService {
 
   updateNotification(body: any): Observable<any> {
     return this.http.post(
-      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + "/admin/update/notification",
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API +
+        '/admin/update/notification',
       body,
       this.httpOptions
     );
   }
-  
+
   getListNotification(idUser: string): Observable<any> {
-    return this.http.get<any>(`${environment.BASE_API_URI.BASE_SERVICE_ONTHI_API}/notifications/${idUser}`);
+    return this.http.get<any>(
+      `${environment.BASE_API_URI.BASE_SERVICE_ONTHI_API}/notifications/${idUser}`
+    );
+  }
+
+  getShortsByUserId(idUser: string): Observable<any> {
+    return this.http.get<any>(
+      `${environment.BASE_API_URI.BASE_SERVICE_ONTHI_API}/teacher/getShortsByUserId/${idUser}`
+    );
+  }
+
+  userGetShortsById(idUser: string): Observable<any> {
+    return this.http.get<any>(
+      `${environment.BASE_API_URI.BASE_SERVICE_ONTHI_API}/user/getShortsByUserId/${idUser}`
+    );
+  }
+
+  addShort(body: any): Observable<any> {
+    return this.http.post(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + '/teacher/addShort',
+      body,
+      this.httpOptions
+    );
+  }
+
+  deleteShort(body: any): Observable<any> {
+    return this.http.post(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + '/teacher/deleteShort',
+      body,
+      this.httpOptions
+    );
+  }
+
+  getDetailShort(id: string): Observable<any> {
+    return this.http.get<any>(
+      `${environment.BASE_API_URI.BASE_SERVICE_ONTHI_API}/user/getShort/${id}`
+    );
   }
 }

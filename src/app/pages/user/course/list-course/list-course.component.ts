@@ -12,6 +12,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/service/user-service/user.service';
 import { UploadService } from 'src/app/service/upload-service/upload.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-list-course',
@@ -41,6 +42,8 @@ export class ListCourseComponent implements OnInit {
   listProvinces: any;
   listOfOption = ['Apples', 'Nails', 'Bananas', 'Helicopters'];
   listOfSelectedValue: string[] = [];
+  public sanitizedContent: SafeHtml;
+
   @ViewChild('template', { static: true }) template!: TemplateRef<any>;
 
   constructor(
@@ -48,7 +51,8 @@ export class ListCourseComponent implements OnInit {
     private userService: UserService,
     private notification: NzNotificationService,
     public router: Router,
-    private fileService: UploadService
+    private fileService: UploadService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
