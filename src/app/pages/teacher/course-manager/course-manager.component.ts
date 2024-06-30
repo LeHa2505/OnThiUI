@@ -22,6 +22,7 @@ export class CourseManagerComponent {
   pageIndex = 1;
   pageSize = 5; // number of items per page
   total = 0;
+  loadingCourse = true;
 
   constructor(
     private mess: NzMessageService,
@@ -58,6 +59,7 @@ export class CourseManagerComponent {
     const startIndex = (this.pageIndex - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
     this.paginatedCourses = this.listCourses.slice(startIndex, endIndex);
+    this.loadingCourse = false;
   }
 
   getCategoryNameColor(type: string): string {
@@ -135,5 +137,12 @@ export class CourseManagerComponent {
     this.couserService.idCourse = Number(item);
     localStorage.setItem('idCourse', item);
     this.router.navigateByUrl('/course-manager/detail/item');
+  }
+
+  
+  getCourseDetail(item: any) {
+    this.couserService.idCourse = Number(item);
+    localStorage.setItem('idCourse', item);
+    this.router.navigateByUrl('/course-manager/edit/' + item);
   }
 }

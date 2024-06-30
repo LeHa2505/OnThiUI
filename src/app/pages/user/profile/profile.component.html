@@ -80,7 +80,7 @@
                                     <nz-option nzValue="1" nzLabel="Nữ"></nz-option>
                                     <nz-option nzValue="2" nzLabel="Khác"></nz-option>
                                 </nz-select>
-                                <span *ngIf="!isEditing">{{ gender }}</span>
+                                <span *ngIf="!isEditing">{{ gender==1?'Nữ':'Nam' }}</span>
                             </div>
                         </div>
                         <div class="row mb-3">

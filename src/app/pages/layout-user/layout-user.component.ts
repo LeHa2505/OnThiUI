@@ -153,36 +153,36 @@ export class LayoutUserComponent implements OnInit {
   private connectInterval: any;
 
   connect() {
-    // const _this = this;
-    // // Attempt to connect
-    // const tryConnect = () => {
-    //   const socket = new SockJS('http://localhost:8899/chat');
-    //   _this.stompClient = Stomp.over(socket);
-    //   _this.stompClient.connect(
-    //     {},
-    //     function (frame) {
-    //       _this.initNotification();
-    //       // Assuming you have a method to handle connected state
-    //       // _this.setConnected(true);
-    //       _this.stompClient.subscribe(
-    //         '/send/notifications',
-    //         function (notification) {
-    //           // Assuming you have a method to handle new notifications
-    //           // _this.handleNewNotification(JSON.parse(notification.body));
-    //         }
-    //       );
-    //     },
-    //     function (error) {
-    //       // Handle connection error here if needed
-    //     }
-    //   );
-    // };
-    // // Start the initial connection attempt
-    // tryConnect();
-    // // Set up interval to reconnect every 0.5 seconds
-    // this.connectInterval = setInterval(() => {
-    //   tryConnect();
-    // }, 2000);
+    const _this = this;
+    // Attempt to connect
+    const tryConnect = () => {
+      const socket = new SockJS('http://localhost:8899/chat');
+      _this.stompClient = Stomp.over(socket);
+      _this.stompClient.connect(
+        {},
+        function (frame) {
+          _this.initNotification();
+          // Assuming you have a method to handle connected state
+          // _this.setConnected(true);
+          _this.stompClient.subscribe(
+            '/send/notifications',
+            function (notification) {
+              // Assuming you have a method to handle new notifications
+              // _this.handleNewNotification(JSON.parse(notification.body));
+            }
+          );
+        },
+        function (error) {
+          // Handle connection error here if needed
+        }
+      );
+    };
+    // Start the initial connection attempt
+    tryConnect();
+    // Set up interval to reconnect every 0.5 seconds
+    this.connectInterval = setInterval(() => {
+      tryConnect();
+    }, 2000);
   }
 
   disconnect() {

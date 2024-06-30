@@ -29,35 +29,39 @@ export class CourseService {
 
   guestGetDetailCourse(id: number): Observable<any> {
     return this.http.get(
-      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/guest/getDetailCourse/${id}`,
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API +
+        `/guest/getDetailCourse/${id}`,
       this.httpOptions
     );
-  }   
+  }
 
   adminGetDetailCourse(id: number): Observable<any> {
     return this.http.get(
-      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/admin/getDetailCourse/${id}`,
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API +
+        `/admin/getDetailCourse/${id}`,
       this.httpOptions
     );
-  }   
+  }
 
   userGetDetailCourse(id: number): Observable<any> {
     return this.http.get(
-      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/getDetailCourse/${id}`,
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API +
+        `/user/getDetailCourse/${id}`,
       this.httpOptions
     );
-  }   
+  }
 
   userGetListReview(id: any): Observable<any> {
     return this.http.get(
       environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/getReview/${id}`,
       this.httpOptions
-    );  
+    );
   }
 
   userUnlikeUndislikeReview(body: any): Observable<any> {
     return this.http.post(
-      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + '/user/userUnlikeUndislikeReview',
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API +
+        '/user/userUnlikeUndislikeReview',
       body,
       this.httpOptions
     );
@@ -65,7 +69,8 @@ export class CourseService {
 
   userLikeDislikeReview(body: any): Observable<any> {
     return this.http.post(
-      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + '/user/likeDislikeReview',
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API +
+        '/user/likeDislikeReview',
       body,
       this.httpOptions
     );
@@ -81,23 +86,26 @@ export class CourseService {
 
   deleteReview(id: any): Observable<any> {
     return this.http.delete(
-      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/deleteReview/${id}`,
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API +
+        `/user/deleteReview/${id}`,
       this.httpOptions
     );
   }
 
   userGetLessonDetail(id: any): Observable<any> {
     return this.http.get(
-      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/userGetLessonDetail/${id}`,
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API +
+        `/user/userGetLessonDetail/${id}`,
       this.httpOptions
-    );  
+    );
   }
 
   userGetListComment(id: any): Observable<any> {
     return this.http.get(
-      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/getComment/${id}`,
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API +
+        `/user/getComment/${id}`,
       this.httpOptions
-    );  
+    );
   }
 
   enrollCourse(body: any): Observable<any> {
@@ -105,15 +113,16 @@ export class CourseService {
       environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/enrollCourse`,
       body,
       this.httpOptions
-    );  
+    );
   }
 
   updateLearningProcess(body: any): Observable<any> {
     return this.http.post(
-      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/updateLearningProcess`,
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API +
+        `/user/updateLearningProcess`,
       body,
       this.httpOptions
-    );  
+    );
   }
 
   userGetNote(body: any): Observable<any> {
@@ -121,7 +130,7 @@ export class CourseService {
       environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/getNote`,
       body,
       this.httpOptions
-    );  
+    );
   }
 
   getListExercise(body: any): Observable<any> {
@@ -129,7 +138,7 @@ export class CourseService {
       environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/getListExercise`,
       body,
       this.httpOptions
-    );  
+    );
   }
 
   updateNote(body: any): Observable<any> {
@@ -137,7 +146,7 @@ export class CourseService {
       environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/updateNote`,
       body,
       this.httpOptions
-    );  
+    );
   }
 
   saveNote(body: any): Observable<any> {
@@ -145,21 +154,22 @@ export class CourseService {
       environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/saveNote`,
       body,
       this.httpOptions
-    );  
+    );
   }
 
   getDetailExercise(id: any): Observable<any> {
     return this.http.get(
-      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/getDetailExercise/${id}`,
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API +
+        `/user/getDetailExercise/${id}`,
       this.httpOptions
-    );  
+    );
   }
 
   getAllCourse(): Observable<any> {
     return this.http.get(
       environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/user/getAllCourse`,
       this.httpOptions
-    );  
+    );
   }
 
   inactiveCourse(body: any): Observable<any> {
@@ -167,7 +177,7 @@ export class CourseService {
       environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/admin/inactiveCourse`,
       body,
       this.httpOptions
-    );  
+    );
   }
 
   activeCourse(body: any): Observable<any> {
@@ -175,14 +185,15 @@ export class CourseService {
       environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/admin/activeCourse`,
       body,
       this.httpOptions
-    );  
+    );
   }
-  
+
   getStudentsByTeacherId(idTeacher: any): Observable<any> {
     return this.http.get(
-      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/teacher/getListUser/${idTeacher}`,
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API +
+        `/teacher/getListUser/${idTeacher}`,
       this.httpOptions
-    );  
+    );
   }
 
   teacherAddCourse(body: any): Observable<any> {
@@ -190,23 +201,25 @@ export class CourseService {
       environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/teacher/addCourse`,
       body,
       this.httpOptions
-    );  
+    );
   }
 
   teacherAddLessonParents(body: any): Observable<any> {
     return this.http.post(
-      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/teacher/addLessonParents`,
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API +
+        `/teacher/addLessonParents`,
       body,
       this.httpOptions
-    );  
+    );
   }
 
   unSubmitCourse(id: any): Observable<any> {
     return this.http.post(
-      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/teacher/unSubmitCourse`,
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API +
+        `/teacher/unSubmitCourse`,
       id,
       this.httpOptions
-    );  
+    );
   }
 
   submitCourse(id: any): Observable<any> {
@@ -214,6 +227,14 @@ export class CourseService {
       environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/teacher/submitCourse`,
       id,
       this.httpOptions
-    );  
+    );
+  }
+
+  updateCourse(body: any): Observable<any> {
+    return this.http.post(
+      environment.BASE_API_URI.BASE_SERVICE_ONTHI_API + `/teacher/updateCourse`,
+      body,
+      this.httpOptions
+    );
   }
 }

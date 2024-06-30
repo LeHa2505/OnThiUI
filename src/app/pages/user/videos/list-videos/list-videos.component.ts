@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserService } from 'src/app/service/user-service/user.service';
 
 @Component({
@@ -12,7 +13,8 @@ export class ListVideosComponent {
   userAvatar = localStorage.getItem('avatar');
   shorts: any;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, public router: Router,
+  ) {}
 
   ngOnInit() {
     this.getShortsAPI();
@@ -24,5 +26,12 @@ export class ListVideosComponent {
         this.shorts = res.data;
       }
     });
+  }
+
+  detailShort(item: any) {
+    const idShort = Number(item.ID_SHORT);
+    this.userService.idShort = idShort;
+    localStorage.setItem('idShort', idShort.toString());
+    this.router.navigateByUrl('/shorts/detail');
   }
 }

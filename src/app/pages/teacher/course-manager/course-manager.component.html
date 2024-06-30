@@ -1,8 +1,7 @@
 <div style="max-width: 800px; margin: 0 auto">
   <div style="display: flex; align-items: center; justify-content: space-between">
     <h2>Quản lý khóa học</h2>
-    <button [routerLink]="['/course-manager/new']"
-    style="
+    <button [routerLink]="['/course-manager/new']" style="
           float: right;
           background-color: #f18524;
           border: none;
@@ -15,34 +14,35 @@
   </div>
 
   <nz-list nzHeader="Danh sách khóa học">
+    <nz-skeleton *ngIf="loadingCourse" [nzActive]="true"></nz-skeleton>
     <nz-list-item *ngFor="let course of paginatedCourses">
       <nz-list-item-meta [nzAvatar]="avatarTemp" nzTitle="{{ course.COURSE_NAME }}"
         [nzDescription]="courseDescription"></nz-list-item-meta>
-        <ng-template #courseDescription>
-          <div nz-row>
-            <div nz-col nzSpan="8">{{ course.CATEGORY_NAME }}</div>
-            <div nz-col nzSpan="8">{{ getCourseType(course.TYPE_COURSE) }}</div>
-          </div>
-        </ng-template>
+      <ng-template #courseDescription>
+        <div nz-row>
+          <div nz-col nzSpan="8">{{ course.CATEGORY_NAME }}</div>
+          <div nz-col nzSpan="8">{{ getCourseType(course.TYPE_COURSE) }}</div>
+        </div>
+      </ng-template>
 
-        <ng-template #avatarTemp>
-          <nz-avatar style="border-radius: 0.8rem;" [nzShape]="'square'" [nzSize]="64" [nzIcon]="'user'" [nzSrc]="course.AVATAR_COURSE"></nz-avatar>
-        </ng-template>
-        
-        
+      <ng-template #avatarTemp>
+        <nz-avatar style="border-radius: 0.8rem;" [nzShape]="'square'" [nzSize]="64" [nzIcon]="'user'"
+          [nzSrc]="course.AVATAR_COURSE"></nz-avatar>
+      </ng-template>
+
+
       <div nz-row>
         <div nz-col nzSpan="8" style="display: flex; align-items: center;">
-          <button style="margin-right: 1rem;" nz-button nzType="default"><i style="margin-right: 0.5rem;" class="fa-solid fa-pen-to-square"></i>Chỉnh sửa khóa học</button>
-          <button (click)="detail(course.ID_COURSE)" nz-button nzType="default"><i style="margin-right: 0.5rem;" class="fa-solid fa-eye" ></i>Xem chi tiết</button>
+          <button (click)="getCourseDetail(course.ID_COURSE)" style="margin-right: 1rem;" nz-button nzType="default"><i
+              style="margin-right: 0.5rem;" class="fa-solid fa-pen-to-square"></i>Chỉnh sửa khóa học</button>
+          <button (click)="detail(course.ID_COURSE)" nz-button nzType="default"><i style="margin-right: 0.5rem;"
+              class="fa-solid fa-eye"></i>Xem chi tiết</button>
         </div>
       </div>
     </nz-list-item>
   </nz-list>
-  <nz-pagination style="align-items: center; display: flex; justify-content: center;"
-    [nzPageIndex]="pageIndex"
-    [nzPageSize]="pageSize"
-    [nzTotal]="total"
-    (nzPageIndexChange)="onPageChange($event)">
+  <nz-pagination style="align-items: center; display: flex; justify-content: center;" [nzPageIndex]="pageIndex"
+    [nzPageSize]="pageSize" [nzTotal]="total" (nzPageIndexChange)="onPageChange($event)">
   </nz-pagination>
-  
+
 </div>

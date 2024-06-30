@@ -15,6 +15,7 @@ import { Cloudinary, CloudinaryImage } from '@cloudinary/url-gen';
 import { CloudinaryVideo } from '@cloudinary/url-gen';
 import { CourseService } from 'src/app/service/course-service/course.service';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { NzUploadFile } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'app-new-course',
@@ -40,6 +41,45 @@ export class NewCourseComponent {
     toolbar:
       'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',
   };
+  fileList: NzUploadFile[] = [
+    {
+      uid: '1',
+      name: 'xxx.png',
+      status: 'done',
+      response: 'Server Error 500', // custom error message to show
+      url: 'http://www.baidu.com/xxx.png',
+    },
+    {
+      uid: '2',
+      name: 'yyy.png',
+      status: 'done',
+      url: 'http://www.baidu.com/yyy.png',
+    },
+    {
+      uid: '3',
+      name: 'zzz.png',
+      status: 'error',
+      response: 'Server Error 500', // custom error message to show
+      url: 'http://www.baidu.com/zzz.png',
+    },
+  ];
+  lessonPanels = [
+    {
+      active: true,
+      name: 'This is panel header 1',
+      disabled: false,
+    },
+    {
+      active: false,
+      disabled: false,
+      name: 'This is panel header 2',
+    },
+    {
+      active: false,
+      disabled: true,
+      name: 'This is panel header 3',
+    },
+  ];
   categoryList: any;
   courseTypeList: any;
   cloudName = 'djiv03sxd'; // replace with your own cloud name
@@ -55,6 +95,8 @@ export class NewCourseComponent {
   current = 0;
   processing = false;
   listLessonParent: any;
+  listLessonChildren: any;
+  lessons: any = [];
   panels: any;
   steps = [
     {
@@ -70,7 +112,6 @@ export class NewCourseComponent {
       percentage: 0,
     },
     { title: 'Step 3', description: 'Bài học', status: 'wait', percentage: 0 },
-    { title: 'Step 4', description: 'Câu hỏi', status: 'wait', percentage: 0 },
   ];
   indexVideoUpload: any;
   faqForm: FormGroup;
@@ -82,10 +123,6 @@ export class NewCourseComponent {
     private fileService: UploadService,
     private notification: NzNotificationService
   ) {
-    this.faqForm = this.fb.group({
-      lesson: ['', Validators.required],
-      faqs: this.fb.array([]),
-    });
     this.validateForm = this.fb.group(
       {
         COURSE_NAME: [null, [Validators.required]],
@@ -105,10 +142,6 @@ export class NewCourseComponent {
   }
 
   ngOnInit(): void {
-    this.initCategoryList();
-    this.initCourseTypeList();
-    this.addFAQ();
-    this.validateForm3 = this.fb.group({});
     this.myWidget = (window as any).cloudinary.createUploadWidget(
       {
         cloudName: this.cloudName,
@@ -129,6 +162,9 @@ export class NewCourseComponent {
                 Number(result.info.duration)
               ).toString()
             );
+          this.validateForm3
+            .get(`ORDER_${this.indexVideoUpload}`)
+            .setValue((Number(this.indexVideoUpload) + 1).toString());
           const uploadedVideo = document.getElementById(
             'uploadedvideo'
           ) as HTMLVideoElement;
@@ -136,6 +172,9 @@ export class NewCourseComponent {
         }
       }
     );
+    this.initCategoryList();
+    this.initCourseTypeList();
+    this.validateForm3 = this.fb.group({});
   }
 
   convertSecondsToMinutes(seconds: number): number {
@@ -146,6 +185,87 @@ export class NewCourseComponent {
     minutes = Math.round(minutes * 100) / 100;
 
     return minutes;
+  }
+
+  get lessonPanelArray(): FormArray {
+    return this.faqForm.get('lessonPanelArray') as FormArray;
+  }
+
+  createLessonPanel(): FormGroup {
+    return this.fb.group({
+      exercises: this.fb.array([]),
+      attachments: this.fb.array([]),
+    });
+  }
+
+  addExercise(lessonIndex: number): void {
+    const exercises = this.lessonPanelArray
+      .at(lessonIndex)
+      .get('exercises') as FormArray;
+    exercises.push(
+      this.fb.group({
+        exerciseName: ['', Validators.required],
+        questions: this.fb.array([]),
+      })
+    );
+  }
+
+  removeExercise(lessonIndex: number, exerciseIndex: number): void {
+    const exercises = this.lessonPanelArray
+      .at(lessonIndex)
+      .get('exercises') as FormArray;
+    exercises.removeAt(exerciseIndex);
+  }
+
+  addQuestion(lessonIndex: number, exerciseIndex: number, type: string): void {
+    const questions = (
+      this.lessonPanelArray.at(lessonIndex).get('exercises') as FormArray
+    )
+      .at(exerciseIndex)
+      .get('questions') as FormArray;
+    questions.push(
+      this.fb.group({
+        questionText: ['', Validators.required],
+        questionType: [type, Validators.required],
+        answer: ['', Validators.required],
+        options:
+          type === 'MCQ'
+            ? this.fb.array([
+                this.fb.control(''),
+                this.fb.control(''),
+                this.fb.control(''),
+                this.fb.control(''),
+              ])
+            : null,
+      })
+    );
+  }
+
+  removeQuestion(
+    lessonIndex: number,
+    exerciseIndex: number,
+    questionIndex: number
+  ): void {
+    const questions = (
+      this.lessonPanelArray.at(lessonIndex).get('exercises') as FormArray
+    )
+      .at(exerciseIndex)
+      .get('questions') as FormArray;
+    questions.removeAt(questionIndex);
+  }
+
+  addAttachment(lessonIndex: number): void {
+    const attachments = this.lessonPanelArray
+      .at(lessonIndex)
+      .get('attachments') as FormArray;
+    attachments.push(this.fb.control(''));
+  }
+
+  removeAttachment(lessonIndex: number, attachmentIndex: number): void {
+    const attachments = this.lessonPanelArray
+      .at(lessonIndex)
+      .get('attachments') as FormArray;
+    attachments.removeAt(attachmentIndex);
   }
 
   faqs(): FormArray {
@@ -198,10 +318,13 @@ export class NewCourseComponent {
     faq.get('optionD').updateValueAndValidity();
   }
 
-  submitFAQForm(): void {
+  submitFaqForm(): void {
     if (this.faqForm.valid) {
       console.log(this.faqForm.value);
-      // Implement the save logic here
+      // Implement submission logic here, e.g., send the form data to a server
+    } else {
+      // Handle form validation errors
+      console.log('Form is invalid');
     }
   }
 
@@ -278,7 +401,7 @@ export class NewCourseComponent {
   initCategoryList() {
     this.categoryList = [
       { label: 'Toán học', value: 'Toán' },
-      { label: 'Ngữ Văn', value: 'Ngữ văn' },
+      { label: 'Ngữ văn', value: 'Ngữ văn' },
       { label: 'Hóa học', value: 'Hóa học' },
       { label: 'Vật lý', value: 'Vật lý' },
       { label: 'Sinh học', value: 'Sinh học' },
@@ -416,6 +539,41 @@ export class NewCourseComponent {
         this.panels.push(newPanel);
       }
     });
+  };
+
+  userMapLessonChildrensToPanels = (lessons) => {
+    this.lessonPanels = [];
+    lessons.sort((a, b) => a.ORDER - b.ORDER);
+
+    lessons.forEach((lesson) => {
+      if (lesson.LESSON_PARENT) {
+        const newPanel = {
+          id: lesson.ID_LESSON,
+          video: lesson.LINK_VIDEO,
+          subject: lesson.SUBJECT,
+          continueTime: lesson.CONTINUE_TIME,
+          view: lesson.VIEW,
+          descrip: lesson.DESCRIPTION,
+          active: false,
+          name: lesson.LESSON_NAME,
+          order: Number(lesson.ORDER),
+          disabled: false,
+        };
+        this.lessonPanels.push(newPanel);
+        const lessonItem = {
+          ID_LESSON: lesson.ID_LESSON,
+          LESSON_NAME: lesson.LESSON_NAME,
+          LESSON_PARENT: lesson.LESSON_PARENT,
+        };
+        this.lessons.push(lessonItem);
+      }
+    });
+    this.faqForm = this.fb.group({
+      lessonPanelArray: this.fb.array(
+        this.lessons.map(() => this.createLessonPanel())
+      ),
+    });
+    this.addFAQ();
   };
 
   onChange(result: Date[]): void {
@@ -597,6 +755,15 @@ export class NewCourseComponent {
         .subscribe((res) => {
           if (res.success) {
             this.createNotification('Lưu bài học thành công', 'success');
+            this.courseService
+              .adminGetDetailCourse(this.idCourse)
+              .subscribe((res) => {
+                if (res.success) {
+                  this.userMapLessonChildrensToPanels(res.data.LESSON_INFO);
+                  this.listLessonChildren = this.lessonPanels;
+                  this.next();
+                }
+              });
           } else this.createNotification(res.message, 'error');
         });
     } else {

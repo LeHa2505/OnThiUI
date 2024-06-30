@@ -87,6 +87,7 @@ import { RequestCourseComponent } from './admin/request-course/request-course.co
 import { NewCourseComponent } from './teacher/new-course/new-course.component';
 import {CloudinaryModule} from '@cloudinary/ng';
 import { ReelsComponent } from './teacher/reels/reels.component';
+import { EditLessonComponent } from './teacher/edit-lesson/edit-lesson.component';
 
 @NgModule({
   declarations: [
@@ -116,6 +117,7 @@ import { ReelsComponent } from './teacher/reels/reels.component';
     RequestCourseComponent,
     NewCourseComponent,
     ReelsComponent,
+    EditLessonComponent,
   ],
 
   imports: [
