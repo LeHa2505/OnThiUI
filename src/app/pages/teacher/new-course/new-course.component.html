@@ -13,13 +13,16 @@
             <span>Tiếp tục</span>
         </span>
     </button>
-    <button *ngIf="!isSubmitted && current >= 2" (click)="requestSubmitCourse()" style="background-color: #faad14; border: none;" nz-button nzType="primary" (click)="done()"
+    <button *ngIf="!isSubmitted && current >= 2" (click)="requestSubmitCourse()"
+        style="background-color: #faad14; border: none;" nz-button nzType="primary" (click)="done()"
         [nzLoading]="processing">
+        <i class="fa-solid fa-lock-open" style="margin-right: 0.5rem;"></i>
         <span>Yêu cầu mở khóa học</span>
     </button>
 
-    <button (click)="requestUnSubmitCourse()" style="background-color: #faad14; border: none;" nz-button nzType="primary" (click)="done()"
-        [nzLoading]="processing" *ngIf="current >= 2 && isSubmitted">
+    <button (click)="requestUnSubmitCourse()" style="background-color: #faad14; border: none;" nz-button
+        nzType="primary" (click)="done()" [nzLoading]="processing" *ngIf="current >= 2 && isSubmitted">
+        <i class="fa-solid fa-lock" style="margin-right: 0.5rem;"></i>
         <span>Hủy yêu cầu mở khóa học</span>
     </button>
 </div>
@@ -29,8 +32,6 @@
     <nz-step [nzTitle]="'Danh sách chủ đề/chương'" [nzDescription]="''" [nzStatus]="steps[1].status"></nz-step>
     <nz-step [nzTitle]="'Bài học'" [nzDescription]="''" [nzPercentage]="steps[2].percentage"
         [nzStatus]="steps[2].status"></nz-step>
-    <nz-step [nzTitle]="'Câu hỏi'" [nzDescription]="''" [nzPercentage]="steps[3].percentage"
-        [nzStatus]="steps[3].status"></nz-step>
 </nz-steps>
 
 <div class="steps-content">
@@ -146,24 +147,6 @@
                             </div>
                         </div>
 
-                        <!-- <div class="ant-row">
-                        <div class="ant-col ant-col-24">
-                            <nz-form-item>
-                                <nz-form-label [nzSm]="6" nzFor="priceOption" nzRequired>Bán với giá</nz-form-label>
-                                <nz-form-control [nzSm]="14">
-                                    <nz-radio-group formControlName="priceOption">
-                                        <label nz-radio nzValue="price">
-                                            <span>Giá gốc</span>
-                                        </label>
-                                        <label nz-radio nzValue="discount">
-                                            <span>Giá giảm</span>
-                                        </label>
-                                    </nz-radio-group>
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
-                    </div> -->
-
                         <div class="ant-row">
                             <div class="ant-col ant-col-24">
                                 <nz-form-item>
@@ -228,8 +211,14 @@
         <form nz-form style="max-width: 100%;" [formGroup]="validateForm3" (ngSubmit)="submitForm3()">
             <div *ngFor="let control of lessonControls; let i = index"
                 style="display: flex; align-items: flex-start; justify-content: space-between; width: 100%;">
-                <div>
-                    <span>__{{i+1}}__</span>
+                <div style="border: 1px solid #1890ff;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;">
+                    <span style="color: #1890ff;">{{i+1}}</span>
                 </div>
                 <div style="width: 100%;">
                     <div class="ant-row">
@@ -289,8 +278,14 @@
                                 <nz-form-label [nzSm]="6" nzFor="title" nzRequired>Thời lượng - Thứ tự bài
                                     học</nz-form-label>
                                 <nz-form-control [nzSm]="6" style="margin-right: 1rem;">
-                                    <input type="number" placeholder="Thời lượng" [min]="0" nz-input
-                                        [formControlName]="'DURATION_' + i" /> <span style="margin-left: 1rem;">Phút</span>
+                                    <nz-input-group [nzSuffix]="suffixTemplate">
+                                        <input type="number" placeholder="Thời lượng" [min]="0" nz-input
+                                            [formControlName]="'DURATION_' + i" />
+                                    </nz-input-group>
+                                    <ng-template #suffixTemplate>
+                                        <span style="margin-left: 1rem;">phút</span>
+                                    </ng-template>
+
                                 </nz-form-control>
                                 <nz-form-control [nzSm]="6">
                                     <input type="number" placeholder="Thứ tự bài học" [min]="0" nz-input
@@ -337,76 +332,111 @@
             <div style="height: 1px; background-color: #d9d9d9; margin: 1rem 0; width: 100%;"></div>
         </ng-container>
     </div>
-    <div style="margin-top: 1.7rem;" *ngIf="current === 3">
-        <form nz-form [formGroup]="faqForm" (ngSubmit)="submitFAQForm()">
-            <div style="display: flex;
-            justify-content: space-between;
-            width: 100%;" formArrayName="faqs" *ngFor="let faq of faqs().controls; let i = index">
-                <div [formGroupName]="i" style="margin-bottom: 1rem; width: 100%;">
-                    <nz-form-item>
-                        <nz-form-label [nzSm]="4" nzFor="question">Câu hỏi #{{i + 1}}</nz-form-label>
-                        <nz-form-control [nzSm]="20">
-                            <input nz-input formControlName="question" placeholder="Enter FAQ question" />
-                        </nz-form-control>
-                    </nz-form-item>
-                    <nz-form-item>
-                        <nz-form-label [nzSm]="4" nzFor="questionType">Loại câu hỏi</nz-form-label>
-                        <nz-form-control [nzSm]="20">
-                            <nz-select formControlName="questionType" (ngModelChange)="onQuestionTypeChange(i)">
-                                <nz-option nzValue="essay" nzLabel="Tự luận"></nz-option>
-                                <nz-option nzValue="multipleChoice" nzLabel="Trắc nghiệm"></nz-option>
-                            </nz-select>
-                        </nz-form-control>
-                    </nz-form-item>
-                    <div *ngIf="faq.get('questionType').value === 'essay'">
-                        <nz-form-item>
-                            <nz-form-label [nzSm]="4" nzFor="answer">Trả lời #{{i + 1}}</nz-form-label>
-                            <nz-form-control [nzSm]="20">
-                                <textarea nz-input formControlName="answer" placeholder="Enter FAQ answer"></textarea>
-                            </nz-form-control>
-                        </nz-form-item>
+    <!-- <div style="margin-top: 1.7rem;" *ngIf="current === 3">
+        <form [formGroup]="faqForm">
+            <div formArrayName="lessonPanelArray">
+                <div *ngFor="let lessonPanel of lessonPanelArray.controls; let i = index" [formGroupName]="i">
+                    <h3 style="font-size: 1.2rem;">{{lessons[i].LESSON_NAME}} (ID: {{lessons[i].ID_LESSON}})</h3>
+                    <div>
+                        <button style="margin-bottom: 1rem" nz-button nzType="dashed" (click)="addExercise(i)">
+                            <i style="margin-right: 0.5rem;" class="fa-solid fa-plus"></i>
+                            Thêm bài tập</button>
+                        <div formArrayName="exercises">
+                            <div *ngFor="let exercise of lessonPanel.get('exercises').controls; let j = index"
+                                [formGroupName]="j">
+                                <div>
+                                    <nz-form-item>
+                                        <nz-form-label [nzFor]="'exercise_' + j" [nzSm]="6" nzRequired>Tên bài
+                                            tập</nz-form-label>
+                                        <nz-form-control style="margin-right: 1rem;" [nzSm]="14">
+                                            <input nz-input formControlName="exerciseName" />
+                                        </nz-form-control>
+                                        <button style=" border: none;" nz-tooltip nzTooltipTitle="Xóa bài tập" nz-button
+                                        nzType="dashed" (click)="removeExercise(i, j)">
+                                        <i class="fa-solid fa-circle-xmark"></i>
+                                    </button>
+                                    </nz-form-item>
+                                </div>
+                                <div style="display: flex;
+                                justify-content: center;
+                                flex-direction: row;
+                                align-items: center;">
+                                    <button style="    margin-bottom: 1rem; margin-right: 1rem;" nz-button
+                                        nzType="dashed" (click)="addQuestion(i, j, 'essay')">Thêm câu hỏi tự
+                                        luận</button>
+                                    <button style="    margin-bottom: 1rem; margin-right: 1rem;" nz-button nzType="dashed"
+                                        (click)="addQuestion(i, j, 'MCQ')">Thêm câu hỏi trắc
+                                        nghiệm</button>
+                                    <button style="    margin-bottom: 1rem;"   nz-button nzType="dashed" (click)="removeQuestion(i, j, k)">
+                                        Xóa câu hỏi
+                                    </button>
+                                </div>
+                                <div>
+                                    <div formArrayName="questions">
+                                        <div *ngFor="let question of exercise.get('questions').controls; let k = index"
+                                            [formGroupName]="k">
+                                            <nz-form-item>
+                                                <nz-form-label [nzFor]="'question_' + k" [nzSm]="6" nzRequired>Nội dung
+                                                    câu hỏi</nz-form-label>
+                                                <nz-form-control [nzSm]="14">
+                                                    <input nz-input formControlName="questionText" />
+                                                </nz-form-control>
+                                            </nz-form-item>
+                                            <div *ngIf="question.get('questionType').value === 'MCQ'">
+                                                <div formArrayName="options">
+                                                    <div
+                                                        *ngFor="let option of question.get('options').controls; let l = index">
+                                                        <nz-form-item>
+                                                            <nz-form-label [nzFor]="'option_' + l" [nzSm]="6"
+                                                                nzRequired>Đáp
+                                                                án {{ l + 1 }}</nz-form-label>
+                                                            <nz-form-control [nzSm]="14">
+                                                                <input nz-input [formControlName]="l" />
+                                                            </nz-form-control>
+                                                        </nz-form-item>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <nz-form-item>
+                                                <nz-form-labe6 [nzFor]="'answer_' + k" [nzSm]="6" nzRequired>Đáp
+                                                    án</nz-form-labe6>
+                                                <nz-form-control [nzSm]="14">
+                                                    <input nz-input formControlName="answer" />
+                                                </nz-form-control>
+                                            </nz-form-item>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div *ngIf="faq.get('questionType').value === 'multipleChoice'">
-                        <nz-form-item>
-                            <nz-form-label [nzSm]="4" nzFor="answer">Đáp án #{{i + 1}}</nz-form-label>
-                            <nz-form-control [nzSm]="20">
-                                <input nz-input formControlName="answer" placeholder="Enter correct answer" />
-                            </nz-form-control>
-                        </nz-form-item>
-                        <nz-form-item>
-                            <nz-form-label [nzSm]="4" nzFor="optionA">Đáp án A</nz-form-label>
-                            <nz-form-control [nzSm]="20">
-                                <input nz-input formControlName="optionA" placeholder="Enter option A" />
-                            </nz-form-control>
-                        </nz-form-item>
-                        <nz-form-item>
-                            <nz-form-label [nzSm]="4" nzFor="optionB">Đáp án B</nz-form-label>
-                            <nz-form-control [nzSm]="20">
-                                <input nz-input formControlName="optionB" placeholder="Enter option B" />
-                            </nz-form-control>x
-                        </nz-form-item>
-                        <nz-form-item>
-                            <nz-form-label [nzSm]="4" nzFor="optionC">Đáp án C</nz-form-label>
-                            <nz-form-control [nzSm]="20">
-                                <input nz-input formControlName="optionC" placeholder="Enter option C" />
-                            </nz-form-control>
-                        </nz-form-item>
-                        <nz-form-item>
-                            <nz-form-label [nzSm]="4" nzFor="optionD">Đáp án D</nz-form-label>
-                            <nz-form-control [nzSm]="20">
-                                <input nz-input formControlName="optionD" placeholder="Enter option D" />
-                            </nz-form-control>
-                        </nz-form-item>
+                    <div>
+                        <button style="margin-top: 1rem; margin-bottom: 1rem;" nz-button nzType="dashed"
+                            (click)="addAttachment(i)">
+                            <i style="margin-right: 0.5rem;" class="fa-solid fa-plus"></i>
+                            Thêm tài liệu đính kèm</button>
+                        <div formArrayName="attachments">
+                            <div *ngFor="let attachment of lessonPanel.get('attachments').controls; let k = index">
+                                <nz-form-item>
+                                    <nz-form-label [nzFor]="'attachment_' + k" [nzSm]="8" nzRequired>Tài liệu đính
+                                        kèm</nz-form-label>
+                                    <nz-form-control [nzSm]="14">
+                                        <input nz-input [formControlName]="k" />
+                                    </nz-form-control>
+                                    <button nz-tooltip nzTooltipTitle="Xóa tài liệu"
+                                        style="margin-left: 1rem; border: none;" nz-button nzType="dashed"
+                                        (click)="removeAttachment(i, k)"><i
+                                            class="fa-solid fa-circle-minus"></i></button>
+                                </nz-form-item>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <button nz-button nzType="dashed" style="border: none;" (click)="removeFAQ(i)">
-                        <i class="fa-solid fa-circle-xmark"></i>
-                    </button>
                 </div>
             </div>
-            <button nz-button nzType="dashed" (click)="addFAQ()">+ Thêm Câu hỏi</button>
-            <button nz-button nzType="primary" [disabled]="!faqForm.valid" htmlType="submit">Lưu FAQs</button>
+            <button nz-button nzType="primary" htmlType="submit">Lưu thông tin chi tiết bài học</button>
         </form>
-    </div>
+    </div> -->
 </div>
+
+<nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76" [nzFileList]="   fileList">
+</nz-upload>

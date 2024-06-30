@@ -2,6 +2,8 @@
   <div class="inner">
     <img src="../../../assets/images/image-1.png" alt="" class="image-1">
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+      <h3><strong>Đăng ký</strong></h3>
+
       <div class="items">
         <nz-form-item>
           <nz-form-label style="float: left; display: flex;" [nzSm]="10" [nzXs]="24" nzFor="username" nzRequired
@@ -25,9 +27,10 @@
           <nz-form-control class="form-holder" [nzSm]="14" [nzXs]="24" nzErrorTip="Hãy điền mật khẩu!">
             <nz-input-group>
               <input [type]="passwordVisible ? 'text' : 'password'" nz-input class="form-control" type="password"
-              id="password" formControlName="password" (ngModelChange)="updateConfirmValidator()" />
-            <span style="float: right; left: 75% !important; width: auto;" class="icon-pass form-control" nz-icon
-              [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></span>
+                id="password" formControlName="password" (ngModelChange)="updateConfirmValidator()" />
+              <span style="float: right; left: 75% !important; width: auto;" class="icon-pass form-control" nz-icon
+                [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+                (click)="passwordVisible = !passwordVisible"></span>
             </nz-input-group>
           </nz-form-control>
         </nz-form-item>
@@ -36,10 +39,11 @@
             nzRequired>Nhập lại mật khẩu</nz-form-label>
           <nz-form-control class="form-holder" [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorTpl">
             <nz-input-group>
-              <input [type]="passwordVisible ? 'text' : 'password'" nz-input class="form-control" 
-              type="password" formControlName="checkPassword" id="checkPassword" />
+              <input [type]="passwordVisible ? 'text' : 'password'" nz-input class="form-control" type="password"
+                formControlName="checkPassword" id="checkPassword" />
               <span style="float: right; left: 75% !important; width: auto;" class="icon-pass form-control" nz-icon
-              [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></span>
+                [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+                (click)="passwordVisible = !passwordVisible"></span>
               <ng-template #errorTpl let-control>
                 <ng-container *ngIf="control.hasError('required')">Hãy nhập lại mật khẩu!</ng-container>
                 <ng-container *ngIf="control.hasError('confirm')">
@@ -47,6 +51,23 @@
                 </ng-container>
               </ng-template>
             </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label style="float: left; display: flex;" [nzSm]="10" [nzXs]="24" nzRequired nzFor="province">Tỉnh
+            thành</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Hãy chọn tỉnh thành!">
+            <nz-select class="form-control" nzPlaceHolder="Chọn tỉnh thành" formControlName="province">
+              <nz-option *ngFor="let option of listProvinces" [nzLabel]="option.name"
+                [nzValue]="option.name"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label style="float: left; display: flex;" [nzSm]="10" [nzXs]="24" nzRequired nzFor="school">Trường
+            học</nz-form-label>
+          <nz-form-control class="form-holder" [nzSm]="14" [nzXs]="24" nzErrorTip="Hãy chọn trường!">
+            <input nz-input class="form-control" formControlName="school" id="school" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>

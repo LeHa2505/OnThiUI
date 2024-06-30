@@ -16,13 +16,13 @@
         </button>
     </div>
 
-    <div class="wrap-videos">
+    <div *ngIf="shorts.length>0" class="wrap-videos">
         <nz-card *ngFor="let item of shorts" nzHoverable class="short-video" [nzCover]="coverTemplate">
             <nz-card-meta></nz-card-meta>
             <div style="margin: -1rem;">
-                <p nz-typography nzEllipsis [nzEllipsisRows]="2" style="margin-top: 1rem; margin-bottom: 0.5rem; margin-right: 1rem;
+                <p nz-typography nzEllipsis [nzEllipsisRows]="1" style="margin-top: 1rem; margin-bottom: 0.5rem; margin-right: 1rem;
         margin-left: 1rem;">
-                    {{ item.THUMBNAIL }}
+                    {{ item.TITLE }}
                 </p>
                 <div
                     style="display: flex; align-items: center; text-align: center; margin-bottom: 1rem; justify-content: flex-end; margin-right: 1rem; margin-top: 1rem;">
@@ -39,6 +39,9 @@
             </ng-template>
         </nz-card>
     </div>
+    <div *ngIf="shorts.length <= 0">
+        <h5>Bạn chưa đăng tải video ngắn nào!</h5>
+    </div>
 </div>
 
 <div class="center-item">
@@ -47,7 +50,7 @@
     </nz-pagination>
 </div>
 
-<nz-modal [(nzVisible)]="isAddVideoModalVisible" nzTitle="Add Video" (nzOnCancel)="handleCancel()"
+<nz-modal [(nzVisible)]="isAddVideoModalVisible" nzTitle="Thêm video ngắn" (nzOnCancel)="handleCancel()"
     (nzOnOk)="handleAddVideoOk()">
     <div *nzModalContent>
         <form [formGroup]="addVideoForm">
@@ -100,7 +103,7 @@
                     [src]="courseAvatar" alt="">
                 <div>
                     <input style="display: none;" type="file" class="file-input" (change)="onFileChange($event)" #file>
-                    <button nz-button class="file-input" (click)="file.click()" style="display: flex;">
+                    <button nz-button class="file-input" (click)="file.click()" style="display: flex; margin-bottom: 1rem;">
                         <div><i style="margin-right: 1rem;" class="fa-regular fa-image"></i></div>
                         Upload lại thumbnail
                     </button>

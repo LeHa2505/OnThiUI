@@ -11,6 +11,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { Router } from '@angular/router';
 import { ethers } from 'ethers';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { UserService } from 'src/app/service/user-service/user.service';
 
 @Component({
   selector: 'app-signup',
@@ -24,6 +25,8 @@ export class SignupComponent implements OnInit {
     email: String,
     password: String,
     typeUser: Number(0),
+    province: String,
+    school: String
   };
   captchaTooltipIcon: NzFormTooltipIcon = {
     type: 'info-circle',
@@ -32,14 +35,24 @@ export class SignupComponent implements OnInit {
   num: number;
   isButtonLoading = false;
   passwordVisible = false;
+  listProvinces: any[] = [];
+  selectedProvince: any;
+  filteredProvinces: any
 
   constructor(
     private fb: UntypedFormBuilder,
     private registerService: AuthenticationService,
     private mess: NzMessageService,
     private notification: NzNotificationService,
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) {}
+
+  initProvinces() {
+    this.userService.getAllProvinces().subscribe((res) => {
+      this.listProvinces = res.data.data;
+    });
+  }
 
   async submitForm(): Promise<void> {
     if (this.validateForm.valid) {
@@ -106,7 +119,10 @@ export class SignupComponent implements OnInit {
       password: [null, [Validators.required]],
       checkPassword: [null, [Validators.required, this.confirmationValidator]],
       username: [null, [Validators.required]],
+      province: [null, [Validators.required]],
+      school: [null, [Validators.required]],
       role: [null, [Validators.required]],
     });
+    this.initProvinces();
   }
 }
